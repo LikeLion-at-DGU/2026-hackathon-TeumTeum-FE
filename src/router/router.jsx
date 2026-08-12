@@ -1,8 +1,10 @@
-import Home from "../pages/Home";
-import Magazine from "../pages/Magazine";
-import Record from "../pages/Record";
-import MyPage from "../pages/MyPage";
-import Onboarding from "../pages/Onboarding";
+import { createBrowserRouter } from "react-router-dom";
+
+import Home from "../pages/Home/Home";
+import Magazine from "../pages/Magazine/Magazine";
+import Record from "../pages/History/History";
+import MyPage from "../pages/MyPage/MyPage";
+import Onboarding from "../pages/Onboarding/Onboarding";
 
 export const router = createBrowserRouter([
   {
@@ -18,8 +20,8 @@ export const router = createBrowserRouter([
     element: <Magazine />,
   },
   {
-    path: "/record",
-    element: <Record />,
+    path: "/history",
+    element: <History />,
   },
   {
     path: "/mypage",
