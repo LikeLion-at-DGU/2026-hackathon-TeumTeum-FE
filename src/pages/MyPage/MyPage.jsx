@@ -1,5 +1,15 @@
+import Header from "../../components/layout/Header";
+
 const MyPage = () => {
-  return <div>MyPage</div>;
+  return (
+    <>
+      <Header
+        title="MY"
+      />
+
+      <div>MyPage</div>
+    </>
+  );
 };
 
 export default MyPage;

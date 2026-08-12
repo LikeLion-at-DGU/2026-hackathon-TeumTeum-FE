@@ -30,7 +30,7 @@ export const TextBox = styled.div`
 
 export const Title = styled.h1`
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: #32cd32;
 `;
 
@@ -38,5 +38,6 @@ export const Description = styled.p`
   margin-top: 4px;
 
   font-size: 12px;
+  font-weight: 400;
   color: #B2B2B2;
 `;
