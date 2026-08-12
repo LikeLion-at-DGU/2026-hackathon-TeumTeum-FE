@@ -1,16 +1,28 @@
-import { Routes, Route } from 'react-router-dom'
-import LandingPage from "../pages/LandingPage.jsx"
-import ProjectPage from "../pages/ProjectPage.jsx"
-import TeamPage from "../pages/TeamPage.jsx"
+import Home from "../pages/Home";
+import Magazine from "../pages/Magazine";
+import Record from "../pages/Record";
+import MyPage from "../pages/MyPage";
+import Onboarding from "../pages/Onboarding";
 
-function Router() {
-    return (
-        <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/team" element={<TeamPage />} />
-        <Route path="/project" element={<ProjectPage />} />
-        </Routes>
-    )
-}
-
-export default Router
+export const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Onboarding />,
+  },
+  {
+    path: "/home",
+    element: <Home />,
+  },
+  {
+    path: "/magazine",
+    element: <Magazine />,
+  },
+  {
+    path: "/record",
+    element: <Record />,
+  },
+  {
+    path: "/mypage",
+    element: <MyPage />,
+  },
+]);
