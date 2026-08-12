@@ -1,10 +1,14 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import Logo from "../../assets/icons/Frame 13.svg";
 import HomeIcon from "../../assets/icons/material-symbols-light_home-outline.svg";
+import HomeActiveIcon from "../../assets/icons/material-symbols-light_home-outline-green.svg";
 import MagazineIcon from "../../assets/icons/material-symbols-light_library-books-outline-rounded.svg";
+import MagazineActiveIcon from "../../assets/icons/material-symbols-light_library-books-outline-rounded-green.svg";
 import HistoryIcon from "../../assets/icons/material-symbols-light_collections-bookmark-outline.svg";
+import HistoryActiveIcon from "../../assets/icons/material-symbols-light_collections-bookmark-outline-green.svg";
 import MyPageIcon from "../../assets/icons/material-symbols-light_person-outline-rounded.svg";
+import MyPageActiveIcon from "../../assets/icons/material-symbols-light_person-outline-rounded-green.svg";
 import LogoutIcon from "../../assets/icons/Bottom.svg";
 
 import {
@@ -29,27 +33,36 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         <MenuList>
           <MenuItem>
-            <Link to="/home">
-              <img src={HomeIcon} alt="홈" />
-            </Link>
+            <NavLink to="/home">
+              {({ isActive }) => (
+                <img src={isActive ? HomeActiveIcon : HomeIcon} alt="홈"/>
+              )}
+            </NavLink>
           </MenuItem>
 
           <MenuItem>
-            <Link to="/magazine">
-              <img src={MagazineIcon} alt="매거진" />
-            </Link>
+            <NavLink to="/magazine">
+              {({ isActive }) => (
+                <img src={isActive ? MagazineActiveIcon : MagazineIcon} alt="매거진" />
+              )}
+            </NavLink>
           </MenuItem>
 
           <MenuItem>
-            <Link to="/history">
-              <img src={HistoryIcon} alt="기록" />
-            </Link>
+            <NavLink to="/history">
+              {({ isActive }) => (
+                <img src={isActive ? HistoryActiveIcon : HistoryIcon} alt="기록" />
+              )}
+              
+            </NavLink>
           </MenuItem>
 
           <MenuItem>
-            <Link to="/mypage">
-              <img src={MyPageIcon} alt="마이페이지" />
-            </Link>
+            <NavLink to="/mypage">
+              {({ isActive }) => (
+                <img src={isActive ? MyPageActiveIcon : MyPageIcon} alt="마이페이지" />
+              )}
+            </NavLink>
           </MenuItem>
         </MenuList>
 
