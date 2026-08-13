@@ -15,8 +15,8 @@ export const CardWrapper = styled.div`
     display: flex;
     gap: 12px;
 
-    width: 375px;
-    padding: 10px 0 16px 50px;
+    width: 100%;
+    box-sizing: border-box;
     
     overflow-x: auto;
     overflow-y: hidden;

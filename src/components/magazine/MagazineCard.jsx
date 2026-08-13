@@ -1,4 +1,4 @@
-import * as S from "./Magazine.styled"
+import * as S from "./MagazineCard.styled"
 import MagazineImg from "../../assets/img/매거진이미지예시.jpg"
 
 const MagazineCard = ({ variant = "featured"}) => {

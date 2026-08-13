@@ -6,7 +6,7 @@ import { Container } from "./Magazine.styled";
 
 const Magazine = () => {
   return (
-    <>
+    <> 
       <Header
         title="발견"
         description="틈틈이 추천하는 오늘의 틈새 코스"
