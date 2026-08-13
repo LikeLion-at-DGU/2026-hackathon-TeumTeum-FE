@@ -16,15 +16,23 @@ const AiInfoPopup = ({ onClose }) => {
 export default AiInfoPopup;
 
 const Container = styled.div`
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+
     display: flex;
     width: 330px;
     padding: 10px;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
+
     border-radius: 23px;
-    background: #FFF;
+    background: #fff;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.25);
+
+    z-index: 1000;
 `;
 
 const Title = styled.p`
@@ -38,7 +46,7 @@ const List = styled.div`
     display: flex;
     flex-direction: column;
     color: #b2b2b2;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
     padding-left: 10px;
 `;
