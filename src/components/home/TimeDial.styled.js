@@ -4,7 +4,7 @@ export const Container = styled.div`
   position: relative;
   width: min(280px, 82vw);
   aspect-ratio: 1;
-  margin: 100px auto 0;
+  margin: 160px auto 0;
   user-select: none;
 `;
 

@@ -13,7 +13,7 @@ export default Chip;
 
 const ChipButton = styled.button`
     width: fit-content;
-    min-width: 82px;
+    min-width: 150px;
     height: 46px;
 
     padding: 0 24px;
