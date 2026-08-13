@@ -1,11 +1,20 @@
 import styled from "styled-components";
 
 export const HeaderContainer = styled.header`
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5;
+
+  width: 100%;
+  box-sizing: border-box;
+
   display: flex;
   align-items: flex-start;
   width: 100%; 
   padding: 44px 20px 0;
+
+  background-color: white;
 `;
 
 export const Left = styled.button`

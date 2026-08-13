@@ -2,11 +2,7 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 import Logo from "../../assets/icons/Frame 13.svg";
 import Button from "../common/Button";
-
-const formatDate = (date) => {
-    const [year, month, day] = date.split("-");
-    return `${year}년 ${Number(month)}월 ${Number(day)}일`;
-};
+import formatDate from "../../utils/formatDate";
 
 const Modal = ({ 
     maintitle, date, title, description, 
