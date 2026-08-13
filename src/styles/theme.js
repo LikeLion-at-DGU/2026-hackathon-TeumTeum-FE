@@ -12,6 +12,7 @@ const theme = {
         menubar: "#000000",
         icon: "#B2B2B2",
         menu_checked: "#32CD32",
+        news: "#4C4C4C",
     },
 
     fontsize: {
