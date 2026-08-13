@@ -1,11 +1,13 @@
 import styled from "styled-components";
 
-const Button = ({ children, onClick, disabled = false, type = "button" }) => {
+const Button = ({ children, onClick, 
+  disabled = false, type = "button", variant="primary" }) => {
   return (
     <ButtonContainer
       type={type}
       onClick={onClick}
       disabled={disabled}
+      $variant={variant}
     >
       {children}
     </ButtonContainer>
@@ -14,14 +16,15 @@ const Button = ({ children, onClick, disabled = false, type = "button" }) => {
 
 export default Button;
 
-export const ButtonContainer = styled.button`
+const ButtonContainer = styled.button`
   width: 155px;
   height: 39px;
 
   border: none;
   border-radius: 8px;
 
-  background: #32cd32;
+  background: ${({ $variant }) =>
+    $variant === "secondary" ? "#B3B3B3" : "#2DCC2F"}; 
   color: #fff;
 
   font-size: 14px;
@@ -29,20 +32,26 @@ export const ButtonContainer = styled.button`
 
   cursor: pointer;
 
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+
   transition:
     background-color 0.15s ease,
     transform 0.1s ease,
     box-shadow 0.15s ease;
 
   &:hover {
-    background: #28b828;
-    box-shadow: 0 6px 12px rgba(50, 205, 50, 0.25);
+    background: ${({ $variant }) =>
+      $variant === "secondary" ? "#969696" : "#28b828"};
+    box-shadow: 0 6px 12px rgba(147, 147, 147, 0.25);
   }
 
   &:active {
-    background: #B2B2B2;
+    background: ${({ $variant }) => 
+      $variant === "secondary" ? "#4c4c4c" : "#209d20"};
     color: #fff;
-    box-shadow: 0 2px 4px rgba(50, 205, 50, 0.2);
+    box-shadow: 0 2px 4px rgba(147, 147, 147, 0.25);
     transform: scale(0.98);
   }
 

@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       <Overlay $isOpen={isOpen} onClick={onClose} />
       <SidebarContainer $isOpen={isOpen}>
         <TopButton type="button" onClick={onClose}>
-          <img src={Logo} alt="메뉴 닫기" />
+          <img src={Logo} alt="로고" />
         </TopButton>
 
         <MenuList>
