@@ -31,7 +31,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           <img src={Logo} alt="로고" />
         </TopButton>
 
-        <MenuList>
+        <MenuList> 
           <MenuItem>
             <NavLink to="/home">
               {({ isActive }) => (

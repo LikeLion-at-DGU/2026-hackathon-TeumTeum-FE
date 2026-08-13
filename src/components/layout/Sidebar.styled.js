@@ -34,11 +34,10 @@ export const SidebarContainer = styled.aside`
   align-items: center;
 `;
 
-export const TopButton = styled.button`
+export const TopButton = styled.div`
   border: 0;
   padding: 24px 0 44px;
   background: transparent;
-  cursor: pointer;
 `;
 
 export const MenuList = styled.ul`
