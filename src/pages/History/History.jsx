@@ -2,7 +2,7 @@ import Header from "../../components/layout/Header";
 import Modal from "../../components/common/Modal";
 import { useState } from "react";
 
-const Record = () => {
+const History = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -13,9 +13,11 @@ const Record = () => {
         description="틈틈이 채워준 틈새 코스의 흔적들을 둘러보세요 :)"
       /> 
 
-      <button type="button" onClick={() => setIsModalOpen(true)}>
+
+
+      {/* <button type="button" onClick={() => setIsModalOpen(true)}>
         기록 보기
-      </button>
+      </button> */}
 
       <Modal
         isOpen={isModalOpen}
@@ -35,9 +37,9 @@ const Record = () => {
         onSecondaryClick={() => setIsModalOpen(false)}
         onPrimaryClick={() => setIsModalOpen(false)}
       />
-      <div>Record</div>
+      <div>History</div>
     </>
   );
 };
 
-export default Record;
+export default History;
