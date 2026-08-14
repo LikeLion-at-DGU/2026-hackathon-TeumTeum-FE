@@ -15,6 +15,11 @@ export const Option = styled.div`
     gap: 15px;
 `
 export const Button = styled.button`
+
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+    
     background-color: ${({theme, $isSelected }) => $isSelected ? theme.colors.primary : theme.colors.catagory};
     width: 70px;
     height: 70px;
@@ -27,10 +32,6 @@ export const Button = styled.button`
 
     transition:
     background-color 0.15s ease,
-    transform 0.1s ease,
-    box-shadow 0.15s ease;
-
-transition:
     transform 0.1s ease,
     box-shadow 0.15s ease;
 
