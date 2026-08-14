@@ -38,6 +38,9 @@ export const TopButton = styled.div`
   border: 0;
   padding: 24px 0 44px;
   background: transparent;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 export const MenuList = styled.ul`
@@ -54,6 +57,9 @@ export const MenuList = styled.ul`
 export const MenuItem = styled.li`
   font-size: 18px;
   font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none;
+  user-select: none;
 `;
 
 export const BottomButton = styled.button`
