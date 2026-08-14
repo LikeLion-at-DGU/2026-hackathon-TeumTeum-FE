@@ -6,7 +6,9 @@ export const Header = styled.div`
     padding: 30px 20px;;
 `
 export const BackIcon = styled.img`
-    
+    visibility: ${({ $hidden }) => $hidden ? "hidden" : "visible"};
+
+    cursor: ${({ $hidden }) => $hidden ? "default" : "pointer" };
 `
 export const QWapper = styled.div`
     display: flex;
