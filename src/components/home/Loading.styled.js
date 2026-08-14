@@ -70,8 +70,8 @@ export const TextGroup = styled.div`
         font-weight: 400;
         letter-spacing: 0.374px;
     }
-    animation: slideUp 0.35s ease-out;
-    @keyframes slideUp {
+    animation: stepFadeUp 0.35s ease-out;
+    @keyframes stepFadeUp {
         from {
             opacity: 0;
             transform: translateY(12px);

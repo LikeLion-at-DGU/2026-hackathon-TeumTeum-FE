@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
 const Button = ({ children, onClick, 
-  disabled = false, type = "button", variant="primary" }) => {
+  disabled = false, type = "button", variant="primary", className }) => {
   return (
     <ButtonContainer
       type={type}
       onClick={onClick}
       disabled={disabled}
       $variant={variant}
+      className={className}
     >
       {children}
     </ButtonContainer>
