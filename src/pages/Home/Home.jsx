@@ -1,12 +1,18 @@
 import { useState } from "react";
-import TimeDial from "../../components/home/TimeDial";
+
 import Header from "../../components/layout/Header";
-import * as S from "./Home.styled";
 import Button from "../../components/common/Button";
-import Chip from "../../components/common/Chip";
+
+import TimeStep from "../../components/home/TimeStep";
+import SituationStep from "../../components/home/SituationStep";
+import ContentStep from "../../components/home/ContentStep";
+import Loading from "../../components/home/Loading";
+
+import useCourseFlow from "../../hooks/useCourseFlow";
+
+import * as S from "./Home.styled";
 
 // 임시 백엔드 데이터
-
 const stepData = {
   step: 0,
   title: "당신에게 남은 '틈'은?",
@@ -40,82 +46,55 @@ const questions = [
     ],
   },
 ];
+
 // 임시 사용자 UUID
 const guestUuid = "550e8400-e29b-41d4-a716-446655440000";
 
-// 나중에 props에 stepData, questions, 넣어야함
-const Home = ({  onPrimaryClick }) => {
-  const [step, setStep] = useState(0);
+const Home = ({ onPrimaryClick }) => {
+  const {
+    step, setStep,
+    duration, setDuration,
+    selectOption,
+    customSituation, setCustomSituation,
+    selectOptions,
+    step1Answer, setStep1Answer,
+    isLoading, setIsLoading,
+    handleOptionClick,
+  } = useCourseFlow();
 
-  // step 0 시간설정
-  const [duration, setDuration] = useState(
-    stepData?.target_minutes ?? 30
-  );
+  const currentQuestion = questions[step - 1];
 
-  // step 1 단일선택
-  const [selectOption, setSelectOption] = useState(null);
-
-  // step 1 기타 입력값
-  const [customSituation, setCustomSituation] = useState("");
-
-  // step 2 복수선택
-  const [selectOptions, setSelectOptions] = useState([]);
-
-  // step 1에서 저장한 답변
-  const [step1Answer, setStep1Answer] = useState(null);
-
-  const currentQuestion = questions?.[step - 1];
-
-  // 칩 선택
-  const handleOptionClick = (optionId) => {
-    //step 1 단일선택
-    if(step === 1) {
-      setSelectOption(optionId);
-    
-      if(optionId !== 4) {
-        setCustomSituation("");
-      }
-      return;
-    }
-
-    // step2 복수선택
-    if(step === 2) {
-      setSelectOptions((prev) => {
-        if(prev.includes(optionId)) {
-          return prev.filter((id) => id !== optionId);
-        }
-
-        return [...prev, optionId];
-      });
-    }
-  };
-
+  // 다음 / 완료 버튼
   const handleNext = () => {
-    if(step === 0) {
+    // Step 0 → Step 1
+    if (step === 0) {
       setStep(1);
       return;
     }
 
-    if(step === 1) {
+    // Step 1 → Step 2
+    if (step === 1) {
       const answer = {
         question_id: currentQuestion.question_id,
-        option_ids: selectOptions,
-        other_content: selectOption === 4 ? customSituation : null,
+        option_id: selectOption,
+        other_content:
+          selectOption === 4 ? customSituation : null,
       };
-      
+
       setStep1Answer(answer);
-      console.log("Step 1 answer: ", answer);
+
+      console.log("Step 1 answer:", answer);
 
       setStep(2);
       return;
     }
 
-    if(step === 2) {
+    // Step 2 → Loading
+    if (step === 2) {
       const answer = {
         question_id: currentQuestion.question_id,
-        option_id: selectOptions,
+        option_ids: selectOptions,
       };
-      console.log("Step 2 answer: ", answer);
 
       const requestData = {
         guest_uuid: guestUuid,
@@ -125,85 +104,76 @@ const Home = ({  onPrimaryClick }) => {
         ],
       };
 
-      console.log("최종 요청 데이터: ", requestData);
+      console.log("최종 요청 데이터:", requestData);
 
+      // 완료 버튼 클릭 → Loading 화면
+      setIsLoading(true);
+
+      // 현재는 임시 동작
+      // 나중에 실제 API 요청으로 교체
       onPrimaryClick?.(requestData);
     }
   };
 
+  // Loading 화면
+  if (isLoading) {
+    return <Loading duration={duration} />;
+  }
+
   return (
     <S.Container>
+      {/* Header */}
       {step === 0 ? (
         <Header
-          title={stepData?.title}
-          description={stepData?.description}
+          title={stepData.title}
+          description={stepData.description}
         />
-      ) : ( 
+      ) : (
         <Header
           title={currentQuestion?.title}
           description={currentQuestion?.description}
         />
       )}
-      
+
+      {/* Step 0 : 시간 설정 */}
       {step === 0 && (
-        <>
-          <TimeDial 
-            initialValue={duration} 
-            onChange={setDuration} 
-            min={stepData?.min_minutes}
-            max={stepData?.max_minutes}
-          />
-
-          <S.TimeSummary aria-live="polite">
-            <S.TimeLabel>틈새 시간</S.TimeLabel>
-            <S.TimeValue>{duration}분</S.TimeValue>
-          </S.TimeSummary>
-        </>
+        <TimeStep
+          stepData={stepData}
+          duration={duration}
+          onChange={setDuration}
+        />
       )}
 
-      {step > 0 && currentQuestion && (
-        <>
-          <S.ChipList>
-            {currentQuestion?.options?.map((option) => (
-              <Chip 
-                key={option.option_id}
-                optionId={option.option_id}
-                content={option.content}
-                selected={
-                    step === 1
-                      ? selectOption === option.option_id
-                      : selectOptions.includes(option.option_id)
-                  }
-                onClick={() => handleOptionClick(option.option_id)}
-              >
-                {option.content}
-              </Chip>
-            ))}
-          </S.ChipList>
-
-          {step === 1 && selectOption === 4 && (
-            <S.CustomInput
-              type="text"
-              value={customSituation}
-              onChange={(e) => setCustomSituation(e.target.value)}
-              placeholder="현재 당신의 상황은?"
-              maxLength={50}
-            />
-          )}
-        </>
-        
+      {/* Step 1 : 상황 선택 */}
+      {step === 1 && currentQuestion && (
+        <SituationStep
+          question={currentQuestion}
+          selectedOption={selectOption}
+          customSituation={customSituation}
+          onOptionClick={handleOptionClick}
+          onCustomSituationChange={(e) =>
+            setCustomSituation(e.target.value)
+          }
+        />
       )}
-      
+
+      {/* Step 2 : 콘텐츠 선택 */}
+      {step === 2 && currentQuestion && (
+        <ContentStep
+          question={currentQuestion}
+          selectedOptions={selectOptions}
+          onOptionClick={handleOptionClick}
+        />
+      )}
+
+      {/* 하단 버튼 */}
       <S.ButtonWrapper>
         <Button variant="primary" onClick={handleNext}>
           {step === 2 ? "완료" : "다음"}
         </Button>
       </S.ButtonWrapper>
-      
     </S.Container>
   );
 };
 
 export default Home;
-
-
