@@ -16,7 +16,7 @@ const CoursePlayer = () => {
 
             {/* 재생 컨트롤 */}
             <Controls>
-
+                
             </Controls>
 
         </Player>
