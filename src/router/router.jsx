@@ -8,15 +8,20 @@ import History from "../pages/History/History";
 import MyPage from "../pages/MyPage/MyPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import MagazineDetail from "../pages/Magazine/MagazineDetail";
+import Splash from "../pages/Splash/Splash";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Onboarding />,
+    element: <Splash />,
   },
   {
     element: <AppLayout />,
     children: [
+      {
+        path: "/onboarding",
+        element: <Onboarding />,
+      },
       {
         path: "/home",
         element: <Home />,
@@ -36,7 +41,7 @@ export const router = createBrowserRouter([
       {
         path: "/magazine/:magazineId",
         element: <MagazineDetail />,
-      }
+      },
     ],
   },
 ]);
