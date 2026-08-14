@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import theme from "../../styles/theme";
 
-const Chip = ({ children, selected, onClick }) => {
+const Chip = ({ content, optionId, selected, onClick }) => {
     return (
         <ChipButton $selected={selected} onClick={onClick}>
-            {children}
+            {content}
         </ChipButton>
     );
 }

@@ -27,9 +27,46 @@ export const TimeValue = styled.strong`
   font-weight: ${({ theme }) => theme.fontWeight.bold};
 `;
 
-export const ButtonWrapper = styled.button`
+export const ButtonWrapper = styled.div`
   position: fixed;
-  bottom: 158px;
+  bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
+`;
+
+export const ChipList = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 196px;
+  gap: 50px;
+`;
+
+export const CustomInput = styled.input`
+  width: 280px;
+  height: 50px;
+
+  margin-top: 12px;
+  padding: 0 20px;
+
+  box-sizing: border-box;
+
+  border: 1.4px solid #efefef;
+  border-radius: 25px;
+
+  background-color: #fff;
+
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: #000;
+
+  outline: none;
+
+  &::placeholder {
+    color: #b2b2b2;
+  }
+
+  &:focus {
+    border-color: #32cd32;
+  }
 `;

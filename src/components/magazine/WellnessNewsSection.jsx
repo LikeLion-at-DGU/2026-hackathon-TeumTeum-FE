@@ -16,4 +16,4 @@ const WellnessNewsSection = () => {
     )
 }
 
-export default WellnessNewsSection
+export default WellnessNewsSection 
