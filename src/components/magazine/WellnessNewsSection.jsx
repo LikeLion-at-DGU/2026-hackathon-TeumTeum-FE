@@ -9,7 +9,7 @@ const WellnessNewsSection = ({ magazines }) => {
                 <S.Title>1분 웰니스 뉴스</S.Title>
                 <S.CardWrapper>
                     {magazines.map((magazine) => (
-                        <Link to={`/magazine/${magazine.id}`}>
+                        <Link key={magazine.id} to={`/magazine/${magazine.id}`}>
                         <MagazineCard key={magazine.id} variant="wellness" magazine={magazine} />
                         </Link>
                     ))}

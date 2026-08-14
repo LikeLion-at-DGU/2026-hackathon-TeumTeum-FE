@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { mockMagazines } from "../../data/mockMagazines";
 import Header from "../../components/layout/Header";
-import * as S from "../Magazine/MagazineDetail"
+import * as S from "../Magazine/MagazineDetail.styled"
 
 const MagazineDetail = () => {
     const { magazineId } = useParams();
