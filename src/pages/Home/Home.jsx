@@ -40,6 +40,8 @@ const questions = [
     ],
   },
 ];
+// 임시 사용자 UUID
+const guestUuid = "550e8400-e29b-41d4-a716-446655440000";
 
 // 나중에 props에 stepData, questions, 넣어야함
 const Home = ({  onPrimaryClick }) => {
@@ -50,41 +52,83 @@ const Home = ({  onPrimaryClick }) => {
     stepData?.target_minutes ?? 30
   );
 
-  // step 1 선택한 option_id
+  // step 1 단일선택
   const [selectOption, setSelectOption] = useState(null);
 
   // step 1 기타 입력값
   const [customSituation, setCustomSituation] = useState("");
 
+  // step 2 복수선택
+  const [selectOptions, setSelectOptions] = useState([]);
+
+  // step 1에서 저장한 답변
+  const [step1Answer, setStep1Answer] = useState(null);
+
   const currentQuestion = questions?.[step - 1];
 
   // 칩 선택
   const handleOptionClick = (optionId) => {
-    setSelectOption(optionId);
+    //step 1 단일선택
+    if(step === 1) {
+      setSelectOption(optionId);
     
-    if(optionID !== 4) {
-      setCustomSituation("");
+      if(optionId !== 4) {
+        setCustomSituation("");
+      }
+      return;
+    }
+
+    // step2 복수선택
+    if(step === 2) {
+      setSelectOptions((prev) => {
+        if(prev.includes(optionId)) {
+          return prev.filter((id) => id !== optionId);
+        }
+
+        return [...prev, optionId];
+      });
     }
   };
 
   const handleNext = () => {
-    if(step === 1) {
-      const answer = {
-        question_id: currentQuestion.question_id,
-        option_id: selectOption,
-        other_content: selectOption === 4 ? customSituation : null,
-      };
-      console.log("Step 1 answer:", answer);
-    }
-
-    if(step < 2) {
-      setStep((prev) => prev + 1);
-      setSelectOption(null);
-      setCustomSituation("");
+    if(step === 0) {
+      setStep(1);
       return;
     }
 
-    onPrimaryClick?.();
+    if(step === 1) {
+      const answer = {
+        question_id: currentQuestion.question_id,
+        option_ids: selectOptions,
+        other_content: selectOption === 4 ? customSituation : null,
+      };
+      
+      setStep1Answer(answer);
+      console.log("Step 1 answer: ", answer);
+
+      setStep(2);
+      return;
+    }
+
+    if(step === 2) {
+      const answer = {
+        question_id: currentQuestion.question_id,
+        option_id: selectOptions,
+      };
+      console.log("Step 2 answer: ", answer);
+
+      const requestData = {
+        guest_uuid: guestUuid,
+        answers: [
+          step1Answer,
+          answer,
+        ],
+      };
+
+      console.log("최종 요청 데이터: ", requestData);
+
+      onPrimaryClick?.(requestData);
+    }
   };
 
   return (
@@ -125,8 +169,12 @@ const Home = ({  onPrimaryClick }) => {
                 key={option.option_id}
                 optionId={option.option_id}
                 content={option.content}
-                selected={selectOption === option.option_id}
-                onClick={() => setSelectOption(option.option_id)}
+                selected={
+                    step === 1
+                      ? selectOption === option.option_id
+                      : selectOptions.includes(option.option_id)
+                  }
+                onClick={() => handleOptionClick(option.option_id)}
               >
                 {option.content}
               </Chip>
