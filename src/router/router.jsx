@@ -7,6 +7,7 @@ import Magazine from "../pages/Magazine/Magazine";
 import History from "../pages/History/History";
 import MyPage from "../pages/MyPage/MyPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
+import MagazineDetail from "../pages/Magazine/MagazineDetail";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
         path: "/mypage",
         element: <MyPage />,
       },
+      {
+        path: "/magazine/:magazineId",
+        element: <MagazineDetail />,
+      }
     ],
   },
 ]);

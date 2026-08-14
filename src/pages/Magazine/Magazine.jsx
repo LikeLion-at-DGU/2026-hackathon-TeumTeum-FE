@@ -1,8 +1,8 @@
 import Header from "../../components/layout/Header";
-import MagazineCard from "../../components/magazine/MagazineCard";
 import FeaturedNewsSection from "../../components/magazine/FeaturedNewsSection"
 import WellnessNewsSection from "../../components/magazine/WellnessNewsSection";
 import { Container } from "./Magazine.styled";
+import { mockMagazines } from "../../data/mockMagazines"
 
 const Magazine = () => {
   return (
@@ -13,8 +13,8 @@ const Magazine = () => {
       />
 
       <Container>
-        <FeaturedNewsSection />
-        <WellnessNewsSection />
+        <FeaturedNewsSection magazine = {mockMagazines[0]}/>
+        <WellnessNewsSection magazines = {mockMagazines.slice(1)}/>
       </Container>
     </>
   );

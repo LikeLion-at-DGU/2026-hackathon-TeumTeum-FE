@@ -1,15 +1,18 @@
 import * as S from "./WellnessNewsSection.styled"
 import MagazineCard from "./MagazineCard"
+import { Link } from "react-router-dom"
 
-const WellnessNewsSection = () => {
+const WellnessNewsSection = ({ magazines }) => {
     return (
         <>
             <S.Section>
                 <S.Title>1분 웰니스 뉴스</S.Title>
                 <S.CardWrapper>
-                    <MagazineCard variant="wellness" />
-                    <MagazineCard variant="wellness" />
-                    <MagazineCard variant="wellness" />
+                    {magazines.map((magazine) => (
+                        <Link to={`/magazine/${magazine.id}`}>
+                        <MagazineCard key={magazine.id} variant="wellness" magazine={magazine} />
+                        </Link>
+                    ))}
                 </S.CardWrapper>
             </S.Section>
         </>
