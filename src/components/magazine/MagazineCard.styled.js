@@ -11,9 +11,10 @@ export const Section = styled.div`
     box-shadow: 0 3px 6px rgb(0 0 0 / 18%);
     padding: ${({ $variant }) =>
     $variant === "featured" ? "18px" : "12px"};
+    width: 100%;
 
-    ${({ $variant }) => $variant === "featured" && css`width: 280px; height:252px;`}
-    ${({ $variant}) => $variant === "wellness" && css`width: 166px; height:252px;`}
+    ${({ $variant }) => $variant === "featured" && css`width: 100%; height: 100%;`}
+    ${({ $variant}) => $variant === "wellness" && css`width:  100%; height: 100%;`}
 `
 export const Inner = styled.div`
     display: flex;

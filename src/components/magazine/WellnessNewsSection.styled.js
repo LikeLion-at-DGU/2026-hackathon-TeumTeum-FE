@@ -14,8 +14,10 @@ export const Title = styled.span`
 export const CardWrapper = styled.div`
     display: flex;
     gap: 12px;
+    padding-bottom: 10px;
 
     width: 100%;
+    height: 255px;
     box-sizing: border-box;
     
     overflow-x: auto;

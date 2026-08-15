@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
 export const Section = styled.div`
+    width: 100%;
+
+    > a {
+        display: block;
+        width: 100%;
+    }
 `
 
 export const Title = styled.span`
