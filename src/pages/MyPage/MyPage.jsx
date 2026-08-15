@@ -1,13 +1,15 @@
 import Header from "../../components/layout/Header";
+import CoursePlayer from "../../components/course/CoursePlayer";
 
-const MyPage = () => {
+const MyPage = ({duration}) => {
   return (
     <>
       <Header
-        title="MY"
+        title="Duration"
       />
 
-      <div>MyPage</div>
+      <div style={{height:"1500px"}}>MyPage</div>
+      <CoursePlayer />
     </>
   );
 };
