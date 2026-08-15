@@ -6,12 +6,11 @@ const CENTER = SIZE / 2;
 const RADIUS = 105;
 const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-const TimeDial = ({ initialValue = 30, onChange }) => {
+const TimeDial = ({ initialValue = 30, min = 3, max = 60, onChange }) => {
   const {
     svgRef,
     minutes,
     startAngle,
-    startPosition,
     endPosition,
     progress,
     handlePointerDown,
@@ -20,7 +19,8 @@ const TimeDial = ({ initialValue = 30, onChange }) => {
   } = useTimeDial({
     size: SIZE,
     radius: RADIUS,
-    maxMinutes: 60,
+    minMinutes: min,
+    maxMinutes: max,
     step: 1,
     initialValue,
     onChange,
@@ -59,27 +59,14 @@ const TimeDial = ({ initialValue = 30, onChange }) => {
         />
 
         <S.Handle
-          cx={startPosition.x}
-          cy={startPosition.y}
-          r="20"
-          role="slider"
-          tabIndex="0"
-          aria-label="시작 지점"
-          aria-valuemin="0"
-          aria-valuemax="60"
-          aria-valuenow="0"
-          onPointerDown={(event) => handlePointerDown(event, "start")}
-        />
-
-        <S.Handle
           cx={endPosition.x}
           cy={endPosition.y}
           r="20"
           role="slider"
           tabIndex="0"
           aria-label="종료 지점"
-          aria-valuemin="0"
-          aria-valuemax="60"
+          aria-valuemin={min}
+          aria-valuemax={max}
           aria-valuenow={minutes}
           onPointerDown={(event) => handlePointerDown(event, "end")}
         />

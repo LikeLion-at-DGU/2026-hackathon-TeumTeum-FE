@@ -43,6 +43,7 @@ export const Track = styled.circle`
   fill: none;
   stroke: ${({ theme }) => theme.colors.catagory};
   stroke-width: 42;
+  filter: drop-shadow(0 8px 10px rgba(0, 0, 0, 0.14));
 `;
 
 export const Progress = styled.circle`
@@ -55,6 +56,7 @@ export const Progress = styled.circle`
   transform: ${({ $startAngle }) => `rotate(${$startAngle - 90}deg)`};
   transform-origin: center;
   pointer-events: none;
+  filter: drop-shadow(0 3px 5px rgba(45, 204, 47, 0.28));
 `;
 
 export const Handle = styled.circle`
@@ -62,6 +64,7 @@ export const Handle = styled.circle`
   stroke: ${({ theme }) => theme.colors.background};
   stroke-width: 6;
   cursor: grab;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.2));
 
   &:active {
     cursor: grabbing;
