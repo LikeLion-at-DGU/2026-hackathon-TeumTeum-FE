@@ -8,6 +8,7 @@ const Course = ({duration}) => {
       />
 
       <div>Course</div>
+
     </>
   );
 };

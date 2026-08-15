@@ -1,15 +1,15 @@
 import { NavLink } from "react-router-dom";
 
 import Logo from "../../assets/icons/Frame 13.svg";
-import HomeIcon from "../../assets/icons/material-symbols-light_home-outline.svg";
-import HomeActiveIcon from "../../assets/icons/material-symbols-light_home-outline-green.svg";
-import MagazineIcon from "../../assets/icons/material-symbols-light_library-books-outline-rounded.svg";
-import MagazineActiveIcon from "../../assets/icons/material-symbols-light_library-books-outline-rounded-green.svg";
-import HistoryIcon from "../../assets/icons/material-symbols-light_collections-bookmark-outline.svg";
-import HistoryActiveIcon from "../../assets/icons/material-symbols-light_collections-bookmark-outline-green.svg";
-import MyPageIcon from "../../assets/icons/material-symbols-light_person-outline-rounded.svg";
-import MyPageActiveIcon from "../../assets/icons/material-symbols-light_person-outline-rounded-green.svg";
-import LogoutIcon from "../../assets/icons/Bottom.svg";
+import HomeIcon from "../../assets/icons/SidebarIcons/material-symbols-light_home-outline.svg";
+import HomeActiveIcon from "../../assets/icons/SidebarIcons/material-symbols-light_home-outline-green.svg";
+import MagazineIcon from "../../assets/icons/SidebarIcons/material-symbols-light_library-books-outline-rounded.svg";
+import MagazineActiveIcon from "../../assets/icons/SidebarIcons/material-symbols-light_library-books-outline-rounded-green.svg";
+import HistoryIcon from "../../assets/icons/SidebarIcons/material-symbols-light_collections-bookmark-outline.svg";
+import HistoryActiveIcon from "../../assets/icons/SidebarIcons/material-symbols-light_collections-bookmark-outline-green.svg";
+import MyPageIcon from "../../assets/icons/SidebarIcons/material-symbols-light_person-outline-rounded.svg";
+import MyPageActiveIcon from "../../assets/icons/SidebarIcons/material-symbols-light_person-outline-rounded-green.svg";
+import LogoutIcon from "../../assets/icons/SidebarIcons/Bottom.svg";
 
 import {
   SidebarContainer,
