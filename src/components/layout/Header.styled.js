@@ -1,10 +1,11 @@
 import styled from "styled-components";
+import theme from "../../styles/theme";
 
 export const HeaderContainer = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 100;
 
   width: 100%;
   box-sizing: border-box;
@@ -15,6 +16,11 @@ export const HeaderContainer = styled.header`
   padding: 44px 20px 0;
 
   background-color: white;
+`;
+
+export const Sidebar = styled.aside`
+    position: fixed;
+    z-index: 101;
 `;
 
 export const Left = styled.button`
@@ -40,7 +46,7 @@ export const TextBox = styled.div`
 export const Title = styled.h1`
   font-size: 24px;
   font-weight: 500;
-  color: #32cd32;
+  color: ${theme.colors.primary};
 `;
 
 export const Description = styled.p`
@@ -48,5 +54,32 @@ export const Description = styled.p`
 
   font-size: 12px;
   font-weight: 400;
-  color: #B2B2B2;
+  color: ${theme.colors.gray};
+`;
+
+export const StopButton = styled.button`
+    position: absolute;
+
+    right: 24px;
+    top: 60px;
+
+    transform: translateY(-50%);
+
+    padding: 0;
+
+    border: none;
+    background: transparent;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    color: ${theme.colors.primary};
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+        opacity: 0.6;
+    }
 `;

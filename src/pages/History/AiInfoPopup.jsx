@@ -32,7 +32,7 @@ const Container = styled.div`
     background: #fff;
     box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.25);
 
-    z-index: 1000;
+    z-index: 20;
 `;
 
 const Title = styled.p`

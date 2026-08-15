@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import theme from "../../styles/theme";
 
 export const Overlay = styled.div`
   position: fixed;
   inset: 0;
 
   background: rgba(0, 0, 0, 0.4);
-  z-index: 10;
+  z-index: 100;
 
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};
@@ -21,8 +22,8 @@ export const SidebarContainer = styled.aside`
   width: 82px;
   height: 100vh;
 
-  background: #fff;
-  z-index: 11;
+  background: ${theme.colors.background};
+  z-index: 101;
 
   transform: ${({ $isOpen }) =>
     $isOpen ? "translateX(0)" : "translateX(-100%)"};

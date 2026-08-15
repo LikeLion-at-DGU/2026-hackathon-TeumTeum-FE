@@ -100,7 +100,7 @@ export const Overlay = styled.div`
     inset: 0;
     background-color: rgba(0, 0, 0, 0.35);
 
-    z-index: 10;
+    z-index: 40;
     animation: bottomSheetSlideUp 0.5s ease-out forwards;
 
     @keyframes bottomSheetSlideUp {
@@ -127,7 +127,7 @@ export const Container = styled.div`
     bottom: 0px;
     left: 50%;
     transform: translate(-50%);
-    z-index: 11;
+    z-index: 41;
 
     animation: slideUp 0.5s ease-out forwards;
     @keyframes slideUp {
