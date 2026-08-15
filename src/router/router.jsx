@@ -9,7 +9,8 @@ import MyPage from "../pages/MyPage/MyPage";
 import Onboarding from "../pages/Onboarding/Onboarding";
 import MagazineDetail from "../pages/Magazine/MagazineDetail";
 import Splash from "../pages/Splash/Splash";
-import CourseComplete from "../pages/Course/Complete/CourseComplete"
+import Course from "../pages/Course/Course";
+import CourseComplete from "../pages/Course/Complete/CourseComplete";
 
 export const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
       {
         path: "/magazine/:magazineId",
         element: <MagazineDetail />,
+      },
+      {
+        path: "/course",
+        element: <Course />,
       },
       {
         path: "/course/coursecomplete",

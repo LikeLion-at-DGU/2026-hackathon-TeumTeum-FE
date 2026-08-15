@@ -45,7 +45,7 @@ export default Modal;
 const Overlay = styled.div`
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: 199;
   background: rgba(0, 0, 0, 0.4);
 
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
@@ -58,7 +58,7 @@ const ModalContainer = styled.div`
   left: 10px;
   right: 10px;
   bottom: 10px;
-  z-index: 11;
+  z-index: 200;
 
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
   pointer-events: ${({ $isOpen }) => ($isOpen ? "auto" : "none")};

@@ -27,7 +27,7 @@ export const Player = styled.div`
 
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 
-    z-index: 1000;
+    z-index: 20;
 `;
 
 
@@ -59,7 +59,7 @@ export const CourseLabel = styled.span`
     font-weight: 500;
 
     color: ${({ $active }) =>
-        $active ? "#32CD32" : "#999999"};
+        $active ? theme.colors.primary : "#999999"};
 
     white-space: nowrap;
 
@@ -94,7 +94,7 @@ export const ProgressRail = styled.div`
 
     transform: translateY(-50%);
 
-    background-color: #efefef;
+    background-color: ${theme.colors.catagory};
 
     border-radius: 999px;
 `;
@@ -114,7 +114,7 @@ export const ProgressFill = styled.div`
 
     transform: translateY(-50%);
 
-    background-color: #32CD32;
+    background-color: ${theme.colors.primary};
 
     border-radius: 999px;
 
@@ -146,10 +146,10 @@ export const CourseDot = styled.div`
 
     background-color: ${({ $completed, $current }) => {
         if ($completed || $current) {
-            return "#32CD32";
+            return theme.colors.primary;
         }
 
-        return "#EFEFEF";
+        return theme.colors.catagory;
     }};
 
     z-index: 3;
@@ -179,7 +179,7 @@ export const Playhead = styled.div`
 
     border-radius: 50%;
 
-    background-color: #32CD32;
+    background-color: ${theme.colors.primary};
 
     box-shadow:
         0 0 0 7px rgba(50, 205, 50, 0.18);
@@ -202,7 +202,7 @@ export const EndDot = styled.div`
 
     border-radius: 50%;
 
-    background-color: #efefef;
+    background-color: ${theme.colors.catagory};
 
     z-index: 3;
 `;

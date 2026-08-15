@@ -3,7 +3,8 @@ import MenuIcon from "../../assets/icons/material-symbols-light_menu.svg";
 import Sidebar from "./Sidebar";
 import * as S from "./Header.styled";
 
-const Header = ({ title, description, onClick }) => {
+const Header = ({ title, description, 
+                  onClick, showStop = false, onStop, }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleMenuClick = () => {
@@ -20,6 +21,11 @@ const Header = ({ title, description, onClick }) => {
             <S.Title>{title}</S.Title>
             {description && <S.Description>{description}</S.Description>}
         </S.TextBox>
+        {showStop && (
+            <S.StopButton onClick={onStop}>
+                중단
+            </S.StopButton>
+        )}
         <Sidebar
             isOpen={isOpen}
             onClose={() => setIsOpen(false)}
