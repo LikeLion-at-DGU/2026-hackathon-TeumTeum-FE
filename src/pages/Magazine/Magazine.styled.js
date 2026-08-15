@@ -6,6 +6,6 @@ export const Container = styled.div`
   width: 100%;
   box-sizing: border-box;
 
-  padding: 120px 10px 20px 10px;
+  padding: 120px 28px 20px 28px;
   gap: 40px;
 `;
