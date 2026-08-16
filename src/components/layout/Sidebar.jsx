@@ -33,7 +33,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
         <MenuList> 
           <MenuItem>
-            <NavLink to="/home">
+            <NavLink to="/home" reloadDocument>
               {({ isActive }) => (
                 <img src={isActive ? HomeActiveIcon : HomeIcon} alt="홈"/>
               )}

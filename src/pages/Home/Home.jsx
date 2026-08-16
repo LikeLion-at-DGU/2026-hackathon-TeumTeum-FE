@@ -64,8 +64,17 @@ const Home = ({ onPrimaryClick }) => {
 
   const currentQuestion = questions[step - 1];
 
+  const hasSelectedOption =
+  step === 0 ||
+  (step === 1 && selectOption !== null &&
+    (selectOption !== 4 || customSituation.trim() !== "")) ||
+  (step === 2 && selectOptions.length > 0);
+
   // 다음 / 완료 버튼
   const handleNext = () => {
+
+    if (!hasSelectedOption) return;
+
     // Step 0 → Step 1
     if (step === 0) {
       setStep(1);
@@ -168,7 +177,10 @@ const Home = ({ onPrimaryClick }) => {
 
       {/* 하단 버튼 */}
       <S.ButtonWrapper>
-        <Button variant="primary" onClick={handleNext}>
+        <Button 
+          variant={ hasSelectedOption ? "primary" : "secondary"} 
+          disabled={!hasSelectedOption}
+          onClick={handleNext}>
           {step === 2 ? "완료" : "다음"}
         </Button>
       </S.ButtonWrapper>
