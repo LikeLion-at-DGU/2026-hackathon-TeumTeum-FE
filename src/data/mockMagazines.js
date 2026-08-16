@@ -3,7 +3,7 @@ import sampleImage from "../assets/img/매거진이미지예시.jpg";
 export const mockMagazines = [
   {
     id: 1,
-    title: "야외 요가를 선호하는 사람들",
+    title: "오후 피로를 줄이는 3가지 방법",
     contentType: "매거진",
     readMinutes: 4,
     summary: "요가 수련장으로 변신한 광화문 광장",

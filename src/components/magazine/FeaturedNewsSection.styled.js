@@ -14,5 +14,10 @@ export const Title = styled.span`
     font-size: ${({theme}) => theme.fontsize.lg};
     font-weight: ${({theme}) => theme.fontWeight.bold};
     color: ${({theme}) => theme.colors.primary};
-    margin-bottom: 10px;
+    margin-bottom: 3px;
+`
+export const Subtitle = styled.span`
+    color: ${({theme}) => theme.colors.gray};
+    font-size: 14px;
+    padding-bottom: 8px;
 `
