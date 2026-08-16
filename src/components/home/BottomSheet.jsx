@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "../../styles/theme";
 import Button from "../common/Button";
 import RefreshIcon from "../../assets/icons/tdesign_refresh.svg";
 import youtube from "../../assets/icons/youtube.svg"
@@ -44,7 +45,7 @@ const BottomSheet = ({ duration }) => {
             <Container>
                 <Header>
                     <Left>
-                        <HeaderTitle>추천 코스</HeaderTitle>
+                        <HeaderTitle>생성된 코스</HeaderTitle>
                         <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
                     </Left>
                     <RefreshButton>
@@ -53,7 +54,7 @@ const BottomSheet = ({ duration }) => {
                 </Header>
                 <TimeSection>
                     <TotalTime>{duration}<span>분</span></TotalTime>
-                    <TimeDescription>이렇게 준비했어요.</TimeDescription>
+                    <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {duration}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
                 </TimeSection>
                 <WellnessVisual>
                     {/* 아이콘들 */}
@@ -88,7 +89,7 @@ const BottomSheet = ({ duration }) => {
                     ))}
                 </CourseSection>
                 <ButtonWrapper>
-                    <BottomButton variant="primary">실행</BottomButton>
+                    <BottomButton variant="primary">{duration}분 코스 실행</BottomButton>
                 </ButtonWrapper>
                 
             </Container>
@@ -106,7 +107,7 @@ export const Overlay = styled.div`
     inset: 0;
     background-color: rgba(0, 0, 0, 0.35);
 
-    z-index: 40;
+    z-index: 120;
     animation: bottomSheetSlideUp 0.5s ease-out forwards;
 
     @keyframes bottomSheetSlideUp {
@@ -121,9 +122,9 @@ export const Overlay = styled.div`
 `;
 
 export const Container = styled.div`
-    background-color: #ffffff;
+    background-color: ${theme.colors.background};
     width: 375px;
-    min-height: 746px;
+    min-height: 750px;
     box-sizing: border-box;
     border-radius: 20px 20px 0 0;
     overflow: hidden;
@@ -133,7 +134,7 @@ export const Container = styled.div`
     bottom: 0px;
     left: 50%;
     transform: translate(-50%);
-    z-index: 41;
+    z-index: 121;
 
     animation: slideUp 0.5s ease-out forwards;
     @keyframes slideUp {
@@ -165,13 +166,13 @@ const Left = styled.div`
 const HeaderTitle = styled.h1`
     font-size: 18px;
     font-weight: 600;
-    color: #000;
+    color: ${theme.colors.black};
 `;
 
 const RefreshTip = styled.p`
     font-size: 12px;
     font-weight: 400;
-    color: #b2b2b2;
+    color: ${theme.colors.gray};
 `;
 
 const RefreshButton = styled.div`
@@ -181,15 +182,17 @@ const RefreshButton = styled.div`
 
 const TimeSection = styled.section`
     padding-top: 40px;
+    padding-bottom: 5px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    gap: 5px;
 `;
 
 const TotalTime = styled.div`
     font-size: 40px;
     font-weight: 700;
-    color: #32cd32;
+    color: ${theme.colors.primary};
 
     span {
         font-size: 16px;
@@ -197,24 +200,26 @@ const TotalTime = styled.div`
 `;
 
 const TimeDescription = styled.p`
-    font-size: 18px;
-    font-weight: 500;
-    color: #b2b2b2;
+    font-size: 14px;
+    font-weight: 400;
+    color: ${theme.colors.gray};
+    line-height: 1.4;
 `;
 
 const WellnessVisual = styled.div`
-    width: 200px;
-    height: 200px;
+    width: 140px;
+    height: 140px;
     border: solid 1px #000;
     margin: 10px;
 `;
 
 const CourseSection = styled.section`
+    padding-top: 6px;
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 18px;
 `;
 
 const CourseCard = styled.div`
@@ -285,7 +290,8 @@ const ContentDescription = styled.p`
 `;
 
 const ContentTime = styled.span`
-    font-size: 15px;
+    padding-left: 8px;
+    font-size: 12px;
     color: ${({theme}) => theme.colors.primary};
 `
 

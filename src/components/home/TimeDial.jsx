@@ -76,9 +76,10 @@ const TimeDial = ({ initialValue = 30, min = 3, max = 60, onChange }) => {
         <strong>{minutes}</strong>분
       </S.TimeOutput>
 
-      <S.TimeMark $position="right">15</S.TimeMark>
+      {/* 최대시간 뭐로할지 몰라서 그냥 주석처리 했습니다 */}
+      {/* <S.TimeMark $position="right">15</S.TimeMark>
       <S.TimeMark $position="bottom">30</S.TimeMark>
-      <S.TimeMark $position="left">45</S.TimeMark>
+      <S.TimeMark $position="left">45</S.TimeMark> */}
     </S.Container>
   );
 };

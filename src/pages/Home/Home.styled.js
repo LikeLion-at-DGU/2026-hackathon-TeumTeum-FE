@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,24 +30,46 @@ export const TimeValue = styled.strong`
 
 export const ButtonWrapper = styled.div`
   position: fixed;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
+`;
+
+export const QuestionArea = styled.div`
+  width: 100%;
+  min-height: 100dvh;
+  padding: 120px 20px 170px;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const ChipList = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 196px;
-  gap: 50px;
+  gap: 36px;
+`;
+
+export const OptionItem = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const CustomInput = styled.input`
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+
   width: 280px;
   height: 50px;
 
-  margin-top: 12px;
   padding: 0 20px;
 
   box-sizing: border-box;
