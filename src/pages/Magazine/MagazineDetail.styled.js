@@ -3,34 +3,50 @@ import styled from "styled-components";
 export const Container= styled.div`
     display: flex;
     flex-direction: column;
-    margin: 100px 20px;
+    margin: 100px 15px;
     border-radius: 25px 25px 0 0;
-    padding: 10px 15px;
+    padding: 0px 10px;
 `
-export const LinkWrapper = styled.div`
+export const AiRecommend = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: #e6f2e3;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+`
+export const TitleBox = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 10px;
+    padding-bottom: 5px;
 `
-export const Icon = styled.img`
-    width: 18px;
-    height: 18px;
-
-`
-export const Link = styled.a`
-    padding-left: 4px;
-    color: ${({theme}) => theme.colors.gray};
-    font-size: ${({theme}) => theme.fontsize.md};
-    font-weight: ${({theme}) => theme.fontWeight.semibold};
+export const RecommendTitle = styled.span`
+    color: green;
+    font-size: ${({theme}) => theme.fontsize.lg};
+    font-weight: ${({theme}) => theme.fontWeight.medium};
+    `
+export const RecommendDescription = styled.span`
+    color: ${({theme}) => theme.colors.black};
+    font-size: 18px;
+    word-break: keep-all;
 `
 export const Title = styled.span`
     color: ${({theme}) => theme.colors.news};
-    font-size: ${({theme}) => theme.fontsize.lg};
-    font-weight: ${({theme}) => theme.fontWeight.semibold};
-    padding: 10px 0px 20px 0px;
+    font-size: 30px;
+    font-weight: ${({theme}) => theme.fontWeight.bold};
+    padding-bottom: 20px;
     word-break: keep-all;
 `
-
+export const Info = styled.span`
+    color: ${({theme}) => theme.colors.gray};
+    font-size: ${({theme}) => theme.fontsize.md};
+    font-weight: ${({theme}) => theme.fontWeight.bold};
+    padding-bottom: 20px;
+`
 export const Img = styled.img`
     width: 299px;
     height: 181px;
@@ -44,4 +60,29 @@ export const Description = styled.span`
     color: ${({theme}) => theme.colors.news};
     font-weight: ${({theme}) => theme.fontWeight.regular};
     word-break: keep-all;
+`
+export const Summary = styled.div`
+    display: flex;
+    flex-direction: column;
+    background-color: #e6f2e3;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 25px;
+`
+export const SummaryTitle = styled.span`
+    color: green;
+    font-size: ${({theme}) => theme.fontsize.lg};
+    font-weight: ${({theme}) => theme.fontWeight.medium};
+    `
+export const SummaryDescription = styled.span`
+    color: ${({theme}) => theme.colors.black};
+    font-size: 18px;
+    word-break: keep-all;
+`
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: center;
 `

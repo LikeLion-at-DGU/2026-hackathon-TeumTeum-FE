@@ -6,7 +6,7 @@ const WellnessNewsSection = ({ magazines }) => {
     return (
         <>
             <S.Section>
-                <S.Title>1분 웰니스 뉴스</S.Title>
+                <S.Title>당신에게 추천</S.Title>
                 <S.CardWrapper>
                     {magazines.map((magazine) => (
                         <Link key={magazine.id} to={`/magazine/${magazine.id}`}>
