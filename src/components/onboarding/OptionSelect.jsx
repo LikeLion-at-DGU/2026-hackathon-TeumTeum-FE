@@ -1,18 +1,18 @@
 import * as S from "./OptionSelect.styled"
-import readingIcon from "../../assets/icons/OnboardingIcons/reading.png";
-import listeningIcon from "../../assets/icons/OnboardingIcons/listening.png";
-import stretchingIcon from "../../assets/icons/OnboardingIcons/stretching.png";
-import mindControlIcon from "../../assets/icons/OnboardingIcons/mind-control.png";
+import readingIcon from "../../assets/icons/OnboardingIcons/reading.svg";
+import listeningIcon from "../../assets/icons/OnboardingIcons/listening.svg";
+import stretchingIcon from "../../assets/icons/OnboardingIcons/stretching.svg";
+import mindControlIcon from "../../assets/icons/OnboardingIcons/mind-control.svg";
 
-import movingIcon from "../../assets/icons/OnboardingIcons/moving.png";
-import beforeAppointmentIcon from "../../assets/icons/OnboardingIcons/before-appointment.png";
-import restingTimeIcon from "../../assets/icons/OnboardingIcons/resting-time.png";
-import workingIcon from "../../assets/icons/OnboardingIcons/working.png";
+import movingIcon from "../../assets/icons/OnboardingIcons/moving.svg";
+import beforeAppointmentIcon from "../../assets/icons/OnboardingIcons/before-appointment.svg";
+import restingTimeIcon from "../../assets/icons/OnboardingIcons/resting-time.svg";
+import workingIcon from "../../assets/icons/OnboardingIcons/working.svg";
 
-import trendTopicIcon from "../../assets/icons/OnboardingIcons/trend-topic.png";
-import mentalCareIcon from "../../assets/icons/OnboardingIcons/mental-care.png";
-import exerciseIcon from "../../assets/icons/OnboardingIcons/exercise.png";
-import restIcon from "../../assets/icons/OnboardingIcons/rest.png";
+import trendTopicIcon from "../../assets/icons/OnboardingIcons/trend-topic.svg";
+import mentalCareIcon from "../../assets/icons/OnboardingIcons/mental-care.svg";
+import exerciseIcon from "../../assets/icons/OnboardingIcons/exercise.svg";
+import restIcon from "../../assets/icons/OnboardingIcons/rest.svg";
 
 const optionIcons = {
     1: readingIcon,
