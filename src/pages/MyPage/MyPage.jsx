@@ -7,26 +7,61 @@ const MyPage = () => {
     <>
       <Header
         title="MY"
+        description="틈틈이 발견한 나의 웰니스"
       />
 
       <S.Container>
-        <S.Content>
-          <S.Name>연체동물</S.Name>
-          <S.Description>유연함이 남다른 연체동물 DNA</S.Description>
-          <S.Avata src={AvataImg} />
-          <S.TimeInfoWrapper>
-            <S.TimeDial></S.TimeDial>
-            <S.Box>
-              <S.TimeInfo>이번주 정비 시간</S.TimeInfo><S.Time>30분</S.Time>
-            </S.Box>
-          </S.TimeInfoWrapper>
-          <S.InfoWrapper>
-            <S.Info>• 어디에서든 유연함을 뽐내는 사람!</S.Info>
-            <S.Info>• 건강전도사가 바로 당신?</S.Info>
-            <S.Info>• 거복목이 뭐야? 당장 고쳐줄게!</S.Info>
-          </S.InfoWrapper>
-        </S.Content>
+        <S.Title>이번 주 나의 틈</S.Title>
+          <S.WeeklyCard>
+            <S.Summary>
+              <S.SummaryTitle>이번 주 회복한 틈 시간</S.SummaryTitle>
+
+              <S.TotalTime>67<S.Min>분</S.Min></S.TotalTime>
+
+              <S.Description>
+                지난주보다 <S.MoreTime>18분</S.MoreTime> 더 
+                <br />
+                나를 위한 시간을 만들었어요!
+              </S.Description>
+
+              <S.ChangeRate>▲ 37%</S.ChangeRate>
+            </S.Summary>
+
+
+            <S.WeekComparison>
+              <S.WeekRow>
+                <span>지난주</span>
+                <S.ProgressBar />
+                <strong>49분</strong>
+              </S.WeekRow>
+
+              <S.WeekRow>
+                <span>이번주</span>
+                <S.ProgressBar $percent={100} />
+                <strong>67분</strong>
+              </S.WeekRow>
+            </S.WeekComparison>
+
+          <S.Stats>
+            <S.StatItem>
+              <S.ItemBox>
+                <S.StatIcon></S.StatIcon>
+                <S.StatValue>8회</S.StatValue>
+              </S.ItemBox>
+              <S.Label>실행한 코스</S.Label>
+            </S.StatItem>
+
+            <S.StatItem>
+              <S.ItemBox>
+                <S.StatIcon></S.StatIcon>
+                <S.StatValue>87%</S.StatValue>
+              </S.ItemBox>
+              <S.Label>완료율</S.Label>
+            </S.StatItem>
+          </S.Stats>
+        </S.WeeklyCard>
       </S.Container>
+
     </>
   );
 };
