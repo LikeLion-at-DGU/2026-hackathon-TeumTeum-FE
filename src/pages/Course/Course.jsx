@@ -3,6 +3,23 @@ import { useState } from "react";
 import Header from "../../components/layout/Header";
 import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
+import ContentRenderer from "../../components/course/ContentRenderer";
+
+//임시데이터
+const mockCourse = {
+  contents: [
+    {
+      content_order: 1,
+      content_type: "article",
+      title: "첫 번째 기사",
+    },
+    {
+      content_order: 2,
+      content_type: "youtube",
+      title: "첫 번째 영상",
+    },
+  ],
+};
 
 const Course = ({ duration }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,6 +32,9 @@ const Course = ({ duration }) => {
         setIsModalOpen(false);
     };
 
+    const currentIndex = 1;
+    const currentContent = mockCourse.contents[currentIndex];
+
     return (
         <>
             <Header
@@ -23,8 +43,8 @@ const Course = ({ duration }) => {
                 onStop={handleStop}
             />
 
-            <div style={{ height: "1500px" }}>
-                Course
+            <div style={{ paddingTop: "120px" }}>
+                <ContentRenderer content={currentContent} />
             </div>
 
             <CoursePlayer />
