@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Button from "../common/Button";
 import RefreshIcon from "../../assets/icons/tdesign_refresh.svg";
+import youtube from "../../assets/icons/youtube.svg"
 
 // 백엔드 임시 데이터
 const contents = [
@@ -61,22 +62,27 @@ const BottomSheet = ({ duration }) => {
                     {contents.map((content) => (
                         <CourseCard key={content.content_order}>
                             <ContentIcon>
-                                {content.content_type === "article" ? "📰" : "▶"}
+                                {content.content_type === "article" ? "🌍" : (<YoutubeIcon src={youtube} alt="YouTube" />) }
                             </ContentIcon>
 
                             <ContentThumbnail>
                                 <img src={content.image_url} alt={content.title}/>
                             </ContentThumbnail>
 
-                            <ContentInfo>
-                                <ContentTitle>
-                                    {content.title}
-                                </ContentTitle>
+                            <ContentInfoWrapper>
+                                <ContentInfo>
+                                    <ContentTitle>
+                                        {content.title}
+                                    </ContentTitle>
 
-                                <ContentDescription>
-                                    {content.description}
-                                </ContentDescription>
-                            </ContentInfo>
+                                    <ContentDescription>
+                                        {content.description}
+                                    </ContentDescription>
+                                </ContentInfo>
+                                <ContentTime>
+                                    {content.estimated_minutes}분
+                                </ContentTime>
+                            </ContentInfoWrapper>
 
                         </CourseCard>
                     ))}
@@ -213,6 +219,7 @@ const CourseSection = styled.section`
 
 const CourseCard = styled.div`
     display: flex;
+    flex-direction: row;
     width: 100%;
     box-sizing: border-box;
     padding: 12px 13px;
@@ -220,16 +227,20 @@ const CourseCard = styled.div`
     align-items: center;
     gap: 10px;
     align-self: stretch;
-    border: 1.4px solid #efefef;
     border-radius: 25px;
-`;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
 
-const ContentIcon = styled.div`
-    width: 16px;
-    height: 16px;
-    background-color: #32cd32;
 
 `;
+
+const ContentIcon = styled.span`
+    font-size: 20px;
+`;
+
+const YoutubeIcon = styled.img`
+    width: 20px;
+    height: 20px;
+`
 
 const ContentThumbnail = styled.div`
     width: 46px;
@@ -245,6 +256,13 @@ const ContentThumbnail = styled.div`
         object-fit: cover;
     }
 `;
+
+const ContentInfoWrapper= styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 13px;
+`
 
 const ContentInfo = styled.div`
     display: flex;
@@ -265,6 +283,11 @@ const ContentDescription = styled.p`
     font-size: 10px;
     font-weight: 400;
 `;
+
+const ContentTime = styled.span`
+    font-size: 15px;
+    color: ${({theme}) => theme.colors.primary};
+`
 
 const ButtonWrapper = styled.div`
     position: absolute;
