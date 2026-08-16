@@ -6,9 +6,9 @@ import BottomSheet from "./BottomSheet";
 
 const steps = [
     "남은 시간 확인",
-    "취향 분석",
-    "콘텐츠 선택",
-    "활동 순서 구상 중",
+    "상황·상태 반영",
+    "관심사 분석",
+    "활동 순서 구성 중",
 ];
 
 const Loading = ({ duration }) => {
