@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import theme from "../../styles/theme";
 import Button from "../common/Button";
@@ -38,7 +39,14 @@ const contents = [
     },
 ];
 
-const BottomSheet = ({ duration }) => {
+const BottomSheet = ({ duration, onRefresh }) => {
+    const [refreshKey, setRefreshKey] = useState(0);
+
+    const handleRefresh = () => {
+        setRefreshKey((previous) => previous + 1);
+        onRefresh?.();
+    };
+
     return (
         <>
             <Overlay />
@@ -48,8 +56,17 @@ const BottomSheet = ({ duration }) => {
                         <HeaderTitle>생성된 코스</HeaderTitle>
                         <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
                     </Left>
-                    <RefreshButton>
-                        <img src={RefreshIcon} alt="추천 코스 새로고침" />
+                    <RefreshButton
+                        type="button"
+                        onClick={handleRefresh}
+                        aria-label="추천 코스 새로고침"
+                    >
+                        <RefreshImage
+                            key={refreshKey}
+                            $animate={refreshKey > 0}
+                            src={RefreshIcon}
+                            alt=""
+                        />
                     </RefreshButton>
                 </Header>
                 <TimeSection>
@@ -175,9 +192,45 @@ const RefreshTip = styled.p`
     color: ${theme.colors.gray};
 `;
 
-const RefreshButton = styled.div`
+const RefreshButton = styled.button`
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+
+    &:active {
+        background: ${theme.colors.catagory};
+    }
+`;
+
+const RefreshImage = styled.img`
     width: 19px;
     height: 19px;
+    animation: ${({ $animate }) =>
+        $animate ? "refreshRotate 0.6s ease-in-out" : "none"};
+
+    @keyframes refreshRotate {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        animation: none;
+    }
 `;
 
 const TimeSection = styled.section`
