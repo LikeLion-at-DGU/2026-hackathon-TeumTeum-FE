@@ -41,7 +41,18 @@ const Loading = ({ duration }) => {
                     description="당신에게 딱 맞는 웰니스 코스를 구성하고 있어요"
                 />
 
-                <S.Dial />
+                <S.Dial aria-label="코스를 생성하고 있어요">
+                    <svg viewBox="0 0 125 125" aria-hidden="true">
+                        <circle cx="62.5" cy="62.5" r="50.5" />
+                        <circle
+                            className="progress"
+                            cx="62.5"
+                            cy="62.5"
+                            r="50.5"
+                            pathLength="100"
+                        />
+                    </svg>
+                </S.Dial>
 
                 <S.StepContainer>
                     {steps.slice(0, visibleSteps).map((step) => (

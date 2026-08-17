@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import theme from "../../styles/theme";
 
 export const Container = styled.div`
     width: 100%;
@@ -20,25 +19,24 @@ export const Dial = styled.div`
 
     margin-top: 55px;
 
-    border-radius: 50%;
-
-    background: conic-gradient(
-        #28c936 0deg,
-        #28c936 90deg,
-        #8ee296 90deg,
-        #8ee296 360deg
-    );
-
-    position: relative;
-
     animation: rotateDial 2.5s linear infinite;
 
-    &::after {
-        content: "";
-        position: absolute;
-        inset: 12px;
-        border-radius: 50%;
-        background: #fff;
+    svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+
+    circle {
+        fill: none;
+        stroke: #b1f2b8;
+        stroke-width: 12;
+    }
+
+    .progress {
+        stroke: #32cd32;
+        stroke-linecap: round;
+        stroke-dasharray: 25 75;
     }
 
     @keyframes rotateDial {
