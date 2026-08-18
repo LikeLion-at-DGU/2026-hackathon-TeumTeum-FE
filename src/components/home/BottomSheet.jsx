@@ -6,45 +6,11 @@ import Button from "../common/Button";
 import RefreshIcon from "../../assets/icons/tdesign_refresh.svg";
 import youtube from "../../assets/icons/youtube.svg"
 
-// 백엔드 임시 데이터
-const contents = [
-    {
-        content_order: 1,
-        content_type: "article",
-        title: "오늘 주목해야 할 AI 트렌드",
-        description: "최근 주목받고 있는 AI 관련 트렌드와 주요 이슈를 살펴보세요.",
-        source: "기사 출처",
-        content_url: "https://example.com/article/1",
-        image_url: "https://images.unsplash.com/photo-1677442136019-21780ecad995",
-        estimated_minutes: 10,
-    },
-    {
-        content_order: 2,
-        content_type: "article",
-        title: "요즘 주목받는 새로운 트렌드",
-        description: "최근 사람들이 관심을 가지는 새로운 트렌드를 읽어보세요.",
-        source: "기사 출처",
-        content_url: "https://example.com/article/2",
-        image_url: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3",
-        estimated_minutes: 10,
-    },
-    {
-        content_order: 3,
-        content_type: "youtube",
-        title: "5분 만에 따라 하는 목과 어깨 스트레칭",
-        description: "오래 앉아있어 뻐근한 목과 어깨를 가볍게 풀어보세요.",
-        source: "YouTube",
-        content_url: "https://www.youtube.com/",
-        image_url: "https://images.unsplash.com/photo-1518611012118-696072aa579a",
-        estimated_minutes: 10,
-    },
-];
-
 const BottomSheet = ({ duration, onRefresh }) => {
     const [refreshKey, setRefreshKey] = useState(0);
     const navigate = useNavigate();
 
-    const handleRefresh = () => {
+    const handleRefresh = async () => {
         setRefreshKey((previous) => previous + 1);
         onRefresh?.();
     };
