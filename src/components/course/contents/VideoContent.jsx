@@ -1,22 +1,47 @@
-import { Description } from "../../layout/Header.styled";
 import * as S from "./VideoContent.styled";
-import { useState } from "react";
 
 const VideoContent = ({content}) => {
+    // 백엔드 유튜브 링크를 iframe용 주소로 변환
+    const getYoutubeEmbedUrl = (url) => {
+        if (!url) return "";
 
-    const [activeTab, setActiveTab] = useState("description");
+        try {
+            const parsedUrl = new URL(url);
+            let videoId = "";
 
+            if (parsedUrl.hostname === "youtu.be") {
+                videoId = parsedUrl.pathname.slice(1);
+            } else if (parsedUrl.pathname.startsWith("/embed/")) {
+                videoId = parsedUrl.pathname.split("/embed/")[1];
+            } else {
+                videoId = parsedUrl.searchParams.get("v") ?? "";
+            }
+
+            if (!videoId) return "";
+
+            const embedUrl = new URL(
+                `https://www.youtube.com/embed/${videoId}`,
+            );
+
+            embedUrl.searchParams.set("origin", window.location.origin);
+            embedUrl.searchParams.set("widget_referrer", window.location.href);
+            embedUrl.searchParams.set("playsinline", "1");
+
+            return embedUrl.toString();
+        } catch {
+            return "";
+        }
+    };
 
     return (
         <S.Container>
             <S.VideoPlayer 
-                src={content.video_url}
+                src={getYoutubeEmbedUrl(content.video_url)}
                 title={content.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
             />
-            <S.ChipContainer>
-                {/* <Chip /> */}
-            </S.ChipContainer>
             <S.Content>
                 <S.ContentHeader>
                     <S.Title>
@@ -26,25 +51,6 @@ const VideoContent = ({content}) => {
                         {content.channel_name}
                     </S.ChannelName>
                 </S.ContentHeader>
-                <S.ContentTabs>
-                    <S.TabMenu>
-                        <button onClick={() => setActiveTab("description")}>
-                            영상 소개
-                        </button>
-                        <button onClick={() => setActiveTab("summary")}>
-                            ai 요약
-                        </button>
-                    </S.TabMenu>
-                    <S.TabPanel>
-                        {activeTab === "description" && (
-                            <S.VideoDescription>
-                            </S.VideoDescription>
-                        )}
-                        {}
-                        
-                        <S.AiSummary></S.AiSummary>
-                    </S.TabPanel>
-                </S.ContentTabs>
             </S.Content>
         </S.Container>
     );

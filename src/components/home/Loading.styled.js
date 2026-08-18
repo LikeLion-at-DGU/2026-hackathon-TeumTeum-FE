@@ -92,6 +92,10 @@ export const TimeSummary = styled.p`
   bottom: 100px;
   left: 50%;
   transform: translateX(-50%);
+
+  @media (min-width: 376px) {
+    bottom: 50px;
+  }
 `;
 
 export const TimeLabel = styled.span`

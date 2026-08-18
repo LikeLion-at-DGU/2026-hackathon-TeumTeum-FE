@@ -29,10 +29,16 @@ export const TimeValue = styled.strong`
 `;
 
 export const ButtonWrapper = styled.div`
+  /* 모바일 */
   position: fixed;
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
+
+  /* PC */
+  @media (min-width: 376px) {
+    bottom: 40px;
+  }
 `;
 
 export const QuestionArea = styled.div`

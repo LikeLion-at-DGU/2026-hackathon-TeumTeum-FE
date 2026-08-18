@@ -16,6 +16,10 @@ export const HeaderContainer = styled.header`
   padding: 44px 20px 0;
 
   background-color: white;
+
+  @media (min-width: 376px) {
+    padding-top: 30px;
+  }
 `;
 
 export const Sidebar = styled.aside`
@@ -27,6 +31,10 @@ export const Left = styled.button`
   position: absolute;
   left: 20px;
   top: 44px;
+
+  @media (min-width: 376px) {
+    top: 20px;
+  }
 
   border: none;
   background: none;

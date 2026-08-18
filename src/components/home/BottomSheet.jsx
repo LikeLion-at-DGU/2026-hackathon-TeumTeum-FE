@@ -114,7 +114,7 @@ const BottomSheet = ({ duration, onRefresh }) => {
         
     );
 
-    
+
 };
 
 export default BottomSheet;
@@ -142,6 +142,11 @@ export const Container = styled.div`
     background-color: ${theme.colors.background};
     width: 375px;
     min-height: 750px;
+
+    @media (min-width: 768px) {
+        min-height: 720px;
+        height: 720px;
+    }
     box-sizing: border-box;
     border-radius: 20px 20px 0 0;
     overflow: hidden;
@@ -353,6 +358,10 @@ const ButtonWrapper = styled.div`
     left: 28px;
     right: 28px;
     bottom: 30px;
+    /* PC */
+  @media (min-width: 376px) {
+    bottom: 20px;
+  }
 `;
 
 const BottomButton = styled(Button)`
