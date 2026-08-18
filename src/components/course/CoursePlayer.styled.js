@@ -21,11 +21,13 @@ export const Player = styled.div`
 
     box-sizing: border-box;
 
-    background-color: ${theme.colors.white};
+    background-color: rgba(255, 255, 255, 0.87);
+    backdrop-filter: blur(0.1px);
+    -webkit-backdrop-filter: blur(0.1px);
 
     border-radius: 24px;
 
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 
     z-index: 20;
 `;

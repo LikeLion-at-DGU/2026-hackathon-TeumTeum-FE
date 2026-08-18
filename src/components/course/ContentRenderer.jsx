@@ -1,5 +1,5 @@
 import VideoContent from "./contents/VideoContent";
-import ArticleContent from "./contents/ArticleContent";
+import AiBriefContent from "./contents/AiBriefContent";
 
 const ContentRenderer = ({ content }) => {
   switch(content.content_type) {
@@ -7,7 +7,7 @@ const ContentRenderer = ({ content }) => {
         return <VideoContent content={content} />;
 
     case "article":
-        return <ArticleContent content={content} />;
+        return <AiBriefContent content={content} />;
     
     default:
         return null;
