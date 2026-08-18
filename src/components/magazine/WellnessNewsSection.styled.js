@@ -13,27 +13,17 @@ export const Title = styled.span`
 `
 export const CardWrapper = styled.div`
     display: flex;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
     padding-bottom: 10px;
 
     width: 100%;
-    height: 255px;
-    box-sizing: border-box;
-    
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    overscroll-behavior-x: contain;
 
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-        display: none;
-    }
-
-    > * {
-        flex: 0 0 166px;
-        scroll-snap-align: start;
+    > a {
+        width: 100%;
+        color: inherit;
+        text-decoration: none;
     }
     
 `
