@@ -4,7 +4,7 @@ import Button from "../../components/common/Button.jsx";
 import * as S from "./Onboarding.styled.js"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getOnboardingQuestions } from "../../apis/onboarding";
+import { getOnboardingQuestions, saveOnboardingAnswers } from "../../apis/onboarding";
 
 const Onboarding = () => {
   const [questions, setQuestions] = useState([]);
@@ -47,20 +47,36 @@ const Onboarding = () => {
     (question) => question.order === currentStep
   );
 
-  const handleNext =() => {
-    if(currentStep < questions.length){
-      setCurrentStep((previousStep) => previousStep +1);
-    }
-
-    if(currentStep === questions.length){
-      navigate("/home");
+  const handleNext = async () => {
+    // 1, 2단계라면 다음 질문으로 이동
+    if (currentStep < questions.length) {
+      setCurrentStep((previousStep) => previousStep + 1);
       return;
     }
 
-    if(selectedOptionIds === 0) {
+  const answers = questions.map((question) => ({
+    question_id: question.question_id,
 
-    }
+    option_ids: question.options
+      .filter((option) =>
+        selectedOptionIds.includes(option.option_id)
+      )
+      .map((option) => option.option_id),
+  }));
+
+  try {
+    // 백엔드에 POST 요청
+    await saveOnboardingAnswers(answers);
+
+    // 저장 성공 후에만 Home으로 이동
+    navigate("/home");
+  } catch (error) {
+    console.error(
+      "온보딩 답변 저장 실패:",
+      error.response?.data ?? error.message
+    );
   }
+};
 
   const handleSelect = (optionId) => {
     setSelectedOptionIds((previousIds) => {

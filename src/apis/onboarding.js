@@ -10,7 +10,7 @@ export const saveOnboardingAnswers = async (
     answers
     ) => {
     const response = await axiosInstance.post(
-        "/onboarding",
+        "/onboarding/",
         {
         guest_uuid: getGuestUuid(),
         answers,
