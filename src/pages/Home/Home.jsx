@@ -10,6 +10,9 @@ import useCourseFlow from "../../hooks/useCourseFlow";
 
 import * as S from "./Home.styled";
 
+import { useEffect, useState } from "react";
+import { getMain } from "../../apis/main";
+
 // 임시 백엔드 데이터
 const stepData = {
   step: 0,
@@ -75,6 +78,23 @@ const questions = [
 const guestUuid = "550e8400-e29b-41d4-a716-446655440000";
 
 const Home = ({ onPrimaryClick }) => {
+
+  useEffect(() => {
+    const fetchMain = async () => {
+      try {
+        const data = await getMain();
+        console.log("main API 응답:", data);
+      } catch (error) {
+        console.error(
+          "main API 오류:",
+          error.response?.data || error.message
+        );
+      }
+    };
+
+    fetchMain();
+  }, []);
+
   const {
     step, setStep,
     duration, setDuration,
