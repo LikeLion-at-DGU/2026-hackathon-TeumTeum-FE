@@ -5,7 +5,7 @@ const MagazineCard = ({ magazine, variant = "featured"}) => {
         <>
         <S.Section $variant={variant}>
             <S.Inner $variant={variant}>
-                <S.ImageWrapper>
+                <S.ImageWrapper $variant={variant}>
                     <S.Img src={magazine.image} alt="뉴스 이미지" $variant={variant}/>
                     {variant=="featured" && (
                         <S.AiBadge>AI 추천</S.AiBadge>
