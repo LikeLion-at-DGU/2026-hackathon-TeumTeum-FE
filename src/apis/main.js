@@ -1,10 +1,10 @@
-import client from "./client";
+import axiosInstance from "./axiosInstance";
 import { getGuestUuid } from "../utils/guestUuid";
 
 export const getMain = async () => {
     const guestUuid = getGuestUuid();
 
-    const response = await client.get("/main", {
+    const response = await axiosInstance.get("/main", {
         params: {
         guest_uuid: guestUuid,
         },

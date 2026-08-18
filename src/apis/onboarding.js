@@ -1,15 +1,15 @@
-import client from "./client";
+import axiosInstance from "./axiosInstance";
 import { getGuestUuid } from "../utils/guestUuid";
 
 export const getOnboardingQuestions = async () => {
-    const response = await client.get("/onboarding/questions");
+    const response = await axiosInstance.get("/onboarding/questions");
     return response.data;
 };
 
 export const saveOnboardingAnswers = async (
     answers
     ) => {
-    const response = await client.post(
+    const response = await axiosInstance.post(
         "/onboarding",
         {
         guest_uuid: getGuestUuid(),
