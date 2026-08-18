@@ -21,16 +21,27 @@ export const Inner = styled.div`
 `
 export const ImageWrapper = styled.div`
     position: relative;
-    width: 100%;
-`;
-export const Img = styled.img`
+    
+
     width: ${({ $variant }) =>
         $variant === "wellness" ? "88px" : "100%"};
+
+    height: ${({ $variant }) =>
+        $variant === "wellness" ? "100px" : "auto"};
+
+    flex-shrink: 0;
+
+`;
+export const Img = styled.img`
+    display: block;
+    width: 100%;
+
     height: ${({ $variant }) =>
         $variant === "wellness" ? "100px" : "100%"};
-    flex-shrink: 0;
+
     object-fit: cover;
-    border-radius: ${({theme}) => theme.borderRadius.md};
+    border-radius: ${({ theme }) =>
+        theme.borderRadius.md};
 `
 export const Content = styled.div`
     min-width: 0;
@@ -41,7 +52,7 @@ export const Content = styled.div`
     justify-content: ${({ $variant }) =>
         $variant === "wellness" ? "space-between" : "flex-start"};
     ${({ $variant }) => $variant === "featured" && css`padding-left: 7px`}
-    ${({ $variant}) => $variant === "wellness" && css`padding: 10px 0;`}
+    ${({ $variant}) => $variant === "wellness" && css`padding-top: 10px`}
 `
 export const Title = styled.span`
     display: block;
