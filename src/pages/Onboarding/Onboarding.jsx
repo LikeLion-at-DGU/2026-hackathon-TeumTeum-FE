@@ -2,7 +2,6 @@ import OnboardingHeader from "../../components/onboarding/OnboardingHeader.jsx"
 import OptionSelect from "../../components/onboarding/OptionSelect.jsx";
 import Button from "../../components/common/Button.jsx";
 import * as S from "./Onboarding.styled.js"
-import { mockOnboardingQuestions } from "../../data/mockOnBoardingQuestions.js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
