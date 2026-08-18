@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import theme from "../../styles/theme";
 import Button from "../common/Button";
@@ -41,10 +42,24 @@ const contents = [
 
 const BottomSheet = ({ duration, onRefresh }) => {
     const [refreshKey, setRefreshKey] = useState(0);
+    const navigate = useNavigate();
 
     const handleRefresh = () => {
         setRefreshKey((previous) => previous + 1);
         onRefresh?.();
+    };
+
+    const handleStartCourse = () => {
+        navigate("/course", {
+            state: {
+                duration,
+                course: {
+                    title: `${duration}분 틈 활용법`,
+                    total_minutes: duration,
+                    contents,
+                },
+            },
+        });
     };
 
     return (
@@ -106,7 +121,12 @@ const BottomSheet = ({ duration, onRefresh }) => {
                     ))}
                 </CourseSection>
                 <ButtonWrapper>
-                    <BottomButton variant="primary">{duration}분 코스 실행</BottomButton>
+                    <BottomButton
+                        variant="primary"
+                        onClick={handleStartCourse}
+                    >
+                        {duration}분 코스 실행
+                    </BottomButton>
                 </ButtonWrapper>
                 
             </Container>
