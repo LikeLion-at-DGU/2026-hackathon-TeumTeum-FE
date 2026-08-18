@@ -5,6 +5,54 @@ import Header from "../../components/layout/Header";
 import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
+import ReflectionContent from "../../components/course/contents/ReflectionContent";
+import AiBriefContent from "../../components/course/contents/AiBriefContent";
+import BreathingContent from "../../components/course/contents/BreathingContent";
+import StretchingContent from "../../components/course/contents/StretchingContent";
+
+//임시데이터
+const mockCourseResponse = {
+  guest_uuid: "550e8400-e29b-41d4-a716-446655440000",
+  target_minutes: 12,
+  course: {
+    course_id: 34,
+    title: "12분 틈 활용법",
+    description: "추천이 마음에 들지 않는다면 바꿔보세요.",
+    total_minutes: 12,
+    contents: [
+        {
+            content_order: 1,
+            content_type: "youtube",
+            title: "앉아서 하는 목·어깨 스트레칭",
+            description: "",
+            content: null,
+            video_url: "https://www.youtube.com/watch?v=2N1g30OrtFg",
+            thumbnail_url: "https://i.ytimg.com/vi/2N1g30OrtFg/hqdefault.jpg",
+            channel_name: "채널명",
+            estimated_minutes: 6,
+        },
+        {
+            content_order: 2,
+            content_type: "article",
+            title: "오늘 피부가 유난히 지쳐 보이는 이유",
+            description: "물 한 모금 마시고 턱 긴장을 풀어보세요.",
+            content: "AI가 재구성한 본문...",
+            source: "팀 원문",
+            content_url: null,
+            image_url: null,
+            video_url: null,
+            thumbnail_url: null,
+            channel_name: null,
+            voice_script: "TTS용 스크립트...",
+            steps: [],
+            question: "오늘 피부 컨디션은 몇 점인가요?",
+            question_options: [],
+            allow_text_input: false,
+            estimated_minutes: 4,
+        },
+    ],
+  },
+};
 
 const formatRemainingTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -20,9 +68,9 @@ const Course = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    const course = state?.course;
-    const duration = state?.duration ?? course?.total_minutes ?? 0;
-    const currentContent = course?.contents?.[currentIndex];
+    const course = mockCourseResponse.course;
+    const duration = state?.duration ?? course.total_minutes;
+    const currentContent = course.contents[currentIndex];
     const [remainingSeconds, setRemainingSeconds] = useState(
         duration * 60,
     );
@@ -44,10 +92,6 @@ const Course = () => {
 
         return () => clearInterval(timer);
     }, [isModalOpen, remainingSeconds]);
-
-    if (!course || !currentContent) {
-        return <p>코스 정보를 불러올 수 없습니다.</p>;
-    }
 
     return (
         <>
