@@ -73,6 +73,7 @@ const Loading = ({ duration, course, onRefresh }) => {
                 <BottomSheet
                     course={course}
                     onRefresh={onRefresh}
+                    targetMinutes={duration}
                 />
             )}
         </>

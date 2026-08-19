@@ -131,6 +131,7 @@ const Course = () => {
     };
     
     const handleConfirmStop = async () => {
+        console.log("중단 확인 버튼: ", execution.execution_id);
         if (isStopping) return;
 
         try {   
