@@ -1,19 +1,19 @@
 import * as S from "./BreathingContent.style";
 
-const BreathingContent = () => {
+const BreathingContent = ({ content }) => {
     return (
         <S.Container>
             <S.Title>
-                약속 전 긴장 리셋
+                {content.title}
             </S.Title>
             <S.CenterContent>
                 <S.Guide>
-                    <S.GuideText>오늘의 약속을 잘 해내야 한다는 생각을</S.GuideText>
-                    <S.GuideText>잠시 내려놓아도 괜찮아요.</S.GuideText>
+                    <S.GuideText>{content.description}</S.GuideText>
+                    <S.GuideText>{content.voice_script}</S.GuideText>
                 </S.Guide>
 
                 <S.BreathArea>
-                    <S.BreathOrb aria-label="들이마시는 중">
+                    <S.BreathOrb aria-label={firstStep?.phase}>
                         <S.Glow $delay="0s" />
                         <S.Glow $delay="1.3s" />
                         <S.Core />
@@ -21,8 +21,8 @@ const BreathingContent = () => {
                 </S.BreathArea>
 
                 <S.StatusArea>
-                    <S.Phase>들이 마시기</S.Phase>
-                    <S.Count>00:30</S.Count>
+                    <S.Phase>{firstStep?.phase ?? "호흡 준비"}</S.Phase>
+                    <S.Count>{firstStep?.duration_seconds ?? 0}초</S.Count>
                 </S.StatusArea>
             </S.CenterContent>
         </S.Container>
