@@ -1,6 +1,5 @@
 import Header from "../../components/layout/Header";
 import * as S from "./MyPage.styled"
-import AvataImg from "../../assets/img/ExAvata.png"
 import Button from "../../components/common/Button"
 import { useState, useEffect } from "react";
 
@@ -15,7 +14,7 @@ const MyPage = () => {
       try{
         const data = await getMypage();
         setMyData(data);
-        
+
         console.log("GET /mypage 성공:", data);
       }
       catch(error){
@@ -27,6 +26,16 @@ const MyPage = () => {
     }
     fetchMypage();
   }, [])
+
+  if (!myData) {
+    return <p>마이페이지를 불러오는 중...</p>;
+  }
+
+  const weekly = myData.weekly_recovery;
+  const discovery = myData.ai_discovery;
+  const pattern = myData.teum_pattern;
+  const suggestion = myData.next_suggestion;
+
   return (
     <>
       <Header
@@ -40,15 +49,21 @@ const MyPage = () => {
             <S.Summary>
               <S.SummaryTitle>이번 주 회복한 틈 시간</S.SummaryTitle>
 
-              <S.TotalTime>67<S.Min>분</S.Min></S.TotalTime>
+              <S.TotalTime>{weekly.current_week_minutes}<S.Min>분</S.Min></S.TotalTime>
 
               <S.Description>
-                지난주보다 <S.MoreTime>18분</S.MoreTime> 더 
+                지난주보다 <S.MoreTime>{Math.abs(weekly.diff_minutes)}분</S.MoreTime> {weekly.diff_minutes >= 0 ? "더" : "덜"}
                 <br />
                 나를 위한 시간을 만들었어요!
               </S.Description>
 
-              <S.ChangeRate>▲ 37%</S.ChangeRate>
+              <S.ChangeRate>
+                {weekly.growth_rate > 0
+                  ? `▲ ${weekly.growth_rate}%`
+                  : weekly.growth_rate < 0
+                    ? `▼ ${Math.abs(weekly.growth_rate)}%`
+                    : "-"}
+              </S.ChangeRate>
             </S.Summary>
 
 
@@ -56,13 +71,13 @@ const MyPage = () => {
               <S.WeekRow>
                 <span>지난주</span>
                 <S.ProgressBar />
-                <strong>49분</strong>
+                <strong>{weekly.previous_week_minutes}분</strong>
               </S.WeekRow>
 
               <S.WeekRow>
                 <span>이번주</span>
                 <S.ProgressBar $percent={100} />
-                <strong>67분</strong>
+                <strong>{weekly.current_week_minutes}분</strong>
               </S.WeekRow>
             </S.WeekComparison>
 
@@ -70,7 +85,7 @@ const MyPage = () => {
             <S.StatItem>
               <S.ItemBox>
                 <S.StatIcon></S.StatIcon>
-                <S.StatValue>8회</S.StatValue>
+                <S.StatValue>{weekly.executed_courses}회</S.StatValue>
               </S.ItemBox>
               <S.Label>실행한 코스</S.Label>
             </S.StatItem>
@@ -80,7 +95,7 @@ const MyPage = () => {
             <S.StatItem>
               <S.ItemBox>
                 <S.StatIcon></S.StatIcon>
-                <S.StatValue>87%</S.StatValue>
+                <S.StatValue>{weekly.completion_rate}%</S.StatValue>
               </S.ItemBox>
               <S.Label>완료율</S.Label>
             </S.StatItem>
@@ -94,13 +109,7 @@ const MyPage = () => {
           </S.TitleBox>
 
           <S.InsightDescription>
-            이번 주에는 '이동중'에 피로함을 가장 많이 느꼈어요.
-          </S.InsightDescription>
-          <S.InsightDescription>
-            특히 오후 2~4시에 몸-틈 코스의 완료율이 92%로 가장 높았어요.
-          </S.InsightDescription>
-          <S.InsightDescription>
-            다음 비슷한 상황에서는 짧은 스트레칭을 먼저 추천할게요!
+            {discovery.summary_text}
           </S.InsightDescription>
         </S.AiInsightCard>
 
@@ -108,25 +117,25 @@ const MyPage = () => {
         <S.PatternSection>
           <S.PatternCard>
             <S.PatternIcon />
-            <S.PatternLabel>대중교통</S.PatternLabel>
+            <S.PatternLabel>{pattern.most_frequent_place}</S.PatternLabel>
             <S.PatternDescription>가장 자주 생긴 틈</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
             <S.PatternIcon />
-            <S.PatternLabel>피곤함</S.PatternLabel>
+            <S.PatternLabel>{pattern.most_frequent_state}</S.PatternLabel>
             <S.PatternDescription>가장 자주 느낀 상태</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
             <S.PatternIcon />
-            <S.PatternLabel>스트레칭</S.PatternLabel>
+            <S.PatternLabel>{pattern.best_activity}</S.PatternLabel>
             <S.PatternDescription>가장 잘 맞는 활동</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
             <S.PatternIcon />
-            <S.PatternLabel>11분</S.PatternLabel>
+            <S.PatternLabel>{pattern.avg_duration_minutes}분</S.PatternLabel>
             <S.PatternDescription>평균 틈 시간</S.PatternDescription>
           </S.PatternCard>
         </S.PatternSection>
@@ -137,7 +146,9 @@ const MyPage = () => {
             <S.AiTitle>AI의 다음 제안</S.AiTitle>
           </S.TitleBox>
           <S.SuggestionDescription>
-            최근 이동 중 피로도가 높았어요. 다음에 비슷한 틈이 생기면 5분 목·어깨 리셋 코스를 먼저 추천할게요!
+            <strong>{suggestion.title}</strong>
+            <br />
+            {suggestion.description}
           </S.SuggestionDescription>
           <S.ButtonWrapper>
           <Button variant="primary">추천 코스 보기</Button>

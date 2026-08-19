@@ -159,6 +159,7 @@ export const AiTitle = styled.span`
   font-weight: ${({theme}) => theme.fontWeight.medium};
 `
 export const InsightDescription = styled.span`
+  white-space: pre-line;
   color: ${({theme}) => theme.colors.black};
   font-size: 18px;
   word-break: keep-all;

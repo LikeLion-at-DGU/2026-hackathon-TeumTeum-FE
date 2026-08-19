@@ -12,3 +12,15 @@ export const getMagazines = async () => {
 
     return response.data;
 }
+
+export const getMagazineDetail = async (articleId) => {
+    const gestUuid = getGuestUuid();
+
+    const response = await axiosInstance.get(`/magazines/discovery/${articleId}`,{
+        params: {
+            guest_uuid: gestUuid,
+        },
+    });
+
+    return response.data;
+}
