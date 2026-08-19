@@ -29,13 +29,24 @@ const CONTENT_TYPE_CONFIG = {
         icon: "✍🏻",
     },
 };
-const BottomSheet = ({ course, onRefresh }) => {
+
+const formatDuration = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}분 ${String(
+        seconds,
+    ).padStart(2, "0")}초`;
+};
+
+const BottomSheet = ({ course, onRefresh, targetMinutes }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [isStarting, setIsStarting] = useState(false);
     const navigate = useNavigate();
 
     const contents = course?.contents ?? [];
-    const duration = course?.total_minutes ?? 0;
+    const totalSeconds = course?.total_seconds ?? (course?.total_minutes ?? 0) * 60;
+    const formattedDuration = formatDuration(totalSeconds);
 
     const handleRefresh = async () => {
         if(isRefreshing) return;
@@ -102,8 +113,8 @@ const BottomSheet = ({ course, onRefresh }) => {
                     </RefreshButton>
                 </Header>
                 <TimeSection>
-                    <TotalTime><span>생성된 코스 시간:</span> {duration}<span>분</span></TotalTime>
-                    <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {duration}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
+                    <TotalTime><span>생성된 코스 시간:</span> {formattedDuration}</TotalTime>
+                    <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {targetMinutes}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
                 </TimeSection>
                 
                 <CourseSection>
@@ -152,7 +163,7 @@ const BottomSheet = ({ course, onRefresh }) => {
                         variant="primary"
                         onClick={handleStartCourse}
                     >
-                        {isStarting ? "코스 실행 중..." : `${duration}분 코스 실행`}
+                        {isStarting ? "코스 실행 중..." : `{targetMinutes}분 코스 실행`}
                     </BottomButton>
                 </ButtonWrapper>
                 

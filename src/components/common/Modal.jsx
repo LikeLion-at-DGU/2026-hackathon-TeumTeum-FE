@@ -7,7 +7,7 @@ import formatDate from "../../utils/formatDate";
 const Modal = ({ 
     maintitle, date, title, description, 
     secondaryText, primaryText, onSecondaryClick, onPrimaryClick,
-    isOpen, onClose
+    isOpen, onClose, children
  }) => {
     return (
         <>
@@ -19,6 +19,7 @@ const Modal = ({
                 {date && <Date>{formatDate(date)}</Date>}
                 {title && <Title>{title}</Title>}
                 <Description>{description}</Description>
+                {children}
             </Content>
             <ButtonGroup>
                 <Button
