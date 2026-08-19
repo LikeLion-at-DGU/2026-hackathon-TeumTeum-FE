@@ -6,24 +6,45 @@ import Button from "../common/Button";
 import RefreshIcon from "../../assets/icons/tdesign_refresh.svg";
 import youtube from "../../assets/icons/youtube.svg"
 
-const BottomSheet = ({ duration, onRefresh }) => {
+const CONTENT_TYPE_CONFIG = {
+    youtube: {
+        label: "유튜브",
+        icon:  "youtube",
+    },
+    article: {
+        label: "ai브리프",
+        icon: "🌍",
+    },
+    audio_guide: {
+        label: "호흡명상 가이드",
+        icon: "🧘🏻"
+    },
+    stretch_guide: {
+        label: "스트레칭",
+        icon: "🤸🏻",
+    },
+    reflection: {
+        label: "마음 기록",
+        icon: "✍🏻",
+    },
+};
+const BottomSheet = ({ course, onRefresh }) => {
     const [refreshKey, setRefreshKey] = useState(0);
     const navigate = useNavigate();
 
+    const contents = course?.contents ?? [];
+    const duration = course?.total_minutes ?? 0;
+
     const handleRefresh = async () => {
         setRefreshKey((previous) => previous + 1);
-        onRefresh?.();
+        await onRefresh?.();
     };
 
     const handleStartCourse = () => {
         navigate("/course", {
             state: {
                 duration,
-                course: {
-                    title: `${duration}분 틈 활용법`,
-                    total_minutes: duration,
-                    contents,
-                },
+                course
             },
         });
     };
@@ -58,33 +79,45 @@ const BottomSheet = ({ duration, onRefresh }) => {
                     {/* 아이콘들 */}
                 </WellnessVisual>
                 <CourseSection>
-                    {contents.map((content) => (
-                        <CourseCard key={content.content_order}>
-                            <ContentIcon>
-                                {content.content_type === "article" ? "🌍" : (<YoutubeIcon src={youtube} alt="YouTube" />) }
-                            </ContentIcon>
+                    {contents.map((content) => {
+                        const typeConfig = 
+                            CONTENT_TYPE_CONFIG[content.content_type] ?? {
+                                label: "콘텐츠",
+                                icon: "✨"
+                            };
+                        return (
+                            <CourseCard key={content.content_order}>
+                                <ContentIcon aria-label={typeConfig.label}>
+                                    {typeConfig.icon === "youtube" ? (
+                                        <YoutubeIcon src={youtube} alt="" />
+                                    ) : (
+                                        typeConfig.icon
+                                    )}
+                                </ContentIcon>
+                                 <ContentThumbnail>
+                                    {(content.thumbnail_url || content.image_url) && (
+                                        <img
+                                            src={content.thumbnail_url || content.image_url}
+                                            alt={content.title}
+                                        />
+                                    )}
+                                </ContentThumbnail>
 
-                            <ContentThumbnail>
-                                <img src={content.image_url} alt={content.title}/>
-                            </ContentThumbnail>
+                                <ContentInfoWrapper>
+                                    <ContentInfo>
+                                        <ContentTitle>{content.title}</ContentTitle>
+                                        <ContentDescription>
+                                            {content.description}
+                                        </ContentDescription>
+                                    </ContentInfo>
 
-                            <ContentInfoWrapper>
-                                <ContentInfo>
-                                    <ContentTitle>
-                                        {content.title}
-                                    </ContentTitle>
-
-                                    <ContentDescription>
-                                        {content.description}
-                                    </ContentDescription>
-                                </ContentInfo>
-                                <ContentTime>
-                                    {content.estimated_minutes}분
-                                </ContentTime>
-                            </ContentInfoWrapper>
-
-                        </CourseCard>
-                    ))}
+                                    <ContentTime>
+                                        {content.estimated_minutes}분
+                                    </ContentTime>
+                                </ContentInfoWrapper>
+                            </CourseCard>
+                        );
+                    })}
                 </CourseSection>
                 <ButtonWrapper>
                     <BottomButton
