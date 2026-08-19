@@ -6,6 +6,8 @@ import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
 
+import { pauseCourse, resumeCourse, } from "../../apis/course";
+
 const formatRemainingTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -37,6 +39,48 @@ const Course = () => {
 
     const currentContent = contents[currentIndex];
 
+    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPausing, setIsPausing] = useState(false);
+
+    const handlePause = async () => {
+        if(isPausing) return;
+        setIsPausing(true);
+
+        if(isPlaying) {
+            // 일시정지
+            try {
+                setIsPlaying(false);
+
+                const data = await pauseCourse(execution.execution_id);
+                console.log("코스 일시정지 성공: ", data);
+                setRemainingSeconds(data.remaining_seconds);
+            } catch (error) {
+                console.error("코스 일시정지 실제 오류:", error);
+                console.error("HTTP 상태:", error.response?.status);
+                console.error("백엔드 응답:", error.response?.data);
+                
+                setIsPlaying(true);
+            } finally {
+                setIsPausing(false);
+            }
+            return;
+        }
+        // 재개
+        try {
+            const data = await resumeCourse(execution.execution_id);
+        console.log("코스 타이머 재개 성공: ", data);
+
+        setRemainingSeconds(data.remaining_seconds);
+        setIsPlaying(true);
+        } catch (error) {
+            console.error("코스 재개 실제 오류:", error);
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("백엔드 응답:", error.response?.data);
+        } finally {
+            setIsPausing(false);
+        }
+    };
+
     const handleStop = () => {
         setIsStopModalOpen(true);
     };
@@ -51,14 +95,19 @@ const Course = () => {
     }
 
     useEffect(() => {
-        if (isStopModalOpen || remainingSeconds <= 0) return;
-
+        if (
+            !isPlaying || 
+            isStopModalOpen ||
+            remainingSeconds <= 0
+        ) {
+            return;
+        }
         const timer = setInterval(() => {
             setRemainingSeconds((previous) => Math.max(previous - 1, 0));
         }, 1000);
 
         return () => clearInterval(timer);
-    }, [isStopModalOpen, remainingSeconds]);
+    }, [isPlaying, isStopModalOpen, remainingSeconds]);
 
     if (!execution) {
         return <p>코스 실행 정보를 불러오지 못했습니다.</p>;
@@ -71,6 +120,8 @@ const Course = () => {
     if (!currentContent) {
         return <p>실행할 콘텐츠가 없습니다.</p>;
     }
+
+    
 
     return (
         <>
@@ -89,6 +140,9 @@ const Course = () => {
                 contents={contents}
                 currentIndex={currentIndex}
                 onIndexChange={setCurrentIndex}
+                isPlaying={isPlaying}
+                onPlayPause={handlePause}
+                isUpdating={isPausing}
             />
             <Modal
                 isOpen={isStopModalOpen}

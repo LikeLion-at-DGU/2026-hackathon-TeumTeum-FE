@@ -6,23 +6,13 @@ import PlayIcon from "../../assets/icons/CoursePlayerIcons/play-icon-expanded.sv
 import FowardIcon from "../../assets/icons/CoursePlayerIcons/foward-fill.svg";
 import BackwardIcon from "../../assets/icons/CoursePlayerIcons/backward-fill.svg";
 
-const courseContents = [
-    {
-        id: 1,
-        title: "스트레칭",
-        duration: 180, // 3분
-    },
-    {
-        id: 2,
-        title: "듣기",
-        duration: 320, // 5분 20초
-    },
-    {
-        id: 3,
-        title: "매거진",
-        duration: 120, // 2분
-    },
-];
+const CONTENT_TYPE_LABEL = {
+    youtube: "유튜브",
+    article: "AI 브리프",
+    audio_guide: "호흡",
+    stretch_guide: "스트레칭",
+    reflection: "마음 정리",
+};
 
 const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -33,18 +23,24 @@ const formatTime = (seconds) => {
     ).padStart(2, "0")}`;
 };
 
-const CoursePlayer = () => {
-    const [isPlaying, setIsPlaying] = useState(true);
-
-    const handlePlayPause = () => {
-        setIsPlaying((prev) => !prev);
-    };
-
-    // 현재 콘텐츠 index
-    const [currentIndex, setCurrentIndex] = useState(1);
+const CoursePlayer = ({
+    contents,
+    currentIndex,
+    onIndexChange,
+    isPlaying,
+    onPlayPause,
+    isUpdating,
+}) => {
+    const courseContents = useMemo(() => {
+        return contents.map((content) => ({
+            ...content,
+            id: content.content_order,
+            duration: content.estimated_minutes * 60,
+        }));
+    }, [contents]);
 
     // 현재 콘텐츠에서 몇 초 진행됐는지
-    const [currentTime, setCurrentTime] = useState(120);
+    const [currentTime, setCurrentTime] = useState(0);
 
     const currentContent = courseContents[currentIndex];
 
@@ -54,7 +50,7 @@ const CoursePlayer = () => {
             (total, content) => total + content.duration,
             0
         );
-    }, []);
+    }, [courseContents]);
 
     // 현재까지 진행된 전체 코스 시간
     const elapsedCourseTime = useMemo(() => {
@@ -63,7 +59,7 @@ const CoursePlayer = () => {
             .reduce((total, content) => total + content.duration, 0);
 
         return previousDuration + currentTime;
-    }, [currentIndex, currentTime]);
+    }, [courseContents, currentIndex, currentTime]);
 
     // 전체 코스에서 현재 위치가 몇 %인지
     const progressPercent =
@@ -78,7 +74,7 @@ const CoursePlayer = () => {
 
     // 테스트용 시간 진행
     useEffect(() => {
-        if (!isPlaying) return;
+        if (!isPlaying || isUpdating) return;
 
         const timer = setInterval(() => {
             setCurrentTime((prev) => {
@@ -86,10 +82,9 @@ const CoursePlayer = () => {
                     return prev + 1;
                 }
                 if(currentIndex < courseContents.length - 1) {
-                    setCurrentIndex((prevIndex) => prevIndex + 1);
+                    onIndexChange(currentIndex + 1);
                     return 0;
                 }
-                setIsPlaying(false);
                 return currentContent.duration;
             });
         }, 1000);
@@ -97,8 +92,11 @@ const CoursePlayer = () => {
         return () => clearInterval(timer);
     }, [
         isPlaying,
+        isUpdating,
         currentIndex,
         currentContent.duration,
+        courseContents.length,
+        onIndexChange,
     ]);
 
     // 이전 콘텐츠
@@ -108,7 +106,7 @@ const CoursePlayer = () => {
             return;
         }
         if(currentIndex > 0) {
-            setCurrentIndex((prev) => prev - 1);
+            onIndexChange(currentIndex - 1);
             setCurrentTime(0);
         }
     };
@@ -116,7 +114,7 @@ const CoursePlayer = () => {
     // 다음 콘텐츠
     const handleNext = () => {
         if(currentIndex < courseContents.length - 1) {
-            setCurrentIndex((prev) => prev + 1);
+            onIndexChange(currentIndex + 1);
             setCurrentTime(0);
             return;
         }
@@ -136,7 +134,7 @@ const CoursePlayer = () => {
                             key={content.id}
                             $active={index === currentIndex}
                         >
-                            {content.title}
+                            {CONTENT_TYPE_LABEL[content.content_type]}
                         </S.CourseLabel>
                     ))}
                 </S.Labels>
@@ -219,7 +217,7 @@ const CoursePlayer = () => {
                     <img src={BackwardIcon} alt="이전 콘텐츠" />
                 </S.PreviousButton>
 
-                <S.PlayPauseButton onClick={handlePlayPause} $isPlaying={isPlaying}>
+                <S.PlayPauseButton onClick={onPlayPause} disabled={isUpdating} $isPlaying={isPlaying}>
                     <img 
                         src={isPlaying ? PauseIcon : PlayIcon}
                         alt={isPlaying ? "일시정지" : "재생"}

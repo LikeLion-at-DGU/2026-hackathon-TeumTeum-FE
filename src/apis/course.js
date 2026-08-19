@@ -35,3 +35,29 @@ export const startCourse = async (courseId) => {
     );
     return response.data;
 }
+
+// 코스타이머 일시정지
+export const pauseCourse = async (executionId) => {
+    const guestUuid = getGuestUuid();
+    const response = await axiosInstance.post(
+        `/main/teumteum/${executionId}/pause`,
+        {
+            guest_uuid: guestUuid,
+        }
+    );
+    return response.data;
+};
+
+// 코스 타이머 재개
+export const resumeCourse = async (executionId) => {
+  const guestUuid = getGuestUuid();
+
+  const response = await axiosInstance.post(
+    `/main/teumteum/${executionId}/resume`,
+    {
+      guest_uuid: guestUuid,
+    },
+  );
+
+  return response.data;
+};
