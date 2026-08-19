@@ -61,3 +61,17 @@ export const resumeCourse = async (executionId) => {
 
   return response.data;
 };
+
+// 코스 실행 중단
+export const stopCourse = async (executionId) => {
+    const guestUuid = getGuestUuid();
+
+    const response = await axiosInstance.post(
+        `/main/teumteum/${executionId}/stop`,
+        {
+        guest_uuid: guestUuid,
+        },
+    );
+
+    return response.data;
+};

@@ -6,7 +6,7 @@ import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
 
-import { pauseCourse, resumeCourse, } from "../../apis/course";
+import { pauseCourse, resumeCourse, stopCourse } from "../../apis/course";
 
 const formatRemainingTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -36,6 +36,7 @@ const Course = () => {
         );
 
     const [isStopModalOpen, setIsStopModalOpen] = useState(false);
+    const [isStopping, setIsStopping] = useState(false);
 
     const currentContent = contents[currentIndex];
 
@@ -81,18 +82,72 @@ const Course = () => {
         }
     };
 
-    const handleStop = () => {
+    const handleStop = async () => {
+        setWasPlayingBeforeModal(isPlaying);
+        if(isPlaying) {
+            try {
+                setIsPausing(true);
+                setIsPlaying(false);
+                const data = await pauseCourse(execution.execution_id);
+                setRemainingSeconds(data.remaining_seconds);
+            } catch (error) {
+                console.error("중단 modal 진입 중 일시정지 실패: ", error);
+                setIsPlaying(true);
+                return;
+            } finally {
+                setIsPausing(false);
+            }
+        }
         setIsStopModalOpen(true);
     };
 
-    const handleCloseModal = () => {
+    const [wasPlayingBeforeModal, setWasPlayingBeforeModal] = useState(false);
+    
+    const handleCloseModal = async () => {
+        if(wasPlayingBeforeModal) {
+            try {
+                setIsPausing(true);
+                const data = await resumeCourse(execution.execution_id);
+                setRemainingSeconds(data.remaining_seconds);
+                setIsPlaying(true);
+            } catch(error) {
+                console.error("코스 재개 실패: ", error);
+                console.error("백엔드 응답: ", error.response?.data);
+                return;
+            } finally {
+                setIsPausing(false);
+            }
+        }
         setIsStopModalOpen(false);
     };
     
-    const handleConfirmStop = () => {
-        setIsStopModalOpen(false);
-        navigate("/home");
-    }
+    const handleConfirmStop = async () => {
+        if (isStopping) return;
+
+        try {   
+            setIsStopping(true);
+            const data = await stopCourse(execution.execution_id);
+
+            console.log("코스 중단 성공:", data);
+
+            setIsStopModalOpen(false);
+
+            navigate("/home", {
+                state: {
+                    stoppedExecution: data,
+                },
+            });
+        } catch (error) {
+            console.error("코스 중단 실제 오류:", error);
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("백엔드 응답:", error.response?.data);
+
+            const message = error.response?.data?.detail || "코스를 중단할 수 없습니다.";
+            console.error(message);
+        } finally {
+            setIsStopping(false);
+        }
+    };
 
     useEffect(() => {
         if (
@@ -154,7 +209,7 @@ const Course = () => {
                     </>
                 }
                 secondaryText="닫기"
-                primaryText="네, 중단할게요"
+                primaryText={isStopping ? "중단 중..." : "네, 중단할게요"}
                 onSecondaryClick={handleCloseModal}
                 onPrimaryClick={handleConfirmStop}
             />
