@@ -102,7 +102,7 @@ const BottomSheet = ({ course, onRefresh }) => {
                     </RefreshButton>
                 </Header>
                 <TimeSection>
-                    <TotalTime>{duration}<span>분</span></TotalTime>
+                    <TotalTime><span>생성된 코스 시간:</span> {duration}<span>분</span></TotalTime>
                     <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {duration}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
                 </TimeSection>
                 

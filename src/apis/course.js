@@ -75,3 +75,17 @@ export const stopCourse = async (executionId) => {
 
     return response.data;
 };
+
+// 코스 완료 및 기록 저장
+export const completeCourse = async (executionId) => {
+    const guestUuid = getGuestUuid();
+
+    const response = await axiosInstance.post(
+        `/main/teumteum/${executionId}/complete`,
+        {
+        guest_uuid: guestUuid,
+        },
+    );
+
+    return response.data;
+};
