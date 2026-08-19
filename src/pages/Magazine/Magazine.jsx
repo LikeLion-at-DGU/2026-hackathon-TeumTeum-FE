@@ -14,7 +14,7 @@ const Magazine = () => {
         const data = await getMagazines();
 
         setMagazineData(data);
-        console.log("GET /magazines 성공: ", data);
+        console.log("대표 매거진 ID:", data.featured?.id);
       }
       catch(error){
         console.error(
