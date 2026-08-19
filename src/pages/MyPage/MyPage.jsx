@@ -1,9 +1,32 @@
 import Header from "../../components/layout/Header";
 import * as S from "./MyPage.styled"
 import AvataImg from "../../assets/img/ExAvata.png"
-import Button from "../../components/common/Button";
+import Button from "../../components/common/Button"
+import { useState, useEffect } from "react";
+
+import { getMypage } from "../../apis/mypage";
 
 const MyPage = () => {
+
+  const [myData, setMyData] = useState(null);
+
+  useEffect(() => {
+    const fetchMypage = async() => {
+      try{
+        const data = await getMypage();
+        setMyData(data);
+        
+        console.log("GET /mypage 성공:", data);
+      }
+      catch(error){
+        console.error(
+          "GET /mypage 실패 : ",
+          error.response?.data || error.message
+        )
+      }
+    }
+    fetchMypage();
+  }, [])
   return (
     <>
       <Header
