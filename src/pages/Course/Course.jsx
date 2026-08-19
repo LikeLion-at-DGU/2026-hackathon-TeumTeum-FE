@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 import Header from "../../components/layout/Header";
@@ -6,7 +6,7 @@ import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
 
-import { pauseCourse, resumeCourse, stopCourse } from "../../apis/course";
+import { pauseCourse, resumeCourse, stopCourse, completeCourse } from "../../apis/course";
 
 const formatRemainingTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -149,20 +149,49 @@ const Course = () => {
         }
     };
 
+    const hasRequestedComplete = useRef(false);
+
     useEffect(() => {
-        if (
-            !isPlaying || 
-            isStopModalOpen ||
-            remainingSeconds <= 0
-        ) {
+        if(!isPlaying || isStopModalOpen || remainingSeconds <= 0) {
             return;
         }
         const timer = setInterval(() => {
-            setRemainingSeconds((previous) => Math.max(previous - 1, 0));
+            setRemainingSeconds((previous) =>
+                Math.max(previous - 1, 0),
+            );
         }, 1000);
-
-        return () => clearInterval(timer);
+        return() => clearInterval(timer);
     }, [isPlaying, isStopModalOpen, remainingSeconds]);
+
+    useEffect(() => {
+        if (remainingSeconds !== 0) return;
+        if (!execution) return;
+        if (hasRequestedComplete.current) return;
+
+        const completeCurrentCourse = async () => {
+            try {
+                hasRequestedComplete.current = true;
+                setIsPlaying(false);
+
+                const data = await completeCourse(execution.execution_id);
+                console.log("코스 완료 성공:", data);
+
+                navigate("/course/coursecomplete", {
+                    state: {
+                        completedExecution: data,
+                    },
+                });
+            } catch (error) {
+                console.error("코스 완료 실제 오류: ", error);
+                console.error("HTTP 상태:", error.response?.status);
+                console.error("백엔드 응답:", error.response?.data);
+
+                const message = error.response?.data?.detail || "코스를 완료 처리할 수 없습니다.";
+                console.error(message);
+            } 
+        };
+        completeCurrentCourse();
+    }, [remainingSeconds, execution, navigate]);
 
     if (!execution) {
         return <p>코스 실행 정보를 불러오지 못했습니다.</p>;
