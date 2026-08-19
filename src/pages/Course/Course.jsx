@@ -83,6 +83,7 @@ const Course = () => {
     };
 
     const handleStop = async () => {
+        if(isPausing || isStopping) return;
         setWasPlayingBeforeModal(isPlaying);
         if(isPlaying) {
             try {
@@ -92,10 +93,18 @@ const Course = () => {
                 setRemainingSeconds(data.remaining_seconds);
             } catch (error) {
                 console.error("중단 modal 진입 중 일시정지 실패: ", error);
+                console.error("HTTP 상태:", error.response?.status);
+                console.error("백엔드 응답:", error.response?.data);
+                const detail = error.response?.data?.detail;
+                if(
+                    error.response?.status === 400 && detail === "현재 실행 중인 코스가 아닙니다."
+                ) {
+                    setIsPlaying(false);
+                    setIsStopModalOpen(true);
+                    return;
+                }
                 setIsPlaying(true);
                 return;
-            } finally {
-                setIsPausing(false);
             }
         }
         setIsStopModalOpen(true);
