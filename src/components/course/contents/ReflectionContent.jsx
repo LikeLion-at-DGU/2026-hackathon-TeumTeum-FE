@@ -2,48 +2,48 @@ import { useState } from "react";
 
 import * as S from "./ReflectionContent.styled";
 
-const options = ["설레요", "기대돼요", "편안해요", "조금 긴장돼요"];
-
-const ReflectionContent = () => {
+const ReflectionContent = ({ content }) => {
     const [selectedEmotion, setSelectedEmotion] = useState(null);
     const [answer, setAnswer] = useState("");
+
+    const options = content.question_options ?? [];
 
     return (
             <S.Container>
                 <S.SubTitle>
-                    친구를 만나기 전, 마음정리
+                    {content.title}
                 </S.SubTitle>
 
                 <S.Question>
-                    지금 내 기분을 한 단어로 표현하면?
+                    {content.question}
                 </S.Question>
 
+                {options.length > 0 && (
                 <S.OptionList>
-                    {options.map((option) => (
-                        <S.OptionButton
-                            key={option}
-                            type="button"
-                            $selected={selectedEmotion === option}
-                            onClick={() => setSelectedEmotion(option)}
-                        >
-                            {option}
-                        </S.OptionButton>
-                    ))}
+                {options.map((option) => (
+                    <S.OptionButton
+                    key={option}
+                    type="button"
+                    $selected={selectedOption === option}
+                    onClick={() => setSelectedOption(option)}
+                    >
+                    {option}
+                    </S.OptionButton>
+                ))}
                 </S.OptionList>
+            )}
 
-                <S.SecondQuestion>
-                    오늘 이 약속에서
-                    <br />
-                    내가 가장 기대하는 순간은 무엇인가요?
-                </S.SecondQuestion>
-
+            {content.allow_text_input && (
                 <S.TextArea
-                    value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
-                    placeholder="한 문장만 적어도 좋아요."
+                value={answer}
+                onChange={(event) =>
+                    setAnswer(event.target.value)
+                }
+                placeholder="한 문장만 적어도 좋아요."
                 />
+            )}
             </S.Container>
-    );  
-};
+        );
+    };
 
 export default ReflectionContent;

@@ -1,38 +1,48 @@
 import * as S from "./StretchingContent.styled";
 
-const StretchingContent = ({
-  title = "눈에 띄지 않는 목 리셋",
-  currentStep = 1,
-  totalStep = 3,
-  imageUrl,
-}) => {
-  const progress = (currentStep / totalStep) * 100;
+const StretchingContent = ({ content }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const steps = content.steps ?? [];
+  const step = steps[currentStep];
 
   return (
     <S.Container>
-      <S.Title>{title}</S.Title>
+      <S.Title>{content.title}</S.Title>
 
       <S.ProgressTrack>
-        <S.ProgressFill $progress={progress} />
+        <S.ProgressFill
+          $progress={
+            steps.length > 0
+              ? ((currentStep + 1) / steps.length) * 100
+              : 0
+          }
+        />
       </S.ProgressTrack>
 
       <S.Step>
-        {currentStep}/{totalStep}
+        {steps.length > 0
+          ? `${currentStep + 1}/${steps.length}`
+          : "0/0"}
       </S.Step>
 
       <S.ContentArea>
         <S.Instruction>
-          어깨를 귀에서 멀어지게 내립니다.
-          <br />
-          <br />
-          그 상태에서 20초간 유지하세요.
+          {step?.phase ?? content.description}
+          {step?.duration_seconds != null && (
+            <>
+              <br />
+              <br />
+              {step.duration_seconds}초간 유지하세요.
+            </>
+          )}
         </S.Instruction>
 
         <S.ImageFrame>
           {imageUrl && (
             <S.StretchImage
-              src={imageUrl}
-              alt="목과 어깨 스트레칭 자세"
+              src={content.image_url}
+              alt={content.title}
             />
           )}
         </S.ImageFrame>
