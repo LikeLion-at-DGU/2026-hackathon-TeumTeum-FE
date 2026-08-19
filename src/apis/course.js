@@ -24,10 +24,14 @@ export const refreshRecommendedCourse = async () => {
   return response.data;
 };
 
-// 상세 코스 조회
-export const getCourseDetail = async () => {
+// 코스 상세화면 실행
+export const startCourse = async (courseId) => {
+    const guestUuid = getGuestUuid();
     const response = await axiosInstance.post(
-        `/main/teumteum/<int:course_id>`
+        `/main/teumteum/${courseId}`, 
+        {
+            guest_uuid: guestUuid,
+        },
     );
     return response.data;
 }

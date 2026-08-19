@@ -5,6 +5,7 @@ import theme from "../../styles/theme";
 import Button from "../common/Button";
 import RefreshIcon from "../../assets/icons/tdesign_refresh.svg";
 import youtube from "../../assets/icons/youtube.svg"
+import { startCourse } from "../../apis/course";
 
 const CONTENT_TYPE_CONFIG = {
     youtube: {
@@ -30,6 +31,7 @@ const CONTENT_TYPE_CONFIG = {
 };
 const BottomSheet = ({ course, onRefresh }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
+    const [isStarting, setIsStarting] = useState(false);
     const navigate = useNavigate();
 
     const contents = course?.contents ?? [];
@@ -53,13 +55,28 @@ const BottomSheet = ({ course, onRefresh }) => {
         }
     };
 
-    const handleStartCourse = () => {
-        navigate("/course", {
-            state: {
-                duration,
-                course
-            },
-        });
+    const handleStartCourse = async () => {
+        if(!course?.course_id || isStarting) return;
+        try {
+            setIsStarting(true);
+            const data = await startCourse(course.course_id);
+            console.log("코스 실행 성공: ", data);
+            navigate(`/course/${course.course_id}`, {
+                state: {
+                    execution: data,
+                },
+            });
+        } catch (error) {
+            console.error("코스 실행 실제 오류: ", error);
+            console.error("HTTP 상태: ", error.response?.status);
+            console.error("백엔드 응답: ", error.response?.data);
+
+            const message = error.response?.data?.detail || "코스를 실행할 수 없습니다.";
+            
+            alert(message);
+        } finally {
+            setIsStarting(false);
+        }
     };
 
     return (
@@ -135,7 +152,7 @@ const BottomSheet = ({ course, onRefresh }) => {
                         variant="primary"
                         onClick={handleStartCourse}
                     >
-                        {duration}분 코스 실행
+                        {isStarting ? "코스 실행 중..." : `${duration}분 코스 실행`}
                     </BottomButton>
                 </ButtonWrapper>
                 
