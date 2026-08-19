@@ -12,11 +12,13 @@ import * as S from "./Home.styled";
 
 import { useEffect, useState } from "react";
 import { getMain, postMain, getQuestions, postQuestions } from "../../apis/main";
+import { createRecommendedCourse, refreshRecommendedCourse } from "../../apis/course";
 
 const Home = () => {
 
   const [stepData, setStepData] = useState(null);
   const [questions, setQuestions] = useState([]);
+  const [courseData, setCourseData] = useState(null);
 
   
   const {
@@ -47,6 +49,32 @@ const Home = () => {
 
     fetchMain();
   }, [setDuration]);
+
+  const handleCreateCourse = async () => {
+    try {
+      const data = await createRecommendedCourse();
+
+      console.log("추천 코스 생성 성공:", data);
+      setCourseData(data);
+
+      return data;
+    } catch (error) {
+      console.error("최초 추천 코스 생성 실제 오류:", error);
+      console.error("HTTP 상태:", error.response?.status);
+      console.error("백엔드 응답:", error.response?.data);
+
+      throw error;
+    }
+  };
+
+  const handleRefreshCourse = async () => {
+    const data = await refreshRecommendedCourse();
+
+    console.log("추천 코스 새로고침 성공:", data);
+    setCourseData(data);
+
+    return data;
+};
 
   const currentQuestion = questions[step - 1];
   const currentSelectedOptions = currentQuestion
@@ -131,21 +159,17 @@ const Home = () => {
       });
 
       try {
-        const data = await postQuestions(requestAnswers);
+        setIsLoading(true);
 
-        console.log("POST /main/questions 성공:", data);
-
-
-      // 완료 버튼 클릭 → Loading 화면
-      setIsLoading(true);
-
-
+        await postQuestions(requestAnswers);
+        await handleCreateCourse();
       } catch (error) {
-        console.error(
-          "시간 저장 또는 질문 조회 실패:",
-          error.response?.data || error.message,
-        );
-      }
+      const message =
+        error.response?.data?.detail || "추천 코스를 생성하지 못했습니다.";
+
+      console.error(message);
+      setIsLoading(false);
+    }
 
       return;
     }
@@ -155,7 +179,13 @@ const Home = () => {
 
   // Loading 화면
   if (isLoading) {
-    return <Loading duration={duration} />;
+    return (
+      <Loading
+        duration={duration}
+        course={courseData?.course}
+        onRefresh={handleRefreshCourse}
+      />
+    );
   }
 
   if (!stepData) {

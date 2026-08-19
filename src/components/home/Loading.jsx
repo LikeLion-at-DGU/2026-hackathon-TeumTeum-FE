@@ -11,7 +11,7 @@ const steps = [
     "활동 순서 구성 중",
 ];
 
-const Loading = ({ duration }) => {
+const Loading = ({ duration, course, onRefresh }) => {
 
     const [visibleSteps, setVisibleSteps] = useState(1);
     const [showSheet, setShowSheet] = useState(false);
@@ -21,7 +21,7 @@ const Loading = ({ duration }) => {
             // 마지막 step이 화면에 나타난 뒤에 잠깐 기다렸다가 BottomSheet 올라오게
             const timer = setTimeout(() => {
                 setShowSheet(true);
-            }, 500);
+            }, 300);
 
             return () => clearTimeout(timer);
         }
@@ -69,8 +69,11 @@ const Loading = ({ duration }) => {
                 </S.TimeSummary>
 
             </S.Container>
-            {showSheet && (
-                    <BottomSheet duration={duration} />
+            {showSheet && course && (
+                <BottomSheet
+                    course={course}
+                    onRefresh={onRefresh}
+                />
             )}
         </>
         

@@ -29,15 +29,28 @@ const CONTENT_TYPE_CONFIG = {
     },
 };
 const BottomSheet = ({ course, onRefresh }) => {
-    const [refreshKey, setRefreshKey] = useState(0);
+    const [isRefreshing, setIsRefreshing] = useState(false);
     const navigate = useNavigate();
 
     const contents = course?.contents ?? [];
     const duration = course?.total_minutes ?? 0;
 
     const handleRefresh = async () => {
-        setRefreshKey((previous) => previous + 1);
-        await onRefresh?.();
+        if(isRefreshing) return;
+
+        try {
+            setIsRefreshing(true);
+
+            await onRefresh?.();
+        } catch (error) {
+            console.error("코스 새로고침 실제 오류:", error);
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("백엔드 응답:", error.response?.data);
+            const message = error.response?.data?.detail || "새로운 추천 코스를 생성할 수 없습니다.";
+            console.error(message);
+        } finally {
+            setIsRefreshing(false);
+        }
     };
 
     const handleStartCourse = () => {
@@ -61,13 +74,13 @@ const BottomSheet = ({ course, onRefresh }) => {
                     <RefreshButton
                         type="button"
                         onClick={handleRefresh}
+                        disabled={isRefreshing}
                         aria-label="추천 코스 새로고침"
                     >
                         <RefreshImage
-                            key={refreshKey}
-                            $animate={refreshKey > 0}
                             src={RefreshIcon}
                             alt=""
+                            $isRefreshing={isRefreshing}
                         />
                     </RefreshButton>
                 </Header>
@@ -75,9 +88,7 @@ const BottomSheet = ({ course, onRefresh }) => {
                     <TotalTime>{duration}<span>분</span></TotalTime>
                     <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {duration}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
                 </TimeSection>
-                <WellnessVisual>
-                    {/* 아이콘들 */}
-                </WellnessVisual>
+                
                 <CourseSection>
                     {contents.map((content) => {
                         const typeConfig = 
@@ -234,13 +245,21 @@ const RefreshButton = styled.button`
     &:active {
         background: ${theme.colors.catagory};
     }
+
+     &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
 `;
 
 const RefreshImage = styled.img`
     width: 19px;
     height: 19px;
-    animation: ${({ $animate }) =>
-        $animate ? "refreshRotate 0.6s ease-in-out" : "none"};
+
+    animation: ${({ $isRefreshing }) =>
+        $isRefreshing
+            ? "refreshRotate 0.6s linear infinite"
+            : "none"};
 
     @keyframes refreshRotate {
         from {
@@ -250,10 +269,6 @@ const RefreshImage = styled.img`
         to {
             transform: rotate(360deg);
         }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        animation: none;
     }
 `;
 
@@ -283,20 +298,14 @@ const TimeDescription = styled.p`
     line-height: 1.4;
 `;
 
-const WellnessVisual = styled.div`
-    width: 140px;
-    height: 140px;
-    border: solid 1px #000;
-    margin: 10px;
-`;
-
 const CourseSection = styled.section`
-    padding-top: 6px;
+    padding-top: 50px;
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
     gap: 18px;
+    padding-bottom: 100px;
 `;
 
 const CourseCard = styled.div`
