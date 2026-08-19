@@ -1,7 +1,7 @@
 import Header from "../../components/layout/Header";
 import FeaturedNewsSection from "../../components/magazine/FeaturedNewsSection"
 import WellnessNewsSection from "../../components/magazine/WellnessNewsSection";
-import { Container } from "./Magazine.styled";
+import * as S from "./Magazine.styled"
 import { getMagazines } from "../../apis/magazine";
 import { useState, useEffect } from "react";
 
@@ -38,12 +38,17 @@ const Magazine = () => {
         description="틈틈이 추천하는 오늘의 틈새 코스"
       />
 
-      <Container>
+      <S.Container>
+        {magazineData.is_initial && magazineData.message &&(
+          <S.TextBox>
+            <S.Text>{magazineData.message}</S.Text>
+          </S.TextBox>
+        )}
         {magazineData.featured && (
           <FeaturedNewsSection magazine={magazineData.featured}/>
         )}
         <WellnessNewsSection magazines={magazineData.recommendations ?? []} />
-      </Container>
+      </S.Container>
     </>
   );
 };
