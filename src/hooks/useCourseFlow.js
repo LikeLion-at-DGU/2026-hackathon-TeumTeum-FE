@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const useCourseFlow = () => {
   const [step, setStep] = useState(0);
-  const [duration, setDuration] = useState(3);
+  const [duration, setDuration] = useState(5);
   const [answers, setAnswers] = useState({});
   const [otherContents, setOtherContents] = useState({});
   const [isLoading, setIsLoading] = useState(false);
