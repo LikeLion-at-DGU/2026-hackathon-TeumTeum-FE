@@ -11,11 +11,16 @@ import MagazineDetail from "../pages/Magazine/MagazineDetail";
 import Splash from "../pages/Splash/Splash";
 import Course from "../pages/Course/Course";
 import CourseComplete from "../pages/Course/Complete/CourseComplete";
+import ShareTarget from "../pages/ShareTarget/ShareTarget";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: <Splash />,
+  },
+  {
+    path: "/share-target",
+    element: <ShareTarget />,
   },
   {
     element: <AppLayout />,
