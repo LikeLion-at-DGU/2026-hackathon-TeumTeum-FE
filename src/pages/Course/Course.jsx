@@ -5,6 +5,7 @@ import Header from "../../components/layout/Header";
 import Modal from "../../components/common/Modal";
 import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
+import StatusInfo from "../../components/common/StatusInfo";
 
 import { pauseCourse, resumeCourse, stopCourse, completeCourse } from "../../apis/course";
 
@@ -204,15 +205,15 @@ const Course = () => {
     }, [remainingSeconds, execution, navigate]);
 
     if (!execution) {
-        return <p>코스 실행 정보를 불러오지 못했습니다.</p>;
+        return <StatusInfo>코스 실행 정보를 불러오지 못했습니다.</StatusInfo>;
     }
 
     if (String(execution.course_id) !== courseId) {
-        return <p>요청한 코스 정보가 일치하지 않습니다.</p>;
+        return <StatusInfo>요청한 코스 정보가 일치하지 않습니다.</StatusInfo>;
     }
 
     if (!currentContent) {
-        return <p>실행할 콘텐츠가 없습니다.</p>;
+        return <StatusInfo>실행할 콘텐츠가 없습니다.</StatusInfo>;
     }
 
     

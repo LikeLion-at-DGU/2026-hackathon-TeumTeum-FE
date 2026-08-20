@@ -2,8 +2,53 @@ import Header from "../../components/layout/Header";
 import * as S from "./MyPage.styled"
 import Button from "../../components/common/Button"
 import { useState, useEffect } from "react";
+import CourseIcon from "../../assets/mypageIcon/Icon/solar_course-up-bold.svg";
+import CompleteIcon from "../../assets/mypageIcon/Icon/fluent-mdl2_completed.svg"
+import AiIcon from "../../assets/mypageIcon/Icon/mingcute_robot-line.svg"
+import AverageTimeIcon from "../../assets/mypageIcon/Icon/평균시간.svg";
+import MovingIcon from "../../assets/mypageIcon/이동중.svg";
+import CafeIcon from "../../assets/mypageIcon/카페실내.svg";
+import SchoolIcon from "../../assets/mypageIcon/학교회사.svg";
+import HomeIcon from "../../assets/mypageIcon/집.svg";
+import OtherIcon from "../../assets/mypageIcon/기타.svg";
+import TiredIcon from "../../assets/mypageIcon/피곤해요.svg";
+import TenseIcon from "../../assets/mypageIcon/긴장돼요.svg";
+import ComplexIcon from "../../assets/mypageIcon/머릿속이복잡해요.svg";
+import StiffIcon from "../../assets/mypageIcon/몸이뻐근해요.svg";
+import SkinIcon from "../../assets/mypageIcon/피부가신경쓰여요.svg";
+import StretchingIcon from "../../assets/mypageIcon/스트레칭.svg";
+import MindIcon from "../../assets/mypageIcon/마음정리.svg";
+import ReadingIcon from "../../assets/mypageIcon/읽기.svg";
+import ListeningIcon from "../../assets/mypageIcon/듣기.svg";
+import ReadyIcon from "../../assets/icons/OnboardingIcons/before-appointment.svg";
 
 import { getMypage } from "../../apis/mypage";
+import StatusInfo from "../../components/common/StatusInfo";
+
+const PATTERN_ICON_MAP = {
+  "이동 중": MovingIcon,
+  "카페·실내": CafeIcon,
+  "학교·회사": SchoolIcon,
+  집: HomeIcon,
+  기타: OtherIcon,
+  피곤함: TiredIcon,
+  피곤해요: TiredIcon,
+  긴장됨: TenseIcon,
+  긴장돼요: TenseIcon,
+  "머릿속이 복잡함": ComplexIcon,
+  "머릿속이 복잡해요": ComplexIcon,
+  "몸이 뻐근함": StiffIcon,
+  "몸이 뻐근해요": StiffIcon,
+  "피부가 신경 쓰임": SkinIcon,
+  "피부가 신경 쓰여요": SkinIcon,
+  스트레칭: StretchingIcon,
+  "마음 정리": MindIcon,
+  읽기: ReadingIcon,
+  듣기: ListeningIcon,
+  "준비-틈": ReadyIcon,
+};
+
+const getPatternIcon = (label) => PATTERN_ICON_MAP[label] ?? OtherIcon;
 
 const MyPage = () => {
 
@@ -28,7 +73,7 @@ const MyPage = () => {
   }, [])
 
   if (!myData) {
-    return <p>마이페이지를 불러오는 중...</p>;
+    return <StatusInfo>마이페이지를 불러오는 중...</StatusInfo>;
   }
 
   const weekly = myData.weekly_recovery;
@@ -84,7 +129,7 @@ const MyPage = () => {
           <S.Stats>
             <S.StatItem>
               <S.ItemBox>
-                <S.StatIcon></S.StatIcon>
+                <S.StatIcon src={CourseIcon} alt=""/>
                 <S.StatValue>{weekly.executed_courses}회</S.StatValue>
               </S.ItemBox>
               <S.Label>실행한 코스</S.Label>
@@ -94,7 +139,7 @@ const MyPage = () => {
 
             <S.StatItem>
               <S.ItemBox>
-                <S.StatIcon></S.StatIcon>
+                <S.StatIcon src={CompleteIcon} alt=""/>
                 <S.StatValue>{weekly.completion_rate}%</S.StatValue>
               </S.ItemBox>
               <S.Label>완료율</S.Label>
@@ -104,7 +149,7 @@ const MyPage = () => {
         
         <S.AiInsightCard>
           <S.TitleBox>
-            <S.Icon></S.Icon>
+            <S.Icon src={AiIcon} alt="" />
             <S.AiTitle>AI가 발견한 나</S.AiTitle>
           </S.TitleBox>
 
@@ -116,25 +161,25 @@ const MyPage = () => {
         <S.Title>나의 틈 패턴</S.Title>
         <S.PatternSection>
           <S.PatternCard>
-            <S.PatternIcon />
+            <S.PatternIcon src={getPatternIcon(pattern.most_frequent_place)} alt="" />
             <S.PatternLabel>{pattern.most_frequent_place}</S.PatternLabel>
             <S.PatternDescription>가장 자주 생긴 틈</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
-            <S.PatternIcon />
+            <S.PatternIcon src={getPatternIcon(pattern.most_frequent_state)} alt="" />
             <S.PatternLabel>{pattern.most_frequent_state}</S.PatternLabel>
             <S.PatternDescription>가장 자주 느낀 상태</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
-            <S.PatternIcon />
+            <S.PatternIcon src={getPatternIcon(pattern.best_activity)} alt="" />
             <S.PatternLabel>{pattern.best_activity}</S.PatternLabel>
             <S.PatternDescription>가장 잘 맞는 활동</S.PatternDescription>
           </S.PatternCard>
 
           <S.PatternCard>
-            <S.PatternIcon />
+            <S.PatternIcon src={AverageTimeIcon} alt="" />
             <S.PatternLabel>{pattern.avg_duration_minutes}분</S.PatternLabel>
             <S.PatternDescription>평균 틈 시간</S.PatternDescription>
           </S.PatternCard>
@@ -142,7 +187,7 @@ const MyPage = () => {
 
         <S.AiSuggestionCard>
           <S.TitleBox>
-            <S.Icon></S.Icon>
+            <S.Icon src={AiIcon} alt="" />
             <S.AiTitle>AI의 다음 제안</S.AiTitle>
           </S.TitleBox>
           <S.SuggestionDescription>
@@ -150,9 +195,6 @@ const MyPage = () => {
             <br />
             {suggestion.description}
           </S.SuggestionDescription>
-          <S.ButtonWrapper>
-          <Button variant="primary">추천 코스 보기</Button>
-          </S.ButtonWrapper>
         </S.AiSuggestionCard>
       </S.Container>
     </>

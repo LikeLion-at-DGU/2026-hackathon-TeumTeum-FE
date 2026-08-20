@@ -64,6 +64,9 @@ export const Description = styled.span`
 export const Summary = styled.div`
     display: flex;
     flex-direction: column;
+    height: auto;
+    min-height: fit-content;
+    overflow: visible;
     background-color: #e6f2e3;
     border-radius: 20px;
     padding: 15px;
@@ -77,9 +80,15 @@ export const SummaryTitle = styled.span`
     font-weight: ${({theme}) => theme.fontWeight.medium};
     `
 export const SummaryDescription = styled.span`
+    display: block;
+    height: auto;
+    overflow: visible;
     color: ${({theme}) => theme.colors.black};
     font-size: 18px;
+    line-height: 1.4;
+    white-space: pre-wrap;
     word-break: keep-all;
+    overflow-wrap: anywhere;
 `
 
 export const ButtonWrapper = styled.div`

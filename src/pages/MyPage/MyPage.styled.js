@@ -84,10 +84,24 @@ export const WeekRow = styled.div`
   
 `
 export const ProgressBar = styled.div`
+  position: relative;
+  overflow: hidden;
+
   background-color: #e6f2e3;
   width: 190px;
   height: 15px;
   border-radius: 30px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: ${({$percent}) =>
+      `${Math.min(Math.max($percent ?? 0, 0), 100)}%`};
+    background-color: ${({theme}) => theme.colors.primary};
+    border-radius: inherit;
+    transition: width 0.4s ease;
+  }
 `
 export const Line = styled.div`
   width: 1px;
@@ -116,8 +130,7 @@ export const ItemBox = styled.div`
   align-items: center;
   gap: 5px;
 `
-export const StatIcon = styled.div`
-  background-color: green;
+export const StatIcon = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -147,8 +160,7 @@ export const TitleBox = styled.div`
   gap: 10px;
   padding-bottom: 5px;
 `
-export const Icon = styled.div`
-  background-color: green;
+export const Icon = styled.img`
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -178,11 +190,10 @@ export const PatternCard = styled.div`
   border-radius: 25px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 `
-export const PatternIcon = styled.div`
-  background-color: green;
+export const PatternIcon = styled.img`
   width: 50px;
   height: 50px;
-  border-radius: 50%;
+  object-fit: contain;
 `
 export const PatternLabel = styled.span`
   color: ${({theme}) => theme.colors.black};
