@@ -5,10 +5,22 @@ import BreathingContent from "./contents/BreathingContent";
 import StretchingContent from "./contents/StretchingContent";
 import ReflectionContent from "./contents/ReflectionContent";
 
-const ContentRenderer = ({ content, isPlaying }) => {
+const ContentRenderer = ({
+  content,
+  isPlaying,
+  onVideoPlaybackStateChange,
+  onVideoEnded,
+}) => {
   switch (content.content_type) {
     case "youtube":
-        return <VideoContent content={content} />;
+        return (
+          <VideoContent
+            content={content}
+            isPlaying={isPlaying}
+            onPlaybackStateChange={onVideoPlaybackStateChange}
+            onEnded={onVideoEnded}
+          />
+        );
 
     case "article":
         return <AiBriefContent content={content} />;

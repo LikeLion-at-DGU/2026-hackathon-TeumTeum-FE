@@ -38,6 +38,9 @@ export const Left = styled.button`
 
   border: none;
   background: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -69,7 +72,11 @@ export const StopButton = styled.button`
     position: absolute;
 
     right: 24px;
-    top: 60px;
+    top: 64px;
+
+    @media (min-width: 376px) {
+      top: 40px;
+    }
 
     transform: translateY(-50%);
 

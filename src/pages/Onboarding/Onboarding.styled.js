@@ -6,7 +6,7 @@ export const Container = styled.div`
 
 export const ButtonWrapper = styled.div`
   position: fixed;
-  bottom: 100px;
+  bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
 `;

@@ -44,6 +44,7 @@ const Course = () => {
     
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentContentElapsed, setCurrentContentElapsed] = useState(0);
+    const [youtubePlaybackState, setYoutubePlaybackState] = useState("loading");
     const [remainingSeconds, setRemainingSeconds] = useState(
             execution?.remaining_seconds ?? 0,
         );
@@ -52,12 +53,123 @@ const Course = () => {
     const [isStopping, setIsStopping] = useState(false);
 
     const currentContent = contents[currentIndex];
+    const isYoutubeContent = currentContent?.content_type === "youtube";
     const currentContentDuration = getContentDuration(currentContent);
+
+    const displayRemainingSeconds = useMemo(() => {
+        const currentRemaining = Math.max(
+            currentContentDuration - currentContentElapsed,
+            0,
+        );
+
+        const followingContentsDuration = contents
+            .slice(currentIndex + 1)
+            .reduce(
+                (total, content) => total + getContentDuration(content),
+                0,
+            );
+
+        return currentRemaining + followingContentsDuration;
+    }, [
+        contents,
+        currentIndex,
+        currentContentDuration,
+        currentContentElapsed,
+    ]);
 
     const [isPlaying, setIsPlaying] = useState(
         execution?.status === "in_progress",
     );
     const [isPausing, setIsPausing] = useState(false);
+    const youtubeServerPausedRef = useRef(false);
+    const youtubePlaybackStateRef = useRef(youtubePlaybackState);
+    youtubePlaybackStateRef.current = youtubePlaybackState;
+
+    useEffect(() => {
+        setYoutubePlaybackState(isYoutubeContent ? "loading" : "idle");
+    }, [currentContent?.content_order, isYoutubeContent]);
+
+    useEffect(() => {
+        if (!execution || !isPlaying || isPausing) return;
+
+        if (!isYoutubeContent) {
+            if (!youtubeServerPausedRef.current) return;
+
+            const resumeAfterVideo = async () => {
+                try {
+                    setIsPausing(true);
+                    const data = await resumeCourse(execution.execution_id);
+                    setRemainingSeconds(data.remaining_seconds);
+                    youtubeServerPausedRef.current = false;
+                } catch (error) {
+                    console.error("유튜브 종료 후 코스 재개 실패:", error);
+                } finally {
+                    setIsPausing(false);
+                }
+            };
+
+            resumeAfterVideo();
+            return;
+        }
+
+        const shouldKeepRunningAfterVideo =
+            youtubePlaybackState === "ended" &&
+            currentIndex === contents.length - 1;
+
+        if (
+            youtubePlaybackState === "playing" ||
+            shouldKeepRunningAfterVideo
+        ) {
+            if (!youtubeServerPausedRef.current) return;
+
+            const resumeForVideo = async () => {
+                try {
+                    setIsPausing(true);
+                    const data = await resumeCourse(execution.execution_id);
+                    setRemainingSeconds(data.remaining_seconds);
+                    youtubeServerPausedRef.current = false;
+                } catch (error) {
+                    console.error("유튜브 재생 중 코스 재개 실패:", error);
+                } finally {
+                    setIsPausing(false);
+                }
+            };
+
+            resumeForVideo();
+            return;
+        }
+
+        if (youtubeServerPausedRef.current) return;
+
+        const pauseDelay = setTimeout(async () => {
+            try {
+                setIsPausing(true);
+                const data = await pauseCourse(execution.execution_id);
+                setRemainingSeconds(data.remaining_seconds);
+                youtubeServerPausedRef.current = true;
+
+                if (youtubePlaybackStateRef.current === "playing") {
+                    const resumedData = await resumeCourse(execution.execution_id);
+                    setRemainingSeconds(resumedData.remaining_seconds);
+                    youtubeServerPausedRef.current = false;
+                }
+            } catch (error) {
+                console.error("유튜브 로딩 중 코스 일시정지 실패:", error);
+            } finally {
+                setIsPausing(false);
+            }
+        }, 700);
+
+        return () => clearTimeout(pauseDelay);
+    }, [
+        execution,
+        isPausing,
+        isPlaying,
+        isYoutubeContent,
+        youtubePlaybackState,
+        currentIndex,
+        contents.length,
+    ]);
 
     const handleNext = () => {
         if (currentIndex >= contents.length - 1) {
@@ -81,6 +193,12 @@ const Course = () => {
         }
     };
 
+    const handleVideoEnded = () => {
+        if (currentIndex < contents.length - 1) {
+            handleNext();
+        }
+    };
+
     const handlePause = async () => {
         if(isPausing) return;
         setIsPausing(true);
@@ -89,6 +207,10 @@ const Course = () => {
             // 일시정지
             try {
                 setIsPlaying(false);
+
+                if (isYoutubeContent && youtubeServerPausedRef.current) {
+                    return;
+                }
 
                 const data = await pauseCourse(execution.execution_id);
                 console.log("코스 일시정지 성공: ", data);
@@ -119,6 +241,7 @@ const Course = () => {
         console.log("코스 타이머 재개 성공: ", data);
 
         setRemainingSeconds(data.remaining_seconds);
+        youtubeServerPausedRef.current = false;
         setIsPlaying(true);
         } catch (error) {
             console.error("코스 재개 실제 오류:", error);
@@ -213,7 +336,9 @@ const Course = () => {
             !isPlaying ||
             isPausing ||
             isStopModalOpen ||
-            remainingSeconds <= 0
+            (isYoutubeContent &&
+                youtubePlaybackState !== "playing" &&
+                youtubePlaybackState !== "ended")
         ) {
             return;
         }
@@ -242,6 +367,8 @@ const Course = () => {
         isPlaying,
         isPausing,
         isStopModalOpen,
+        isYoutubeContent,
+        youtubePlaybackState,
         remainingSeconds,
         currentContentElapsed,
         currentContentDuration,
@@ -250,8 +377,10 @@ const Course = () => {
     ]);
 
     useEffect(() => {
-        if (remainingSeconds !== 0) return;
+        if (displayRemainingSeconds !== 0) return;
         if (!execution) return;
+        if (currentIndex !== contents.length - 1) return;
+        if (currentContentElapsed < currentContentDuration) return;
         if (hasRequestedComplete.current) return;
 
         const completeCurrentCourse = async () => {
@@ -288,7 +417,16 @@ const Course = () => {
             } 
         };
         completeCurrentCourse();
-    }, [remainingSeconds, execution, navigate]);
+    }, [
+        remainingSeconds,
+        displayRemainingSeconds,
+        execution,
+        navigate,
+        currentIndex,
+        contents.length,
+        currentContentElapsed,
+        currentContentDuration,
+    ]);
 
     if (!execution) {
         return <StatusInfo>코스 실행 정보를 불러오지 못했습니다.</StatusInfo>;
@@ -307,7 +445,7 @@ const Course = () => {
     return (
         <>
             <Header
-                title={formatRemainingTime(remainingSeconds)}
+                title={formatRemainingTime(displayRemainingSeconds)}
                 description={`${execution.target_minutes}분 코스`}
                 showStop
                 onStop={handleStop}
@@ -317,6 +455,8 @@ const Course = () => {
                 <ContentRenderer
                     content={currentContent}
                     isPlaying={isPlaying}
+                    onVideoPlaybackStateChange={setYoutubePlaybackState}
+                    onVideoEnded={handleVideoEnded}
                 />
             </div>
 
