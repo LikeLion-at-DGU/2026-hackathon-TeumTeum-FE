@@ -81,6 +81,17 @@ const MyPage = () => {
   const pattern = myData.teum_pattern;
   const suggestion = myData.next_suggestion;
 
+  const maxWeeklyMinutes = Math.max(
+    weekly.previous_week_minutes ?? 0,
+    weekly.current_week_minutes ?? 0,
+  );
+  const previousWeekPercent = maxWeeklyMinutes
+    ? ((weekly.previous_week_minutes ?? 0) / maxWeeklyMinutes) * 100
+    : 0;
+  const currentWeekPercent = maxWeeklyMinutes
+    ? ((weekly.current_week_minutes ?? 0) / maxWeeklyMinutes) * 100
+    : 0;
+
   return (
     <>
       <Header
@@ -115,13 +126,13 @@ const MyPage = () => {
             <S.WeekComparison>
               <S.WeekRow>
                 <span>지난주</span>
-                <S.ProgressBar />
+                <S.ProgressBar $percent={previousWeekPercent} />
                 <strong>{weekly.previous_week_minutes}분</strong>
               </S.WeekRow>
 
               <S.WeekRow>
                 <span>이번주</span>
-                <S.ProgressBar $percent={100} />
+                <S.ProgressBar $percent={currentWeekPercent} />
                 <strong>{weekly.current_week_minutes}분</strong>
               </S.WeekRow>
             </S.WeekComparison>

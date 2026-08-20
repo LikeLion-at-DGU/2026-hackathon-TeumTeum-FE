@@ -7,6 +7,14 @@ import GlobalStyle from "./styles/GlobalStyle";
 import theme from "./styles/theme";
 import "./styles/fonts.css";
 
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch((error) => {
+      console.error("서비스 워커 등록 실패:", error);
+    });
+  });
+}
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
