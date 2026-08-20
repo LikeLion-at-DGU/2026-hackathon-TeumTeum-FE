@@ -16,7 +16,7 @@ const ContentRenderer = ({ content, isPlaying }) => {
         return <BreathingContent content={content} isPlaying={isPlaying} />;
 
     case "stretch_guide":
-        return <StretchingContent content={content} />;
+        return <StretchingContent content={content} isPlaying={isPlaying} />;
 
     case "reflection":
         return <ReflectionContent content={content} />;
