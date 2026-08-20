@@ -63,6 +63,7 @@ const History = () => {
       navigate(`/course/${data.course_id}`, {
         state: {
           execution: data,
+          returnPath: "/history",
         },
       });
     } catch (error) {
@@ -139,4 +140,3 @@ const Content = styled.div`
   padding-left: 28px;
   padding-right: 28px;
 `;
-

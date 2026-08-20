@@ -35,6 +35,7 @@ const Course = () => {
     const navigate = useNavigate();
 
     const execution = state?.execution;
+    const returnPath = state?.returnPath ?? "/home";
 
     const contents = useMemo(() => {
         return [...(execution?.contents ?? [])].sort(
@@ -312,7 +313,7 @@ const Course = () => {
 
             setIsStopModalOpen(false);
 
-            navigate("/home", {
+            navigate(returnPath, {
                 state: {
                     stoppedExecution: data,
                 },
