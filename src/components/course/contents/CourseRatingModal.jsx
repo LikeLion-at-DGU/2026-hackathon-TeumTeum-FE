@@ -29,7 +29,6 @@ const CourseRatingModal = ({
         <Modal
             isOpen={isOpen}
             onClose={onClose}
-            topOnlyRounded
             maintitle="코스 평가"
             description="평가를 반영하여 다음 코스를 추천해 드릴게요 :)"
             primaryText={isSubmitting ? "등록 중..." : "등록"}
@@ -86,9 +85,10 @@ const RatingButton = styled.button`
 `;
 
 const RatingIcon = styled.img`
-    width: 72px;
-    height: 72px;
+    width: 60px;
+    height: 60px;
     object-fit: contain;
+    filter: drop-shadow(0 4px 2px rgba(0, 0, 0, 0.25));
 `;
 
 const RatingLabel = styled.span`

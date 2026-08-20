@@ -94,25 +94,25 @@ const BottomSheet = ({ course, onRefresh, targetMinutes }) => {
         <>
             <Overlay />
             <Container>
+                <Header>
+                    <Left>
+                        <HeaderTitle>생성된 코스</HeaderTitle>
+                        <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
+                    </Left>
+                    <RefreshButton
+                        type="button"
+                        onClick={handleRefresh}
+                        disabled={isRefreshing}
+                        aria-label="추천 코스 새로고침"
+                    >
+                        <RefreshImage
+                            src={RefreshIcon}
+                            alt=""
+                            $isRefreshing={isRefreshing}
+                        />
+                    </RefreshButton>
+                </Header>
                 <ScrollContent>
-                    <Header>
-                        <Left>
-                            <HeaderTitle>생성된 코스</HeaderTitle>
-                            <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
-                        </Left>
-                        <RefreshButton
-                            type="button"
-                            onClick={handleRefresh}
-                            disabled={isRefreshing}
-                            aria-label="추천 코스 새로고침"
-                        >
-                            <RefreshImage
-                                src={RefreshIcon}
-                                alt=""
-                                $isRefreshing={isRefreshing}
-                            />
-                        </RefreshButton>
-                    </Header>
                     <TimeSection>
                         <TotalTime><span>정확한 코스 시간:</span><br /> {formattedDuration}</TotalTime>
                         <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {targetMinutes}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
@@ -209,6 +209,9 @@ export const Container = styled.div`
 
     overflow: hidden;
 
+    display: flex;
+    flex-direction: column;
+
     padding: 24px 22px;
     padding-bottom: calc(
         24px + env(safe-area-inset-bottom)
@@ -235,7 +238,8 @@ export const Container = styled.div`
 
 const ScrollContent = styled.div`
     width: 100%;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
