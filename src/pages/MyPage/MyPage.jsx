@@ -91,6 +91,7 @@ const MyPage = () => {
   const currentWeekPercent = maxWeeklyMinutes
     ? ((weekly.current_week_minutes ?? 0) / maxWeeklyMinutes) * 100
     : 0;
+  const hasRecords = (weekly.executed_courses ?? 0) > 0;
 
   return (
     <>
@@ -157,8 +158,15 @@ const MyPage = () => {
             </S.StatItem>
           </S.Stats>
         </S.WeeklyCard>
-        
-        <S.AiInsightCard>
+
+        {!hasRecords ? (
+          <S.EmptyRecordMessage>
+            아직 완료한 틈 코스 기록이 없어요.
+            <br />첫 번째 틈 코스를 완료하면 나의 패턴을 발견해드릴게요!
+          </S.EmptyRecordMessage>
+        ) : (
+          <>
+          <S.AiInsightCard>
           <S.TitleBox>
             <S.Icon src={AiIcon} alt="" />
             <S.AiTitle>AI가 발견한 나</S.AiTitle>
@@ -207,6 +215,8 @@ const MyPage = () => {
             {suggestion.description}
           </S.SuggestionDescription>
         </S.AiSuggestionCard>
+          </>
+        )}
       </S.Container>
     </>
   );
