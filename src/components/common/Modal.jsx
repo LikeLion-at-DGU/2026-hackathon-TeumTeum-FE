@@ -63,7 +63,7 @@ const ModalContainer = styled.div`
   position: fixed;
   left: 10px;
   right: 10px;
-  bottom: 10px;
+  bottom: ${({ $topOnlyRounded }) => ($topOnlyRounded ? "0" : "10px")};
   z-index: 200;
 
   opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)};
