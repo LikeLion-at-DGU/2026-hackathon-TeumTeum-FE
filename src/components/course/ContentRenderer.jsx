@@ -4,7 +4,7 @@ import BreathingContent from "./contents/BreathingContent";
 import StretchingContent from "./contents/StretchingContent";
 import ReflectionContent from "./contents/ReflectionContent";
 
-const ContentRenderer = ({ content }) => {
+const ContentRenderer = ({ content, isPlaying }) => {
   switch (content.content_type) {
     case "youtube":
         return <VideoContent content={content} />;
@@ -13,7 +13,7 @@ const ContentRenderer = ({ content }) => {
         return <AiBriefContent content={content} />;
 
     case "audio_guide":
-        return <BreathingContent content={content} />;
+        return <BreathingContent content={content} isPlaying={isPlaying} />;
 
     case "stretch_guide":
         return <StretchingContent content={content} />;

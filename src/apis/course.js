@@ -89,3 +89,18 @@ export const completeCourse = async (executionId) => {
 
     return response.data;
 };
+
+// 완료된 코스 만족도 평가
+export const rateCourse = async (executionId, satisfaction) => {
+    const guestUuid = getGuestUuid();
+
+    const response = await axiosInstance.post(
+        `/main/teumteum/${executionId}/rate`,
+        {
+            guest_uuid: guestUuid,
+            satisfaction,
+        },
+    );
+
+    return response.data;
+};

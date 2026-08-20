@@ -41,7 +41,9 @@ const Course = () => {
 
     const currentContent = contents[currentIndex];
 
-    const [isPlaying, setIsPlaying] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(
+        execution?.status === "in_progress",
+    );
     const [isPausing, setIsPausing] = useState(false);
 
     const handlePause = async () => {
@@ -60,7 +62,16 @@ const Course = () => {
                 console.error("코스 일시정지 실제 오류:", error);
                 console.error("HTTP 상태:", error.response?.status);
                 console.error("백엔드 응답:", error.response?.data);
-                
+
+                const detail = error.response?.data?.detail;
+                if (
+                    error.response?.status === 400 &&
+                    detail === "현재 실행 중인 코스가 아닙니다."
+                ) {
+                    setIsPlaying(false);
+                    return;
+                }
+
                 setIsPlaying(true);
             } finally {
                 setIsPausing(false);
@@ -190,6 +201,7 @@ const Course = () => {
                 navigate("/course/coursecomplete", {
                     state: {
                         completedExecution: data,
+                        targetMinutes: execution.target_minutes,
                     },
                 });
             } catch (error) {
@@ -228,7 +240,10 @@ const Course = () => {
             />
 
             <div style={{ paddingTop: "120px" }}>
-                <ContentRenderer content={currentContent} />
+                <ContentRenderer
+                    content={currentContent}
+                    isPlaying={isPlaying}
+                />
             </div>
 
             <CoursePlayer
