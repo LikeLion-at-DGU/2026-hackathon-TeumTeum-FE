@@ -50,6 +50,9 @@ const PATTERN_ICON_MAP = {
 
 const getPatternIcon = (label) => PATTERN_ICON_MAP[label] ?? OtherIcon;
 
+const getPatternLabel = (label) =>
+  label === "머릿속이 복잡해요" ? "머릿속이 복잡함" : label;
+
 const MyPage = () => {
 
   const [myData, setMyData] = useState(null);
@@ -187,7 +190,7 @@ const MyPage = () => {
 
           <S.PatternCard>
             <S.PatternIcon src={getPatternIcon(pattern.most_frequent_state)} alt="" />
-            <S.PatternLabel>{pattern.most_frequent_state}</S.PatternLabel>
+            <S.PatternLabel>{getPatternLabel(pattern.most_frequent_state)}</S.PatternLabel>
             <S.PatternDescription>가장 자주 느낀 상태</S.PatternDescription>
           </S.PatternCard>
 
