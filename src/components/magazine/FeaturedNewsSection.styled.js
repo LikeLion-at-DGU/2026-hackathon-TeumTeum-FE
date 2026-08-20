@@ -10,14 +10,16 @@ export const Section = styled.div`
 `
 
 export const Title = styled.span`
+    padding-top: 5px;
     display: block;
     font-size: ${({theme}) => theme.fontsize.lg};
     font-weight: ${({theme}) => theme.fontWeight.bold};
     color: ${({theme}) => theme.colors.primary};
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 `
 export const Subtitle = styled.span`
+    display: block;
     color: ${({theme}) => theme.colors.gray};
     font-size: 14px;
-    padding-bottom: 8px;
+    margin-bottom: 12px;
 `

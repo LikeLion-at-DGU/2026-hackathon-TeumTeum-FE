@@ -72,11 +72,11 @@ export const StepInstruction = styled.p`
 `;
 
 export const ImageFrame = styled.div`
-  width: min(100%, 300px);
-  aspect-ratio: 300 / 168;
+  width: min(760px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  aspect-ratio: 16 / 9;
   overflow: hidden;
-  border-radius: 24px;
-  border: 1px solid #000;
+  border-radius: 10px;
 `;
 
 export const StretchImage = styled.img`
