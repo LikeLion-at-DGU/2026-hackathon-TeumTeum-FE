@@ -46,6 +46,11 @@ const MagazineDetail = () => {
         return <StatusInfo>매거진을 찾을 수 없습니다.</StatusInfo>;
     }
 
+    const recommendationReason =
+        typeof magazine.ai_reason === "string" && magazine.ai_reason.trim()
+            ? magazine.ai_reason
+            : "아직 완료한 틈 기록이 없어 추천 이유를 분석하지 못했어요. 틈 코스를 완료해 기록을 쌓으면 나에게 더 잘 맞는 콘텐츠를 추천해드릴게요!";
+
     return (
         <>
         <Header
@@ -58,7 +63,7 @@ const MagazineDetail = () => {
                     <S.RecommendTitle>당신에게 추천한 이유</S.RecommendTitle>
                 </S.TitleBox>
 
-                <S.RecommendDescription>{magazine.ai_reason}</S.RecommendDescription>
+                <S.RecommendDescription>{recommendationReason}</S.RecommendDescription>
 
             </S.AiRecommend>
 
