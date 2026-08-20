@@ -86,14 +86,12 @@ const StretchingContent = ({ content, isPlaying }) => {
 
       <S.ContentArea>
         <S.Instruction>
-          {isComplete ? "스트레칭 완료" : step?.phase ?? content.description}
-          {step?.duration_seconds != null && (
-            <>
-              <br />
-              <br />
-              {remainingSeconds}초간 유지하세요.
-            </>
-          )}
+          <S.Description>{content.description}</S.Description>
+          <S.StepInstruction>
+            {isComplete
+              ? "스트레칭 완료"
+              : step?.instruction ?? step?.phase ?? "천천히 따라 해주세요."}
+          </S.StepInstruction>
         </S.Instruction>
 
         <S.ImageFrame>
@@ -104,6 +102,12 @@ const StretchingContent = ({ content, isPlaying }) => {
             />
           )}
         </S.ImageFrame>
+
+        {step?.duration_seconds != null && (
+          <S.RemainingTime>
+            {remainingSeconds}초간 유지하세요.
+          </S.RemainingTime>
+        )}
       </S.ContentArea>
     </S.Container>
   );

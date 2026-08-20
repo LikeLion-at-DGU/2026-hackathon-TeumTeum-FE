@@ -48,12 +48,27 @@ export const ContentArea = styled.section`
   padding-bottom: 56px;
 `;
 
-export const Instruction = styled.p`
+export const Instruction = styled.div`
   margin: 0 0 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+`;
+
+export const Description = styled.p`
+  margin: 0;
   color: #5a5a5a;
   font-size: 14px;
   line-height: 1.5;
-  text-align: center;
+`;
+
+export const StepInstruction = styled.p`
+  margin: 0;
+  color: #5a5a5a;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
 `;
 
 export const ImageFrame = styled.div`
@@ -69,4 +84,13 @@ export const StretchImage = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+`;
+
+export const RemainingTime = styled.p`
+  margin: 20px 0 0;
+  color: #5a5a5a;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
 `;

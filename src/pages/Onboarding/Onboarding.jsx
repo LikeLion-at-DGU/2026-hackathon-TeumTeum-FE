@@ -22,7 +22,11 @@ const Onboarding = () => {
         const data =
           await getOnboardingQuestions();
 
-        setQuestions(data.questions);
+        setQuestions(
+          Array.isArray(data?.questions)
+            ? data.questions
+            : [],
+        );
       } catch (error) {
         console.error(
           "온보딩 질문 조회 실패:",
@@ -47,6 +51,7 @@ const Onboarding = () => {
   const currentQuestion = questions.find(
     (question) => question.order === currentStep
   );
+  const currentOptions = currentQuestion?.options ?? [];
 
   const handleNext = async () => {
     // 1, 2단계라면 다음 질문으로 이동
@@ -58,7 +63,7 @@ const Onboarding = () => {
   const answers = questions.map((question) => ({
     question_id: question.question_id,
 
-    option_ids: question.options
+    option_ids: (question.options ?? [])
       .filter((option) =>
         selectedOptionIds.includes(option.option_id)
       )
@@ -91,7 +96,7 @@ const Onboarding = () => {
     });
   }
 
-  const hasSelectedOption = currentQuestion.options.some(
+  const hasSelectedOption = currentOptions.some(
   (option) =>
     selectedOptionIds.includes(option.option_id)
   );
@@ -110,13 +115,13 @@ const Onboarding = () => {
     <OnboardingHeader 
       currentStep={currentStep}
       totalStep={questions.length}
-      question={currentQuestion.question}
-      description={currentQuestion.description}
+      question={currentQuestion?.question ?? ""}
+      description={currentQuestion?.description ?? ""}
       progress={progress}
       onPrevious={handlePrevious}
     />
     <OptionSelect 
-      options={currentQuestion.options}
+      options={currentOptions}
       selectedOptionIds={selectedOptionIds}
       onSelect={handleSelect}
     />
