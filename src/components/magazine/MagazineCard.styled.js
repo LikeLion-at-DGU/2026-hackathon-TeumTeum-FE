@@ -49,10 +49,11 @@ export const Content = styled.div`
     flex: 1;
     flex-direction: column;
     align-items: start;
-    justify-content: ${({ $variant }) =>
-        $variant === "wellness" ? "space-between" : "flex-start"};
+    justify-content: flex-start;
+    gap: ${({ $variant }) =>
+        $variant === "wellness" ? "20px" : "8px"};
     ${({ $variant }) => $variant === "featured" && css`padding-left: 7px`}
-    ${({ $variant}) => $variant === "wellness" && css`padding-top: 10px`}
+    ${({ $variant}) => $variant === "wellness" && css`padding-top: 20px`}
 `
 export const Title = styled.span`
     display: block;

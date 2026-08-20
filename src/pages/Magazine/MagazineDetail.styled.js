@@ -48,14 +48,16 @@ export const Info = styled.span`
     padding-bottom: 20px;
 `
 export const Img = styled.img`
-    width: 299px;
-    height: 181px;
+    display: block;
+    width: 100%;
+    aspect-ratio: 299 / 181;
+    object-fit: cover;
     border-radius: 20px;
 `
 
 export const Description = styled.span`
     padding-top: 25px;
-    line-height: 20px;
+    line-height: 24px;
     font-size: 15px;
     color: ${({theme}) => theme.colors.news};
     font-weight: ${({theme}) => theme.fontWeight.regular};

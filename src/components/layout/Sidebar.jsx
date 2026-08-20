@@ -65,10 +65,6 @@ const Sidebar = ({ isOpen, onClose }) => {
             </NavLink>
           </MenuItem>
         </MenuList>
-
-        <BottomButton>
-          <img src={LogoutIcon} alt="로그아웃" />
-        </BottomButton>
       </SidebarContainer>
     </>
     

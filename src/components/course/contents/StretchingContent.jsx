@@ -1,5 +1,28 @@
 import { useEffect, useState } from "react";
 import * as S from "./StretchingContent.styled";
+import stretchGuide01 from "../../../assets/img/stretchguide01.png";
+import stretchGuide02 from "../../../assets/img/stretchguide02.png";
+import stretchGuide03 from "../../../assets/img/stretchguide03.png";
+import stretchGuide04 from "../../../assets/img/stretchguide04.png";
+import stretchGuide05 from "../../../assets/img/stretchguide05.png";
+import stretchGuide06 from "../../../assets/img/stretchguide06.png";
+import stretchGuide07 from "../../../assets/img/stretchguide07.png";
+import stretchGuide08 from "../../../assets/img/stretchguide08.png";
+import stretchGuide09 from "../../../assets/img/stretchguide09.png";
+import stretchGuide10 from "../../../assets/img/stretchguide10.png";
+
+const STRETCH_IMAGE_BY_TITLE = {
+  "2분 어깨 리셋": stretchGuide01,
+  "2분 앉은 자세 리셋": stretchGuide02,
+  "2분 약속 전 자세 정리": stretchGuide03,
+  "3분 목 리셋": stretchGuide04,
+  "3분 손목·손가락 리셋": stretchGuide05,
+  "3분 종아리 리셋": stretchGuide06,
+  "4분 굳은 등·어깨 풀기": stretchGuide07,
+  "4분 손목·팔 이완": stretchGuide08,
+  "4분 서서 하는 전신 리셋": stretchGuide09,
+  "5분 앉아서 하체 리셋": stretchGuide10,
+};
 
 const StretchingContent = ({ content, isPlaying }) => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -7,7 +30,8 @@ const StretchingContent = ({ content, isPlaying }) => {
   const steps = content.steps ?? [];
   const repeatCount = content.repeat_count ?? 1;
   const step = steps[currentStep];
-  const imageUrl = content.image_url;
+  const imageUrl =
+    STRETCH_IMAGE_BY_TITLE[content.title] ?? content.image_url;
   const [remainingSeconds, setRemainingSeconds] = useState(
     steps[0]?.duration_seconds ?? 0,
   );
@@ -97,7 +121,7 @@ const StretchingContent = ({ content, isPlaying }) => {
         <S.ImageFrame>
           {imageUrl && (
             <S.StretchImage
-              src={content.image_url}
+              src={imageUrl}
               alt={content.title}
             />
           )}
