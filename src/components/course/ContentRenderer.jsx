@@ -15,6 +15,7 @@ const ContentRenderer = ({
     case "youtube":
         return (
           <VideoContent
+            key={content.content_order ?? content.video_url}
             content={content}
             isPlaying={isPlaying}
             onPlaybackStateChange={onVideoPlaybackStateChange}

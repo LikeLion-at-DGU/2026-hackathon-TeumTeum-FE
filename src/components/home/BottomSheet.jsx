@@ -369,6 +369,7 @@ const ContentThumbnail = styled.div`
     width: 46px;
     height: 46px;
     flex-shrink: 0;
+    background-color: ${theme.colors.catagory};
 
     overflow: hidden;
     border-radius: 50%;
