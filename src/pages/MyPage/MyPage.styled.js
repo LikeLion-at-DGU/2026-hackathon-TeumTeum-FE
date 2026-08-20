@@ -225,3 +225,12 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
   padding-top: 10px;
 `
+
+export const EmptyRecordMessage = styled.p`
+  margin: 28px 0;
+  color: ${({theme}) => theme.colors.gray};
+  font-size: ${({theme}) => theme.fontsize.md};
+  line-height: 1.6;
+  text-align: center;
+  word-break: keep-all;
+`
