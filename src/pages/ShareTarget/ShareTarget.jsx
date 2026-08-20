@@ -111,7 +111,7 @@ const ShareTarget = () => {
               </Meta>
             )}
             <Description>
-              {asText(sharedContent.message, "공유한 영상이 저장되었어요.")}
+              추천 코스에 반영되었습니다!
             </Description>
           </>
         )}
