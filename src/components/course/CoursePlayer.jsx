@@ -42,6 +42,7 @@ const CoursePlayer = ({
     isPlaying,
     onPlayPause,
     isUpdating,
+    isSkipping,
 }) => {
     const courseContents = useMemo(() => {
         return contents.map((content) => ({
@@ -185,7 +186,10 @@ const CoursePlayer = ({
                     />
                 </S.PlayPauseButton>
 
-                <S.NextButton onClick={onNext}>
+                <S.NextButton
+                    onClick={onNext}
+                    disabled={isSkipping || isUpdating}
+                >
                     <img src={FowardIcon} alt="다음 콘텐츠" />
                 </S.NextButton>
 
