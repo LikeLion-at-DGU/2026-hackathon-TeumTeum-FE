@@ -94,70 +94,72 @@ const BottomSheet = ({ course, onRefresh, targetMinutes }) => {
         <>
             <Overlay />
             <Container>
-                <Header>
-                    <Left>
-                        <HeaderTitle>생성된 코스</HeaderTitle>
-                        <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
-                    </Left>
-                    <RefreshButton
-                        type="button"
-                        onClick={handleRefresh}
-                        disabled={isRefreshing}
-                        aria-label="추천 코스 새로고침"
-                    >
-                        <RefreshImage
-                            src={RefreshIcon}
-                            alt=""
-                            $isRefreshing={isRefreshing}
-                        />
-                    </RefreshButton>
-                </Header>
-                <TimeSection>
-                    <TotalTime><span>정확한 코스 시간:</span><br /> {formattedDuration}</TotalTime>
-                    <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {targetMinutes}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
-                </TimeSection>
-                
-                <CourseSection>
-                    {contents.map((content) => {
-                        const typeConfig = 
-                            CONTENT_TYPE_CONFIG[content.content_type] ?? {
-                                label: "콘텐츠",
-                                icon: "✨"
-                            };
-                        return (
-                            <CourseCard key={content.content_order}>
-                                <ContentIcon aria-label={typeConfig.label}>
-                                    {typeConfig.icon === "youtube" ? (
-                                        <YoutubeIcon src={youtube} alt="" />
-                                    ) : (
-                                        typeConfig.icon
-                                    )}
-                                </ContentIcon>
-                                 <ContentThumbnail>
-                                    {(content.thumbnail_url || content.image_url) && (
-                                        <img
-                                            src={content.thumbnail_url || content.image_url}
-                                            alt={content.title}
-                                        />
-                                    )}
-                                </ContentThumbnail>
+                <ScrollContent>
+                    <Header>
+                        <Left>
+                            <HeaderTitle>생성된 코스</HeaderTitle>
+                            <RefreshTip>추천이 마음에 들지 않는다면 바꿔보세요</RefreshTip>
+                        </Left>
+                        <RefreshButton
+                            type="button"
+                            onClick={handleRefresh}
+                            disabled={isRefreshing}
+                            aria-label="추천 코스 새로고침"
+                        >
+                            <RefreshImage
+                                src={RefreshIcon}
+                                alt=""
+                                $isRefreshing={isRefreshing}
+                            />
+                        </RefreshButton>
+                    </Header>
+                    <TimeSection>
+                        <TotalTime><span>정확한 코스 시간:</span><br /> {formattedDuration}</TotalTime>
+                        <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {targetMinutes}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
+                    </TimeSection>
 
-                                <ContentInfoWrapper>
-                                    <ContentInfo>
-                                        <ContentTitle>{content.title}</ContentTitle>
-                                        <ContentDescription>
-                                            {content.description}
-                                        </ContentDescription>
-                                    </ContentInfo>
+                    <CourseSection>
+                        {contents.map((content) => {
+                            const typeConfig =
+                                CONTENT_TYPE_CONFIG[content.content_type] ?? {
+                                    label: "콘텐츠",
+                                    icon: "✨"
+                                };
+                            return (
+                                <CourseCard key={content.content_order}>
+                                    <ContentIcon aria-label={typeConfig.label}>
+                                        {typeConfig.icon === "youtube" ? (
+                                            <YoutubeIcon src={youtube} alt="" />
+                                        ) : (
+                                            typeConfig.icon
+                                        )}
+                                    </ContentIcon>
+                                     <ContentThumbnail>
+                                        {(content.thumbnail_url || content.image_url) && (
+                                            <img
+                                                src={content.thumbnail_url || content.image_url}
+                                                alt={content.title}
+                                            />
+                                        )}
+                                    </ContentThumbnail>
 
-                                    <ContentTime>
-                                        {content.estimated_minutes}분
-                                    </ContentTime>
-                                </ContentInfoWrapper>
-                            </CourseCard>
-                        );
-                    })}
-                </CourseSection>
+                                    <ContentInfoWrapper>
+                                        <ContentInfo>
+                                            <ContentTitle>{content.title}</ContentTitle>
+                                            <ContentDescription>
+                                                {content.description}
+                                            </ContentDescription>
+                                        </ContentInfo>
+
+                                        <ContentTime>
+                                            {content.estimated_minutes}분
+                                        </ContentTime>
+                                    </ContentInfoWrapper>
+                                </CourseCard>
+                            );
+                        })}
+                    </CourseSection>
+                </ScrollContent>
                 <ButtonWrapper>
                     <BottomButton
                         variant="primary"
@@ -205,8 +207,7 @@ export const Container = styled.div`
     box-sizing: border-box;
     border-radius: 20px 20px 0 0;
 
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 
     padding: 24px 22px;
     padding-bottom: calc(
@@ -230,6 +231,14 @@ export const Container = styled.div`
         }
     }
 
+`;
+
+const ScrollContent = styled.div`
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
 `;
 
 const Header = styled.div`
@@ -331,13 +340,13 @@ const TimeDescription = styled.p`
 `;
 
 const CourseSection = styled.section`
-    padding-top: 50px;
+    padding: 50px 4px 100px;
     display: flex;
     width: 100%;
+    box-sizing: border-box;
     flex-direction: column;
     align-items: flex-start;
     gap: 18px;
-    padding-bottom: 200px;
 `;
 
 const CourseCard = styled.div`
