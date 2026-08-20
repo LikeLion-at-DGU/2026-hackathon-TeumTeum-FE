@@ -62,6 +62,20 @@ export const resumeCourse = async (executionId) => {
   return response.data;
 };
 
+// 현재 콘텐츠 건너뛰기
+export const skipCourse = async (executionId) => {
+    const guestUuid = getGuestUuid();
+
+    const response = await axiosInstance.post(
+        `/main/teumteum/${executionId}/skip`,
+        {
+            guest_uuid: guestUuid,
+        },
+    );
+
+    return response.data;
+};
+
 // 코스 실행 중단
 export const stopCourse = async (executionId) => {
     const guestUuid = getGuestUuid();

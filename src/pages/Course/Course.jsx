@@ -7,7 +7,7 @@ import CoursePlayer from "../../components/course/CoursePlayer";
 import ContentRenderer from "../../components/course/ContentRenderer";
 import StatusInfo from "../../components/common/StatusInfo";
 
-import { pauseCourse, resumeCourse, stopCourse, completeCourse } from "../../apis/course";
+import { pauseCourse, resumeCourse, skipCourse, stopCourse, completeCourse } from "../../apis/course";
 
 const formatRemainingTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -52,6 +52,7 @@ const Course = () => {
 
     const [isStopModalOpen, setIsStopModalOpen] = useState(false);
     const [isStopping, setIsStopping] = useState(false);
+    const [isSkipping, setIsSkipping] = useState(false);
 
     const currentContent = contents[currentIndex];
     const isYoutubeContent = currentContent?.content_type === "youtube";
@@ -172,7 +173,7 @@ const Course = () => {
         contents.length,
     ]);
 
-    const handleNext = () => {
+    const moveToNextContent = () => {
         if (currentIndex >= contents.length - 1) {
             setCurrentContentElapsed(currentContentDuration);
             return;
@@ -180,6 +181,30 @@ const Course = () => {
 
         setCurrentIndex((previous) => previous + 1);
         setCurrentContentElapsed(0);
+    };
+
+    const handleNext = async () => {
+        if (isSkipping || isPausing) return;
+
+        try {
+            setIsSkipping(true);
+
+            const data = await skipCourse(execution.execution_id);
+            console.log("콘텐츠 건너뛰기 성공:", data);
+
+            moveToNextContent();
+        } catch (error) {
+            console.error("콘텐츠 건너뛰기 실제 오류:", error);
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("백엔드 응답:", error.response?.data);
+
+            const message =
+                error.response?.data?.detail ||
+                "다음 콘텐츠로 넘어갈 수 없습니다.";
+            alert(message);
+        } finally {
+            setIsSkipping(false);
+        }
     };
 
     const handlePrevious = () => {
@@ -196,7 +221,7 @@ const Course = () => {
 
     const handleVideoEnded = () => {
         if (currentIndex < contents.length - 1) {
-            handleNext();
+            moveToNextContent();
         }
     };
 
@@ -470,6 +495,7 @@ const Course = () => {
                 isPlaying={isPlaying}
                 onPlayPause={handlePause}
                 isUpdating={isPausing}
+                isSkipping={isSkipping}
             />
             <Modal
                 isOpen={isStopModalOpen}

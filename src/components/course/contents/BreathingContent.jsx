@@ -13,6 +13,11 @@ const BreathingContent = ({ content, isPlaying }) => {
     const [isComplete, setIsComplete] = useState(false);
 
     const currentStep = steps[currentStepIndex];
+    const currentInstruction =
+        currentStep?.instruction ??
+        currentStep?.phase ??
+        content.description ??
+        "";
 
     useEffect(() => {
         setCurrentStepIndex(0);
@@ -72,11 +77,10 @@ const BreathingContent = ({ content, isPlaying }) => {
             <S.CenterContent>
                 <S.Guide>
                     <S.GuideText>{content.description}</S.GuideText>
-                    <S.GuideText>{content.voice_script}</S.GuideText>
                 </S.Guide>
 
                 <S.BreathArea>
-                    <S.BreathOrb aria-label={currentStep?.phase ?? "호흡 완료"}>
+                    <S.BreathOrb aria-label={currentInstruction}>
                         <S.Glow $delay="0s" $isPlaying={isPlaying} />
                         <S.Glow $delay="1.3s" $isPlaying={isPlaying} />
                         <S.Core $isPlaying={isPlaying} />
@@ -85,7 +89,7 @@ const BreathingContent = ({ content, isPlaying }) => {
 
                 <S.StatusArea>
                     <S.Phase>
-                        {isComplete ? "호흡 완료" : currentStep?.phase ?? "호흡 준비"}
+                        {currentInstruction}
                     </S.Phase>
                     <S.Count>{remainingSeconds}초</S.Count>
                 </S.StatusArea>
