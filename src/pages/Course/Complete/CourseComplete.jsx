@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import Header from "../../../components/layout/Header";
 import * as S from "./CourseComplete.styled"
 import Button from "../../../components/common/Button";
+import CourseRatingModal from "../../../components/course/contents/CourseRatingModal";
+import { rateCourse } from "../../../apis/course";
 import { Link, useLocation } from "react-router-dom";
 
 const CourseComplete = () => {
@@ -8,6 +11,18 @@ const CourseComplete = () => {
 
     const completedExecution = state?.completedExecution;
     const targetMinutes = state?.targetMinutes ?? 0;
+    const [isRatingModalOpen, setIsRatingModalOpen] = useState(false);
+    const [isSubmittingRating, setIsSubmittingRating] = useState(false);
+
+    useEffect(() => {
+        if (!completedExecution?.execution_id) return;
+
+        const modalTimer = setTimeout(() => {
+            setIsRatingModalOpen(true);
+        }, 2800);
+
+        return () => clearTimeout(modalTimer);
+    }, [completedExecution?.execution_id]);
 
     const usedSeconds = completedExecution?.used_seconds ?? 0;
     const usedMinutes = Math.floor(usedSeconds / 60);
@@ -19,6 +34,36 @@ const CourseComplete = () => {
 
     const todayCourses = completedExecution?.today_courses ?? 0;
     const completedContents = completedExecution?.completed_contents ?? 0;
+
+    const handleSubmitRating = async (satisfaction) => {
+        if (!completedExecution?.execution_id || isSubmittingRating) return;
+
+        try {
+            setIsSubmittingRating(true);
+
+            const data = await rateCourse(
+                completedExecution.execution_id,
+                satisfaction,
+            );
+
+            console.log("코스 평가 성공:", data);
+            setIsRatingModalOpen(false);
+        } catch (error) {
+            console.error("코스 평가 실제 오류:", error);
+            console.error("HTTP 상태:", error.response?.status);
+            console.error("백엔드 응답:", error.response?.data);
+
+            const responseData = error.response?.data;
+            const message =
+                responseData?.detail ||
+                responseData?.satisfaction?.[0] ||
+                "코스 평가를 등록할 수 없습니다.";
+
+            alert(message);
+        } finally {
+            setIsSubmittingRating(false);
+        }
+    };
     
     return (
         <>
@@ -73,6 +118,12 @@ const CourseComplete = () => {
             </S.ButtonWrapper>
             </S.Record>
         </S.Main>
+        <CourseRatingModal
+            isOpen={isRatingModalOpen}
+            onClose={() => setIsRatingModalOpen(false)}
+            onSubmit={handleSubmitRating}
+            isSubmitting={isSubmittingRating}
+        />
         </>
     )
 }
