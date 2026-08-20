@@ -12,7 +12,7 @@ const ReflectionContent = ({ content }) => {
         <S.Container>
         <S.SubTitle>{content.title}</S.SubTitle>
 
-        <S.Question>{content.question}</S.Question>
+        <S.Question>지금 내 기분을 한 단어로 표현하면?</S.Question>
 
         {options.length > 0 && (
             <S.OptionList>
@@ -29,9 +29,7 @@ const ReflectionContent = ({ content }) => {
             </S.OptionList>
         )}
         <S.SecondQuestion>
-            오늘 이 약속에서
-            <br />
-            내가 가장 기대하는 순간은 무엇인가요?
+            {content.question}
         </S.SecondQuestion>
         {content.allow_text_input && (
             <S.TextArea

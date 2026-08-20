@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import * as S from "./CoursePlayer.styled";
 
 import PauseIcon from "../../assets/icons/CoursePlayerIcons/pause-icon-expanded.svg";
@@ -23,10 +23,22 @@ const formatTime = (seconds) => {
     ).padStart(2, "0")}`;
 };
 
+const getContentDuration = (content) => {
+    const durationSeconds = Number(content?.duration_seconds);
+
+    if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
+        return Math.floor(durationSeconds);
+    }
+
+    return Math.floor((Number(content?.estimated_minutes) || 0) * 60);
+};
+
 const CoursePlayer = ({
     contents,
     currentIndex,
-    onIndexChange,
+    currentContentElapsed,
+    onPrevious,
+    onNext,
     isPlaying,
     onPlayPause,
     isUpdating,
@@ -35,12 +47,9 @@ const CoursePlayer = ({
         return contents.map((content) => ({
             ...content,
             id: content.content_order,
-            duration: content.estimated_minutes * 60,
+            duration: getContentDuration(content),
         }));
     }, [contents]);
-
-    // 현재 콘텐츠에서 몇 초 진행됐는지
-    const [currentTime, setCurrentTime] = useState(0);
 
     const currentContent = courseContents[currentIndex];
 
@@ -58,68 +67,20 @@ const CoursePlayer = ({
             .slice(0, currentIndex)
             .reduce((total, content) => total + content.duration, 0);
 
-        return previousDuration + currentTime;
-    }, [courseContents, currentIndex, currentTime]);
+        return previousDuration + currentContentElapsed;
+    }, [courseContents, currentIndex, currentContentElapsed]);
 
     // 전체 코스에서 현재 위치가 몇 %인지
     const progressPercent =
-        (elapsedCourseTime / totalDuration) * 100;
+        totalDuration > 0
+            ? Math.min((elapsedCourseTime / totalDuration) * 100, 100)
+            : 0;
 
     // 현재 콘텐츠 남은 시간
     const remainingTime = Math.max(
-        currentContent.duration - currentTime,
+        currentContent.duration - currentContentElapsed,
         0
     );
-
-
-    // 테스트용 시간 진행
-    useEffect(() => {
-        if (!isPlaying || isUpdating) return;
-
-        const timer = setInterval(() => {
-            setCurrentTime((prev) => {
-                if(prev < currentContent.duration) {
-                    return prev + 1;
-                }
-                if(currentIndex < courseContents.length - 1) {
-                    onIndexChange(currentIndex + 1);
-                    return 0;
-                }
-                return currentContent.duration;
-            });
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [
-        isPlaying,
-        isUpdating,
-        currentIndex,
-        currentContent.duration,
-        courseContents.length,
-        onIndexChange,
-    ]);
-
-    // 이전 콘텐츠
-    const handlePrevious = () => {
-        if(currentTime > 0) {
-            setCurrentTime(0);
-            return;
-        }
-        if(currentIndex > 0) {
-            onIndexChange(currentIndex - 1);
-            setCurrentTime(0);
-        }
-    };
-
-    // 다음 콘텐츠
-    const handleNext = () => {
-        if(currentIndex < courseContents.length - 1) {
-            onIndexChange(currentIndex + 1);
-            setCurrentTime(0);
-            return;
-        }
-        setCurrentTime(currentContent.duration);
-    };
 
     return (
         <S.Player>
@@ -199,7 +160,7 @@ const CoursePlayer = ({
                 {/* 시간 */}
                 <S.TimeRow>
                     <S.ElapsedTime>
-                        {formatTime(currentTime)}
+                        {formatTime(currentContentElapsed)}
                     </S.ElapsedTime>
 
                     <S.RemainingTime>
@@ -213,7 +174,7 @@ const CoursePlayer = ({
             {/* 재생 컨트롤 */}
             <S.Controls>
 
-                <S.PreviousButton onClick={handlePrevious}>
+                <S.PreviousButton onClick={onPrevious}>
                     <img src={BackwardIcon} alt="이전 콘텐츠" />
                 </S.PreviousButton>
 
@@ -224,7 +185,7 @@ const CoursePlayer = ({
                     />
                 </S.PlayPauseButton>
 
-                <S.NextButton onClick={handleNext}>
+                <S.NextButton onClick={onNext}>
                     <img src={FowardIcon} alt="다음 콘텐츠" />
                 </S.NextButton>
 
