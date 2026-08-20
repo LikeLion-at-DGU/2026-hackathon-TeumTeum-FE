@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
 import * as S from "./StretchingContent.styled";
+import useStepTimer from "../../../hooks/useStepTimer";
 import stretchGuide01 from "../../../assets/img/stretchguide01.png";
 import stretchGuide02 from "../../../assets/img/stretchguide02.png";
 import stretchGuide03 from "../../../assets/img/stretchguide03.png";
@@ -24,70 +24,24 @@ const STRETCH_IMAGE_BY_TITLE = {
   "5분 앉아서 하체 리셋": stretchGuide10,
 };
 
-const StretchingContent = ({ content, isPlaying }) => {
-  const [currentStep, setCurrentStep] = useState(0);
+const EMPTY_STEPS = [];
 
-  const steps = content.steps ?? [];
+const StretchingContent = ({ content, isPlaying }) => {
+  const steps = content.steps ?? EMPTY_STEPS;
   const repeatCount = content.repeat_count ?? 1;
+  const {
+    currentStepIndex: currentStep,
+    remainingSeconds,
+    isComplete,
+  } = useStepTimer({
+    steps,
+    repeatCount,
+    isPlaying,
+    resetKey: content.content_order,
+  });
   const step = steps[currentStep];
   const imageUrl =
     STRETCH_IMAGE_BY_TITLE[content.title] ?? content.image_url;
-  const [remainingSeconds, setRemainingSeconds] = useState(
-    steps[0]?.duration_seconds ?? 0,
-  );
-  const [completedRepeatCount, setCompletedRepeatCount] = useState(0);
-  const [isComplete, setIsComplete] = useState(false);
-
-  useEffect(() => {
-    setCurrentStep(0);
-    setRemainingSeconds(steps[0]?.duration_seconds ?? 0);
-    setCompletedRepeatCount(0);
-    setIsComplete(steps.length === 0);
-  }, [content.content_order]);
-
-  useEffect(() => {
-    if (!isPlaying || isComplete || steps.length === 0) return;
-
-    const timer = setTimeout(() => {
-      if (remainingSeconds > 1) {
-        setRemainingSeconds((previous) => previous - 1);
-        return;
-      }
-
-      const isLastStep = currentStep === steps.length - 1;
-
-      if (!isLastStep) {
-        const nextStep = currentStep + 1;
-        setCurrentStep(nextStep);
-        setRemainingSeconds(steps[nextStep].duration_seconds);
-        return;
-      }
-
-      const nextCompletedRepeatCount = completedRepeatCount + 1;
-
-      if (nextCompletedRepeatCount >= repeatCount) {
-        setCompletedRepeatCount(nextCompletedRepeatCount);
-        setRemainingSeconds(0);
-        setIsComplete(true);
-        return;
-      }
-
-      setCompletedRepeatCount(nextCompletedRepeatCount);
-      setCurrentStep(0);
-      setRemainingSeconds(steps[0].duration_seconds);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [
-    completedRepeatCount,
-    currentStep,
-    isComplete,
-    isPlaying,
-    remainingSeconds,
-    repeatCount,
-    steps,
-  ]);
-
   return (
     <S.Container>
       <S.Title>{content.title}</S.Title>

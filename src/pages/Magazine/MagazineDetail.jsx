@@ -3,46 +3,24 @@ import Header from "../../components/layout/Header";
 import * as S from "../Magazine/MagazineDetail.styled"
 import Button from "../../components/common/Button"
 import { getMagazineDetail } from "../../apis/magazine";
-import { useState, useEffect } from "react";
 import fallbackImage from "../../assets/img/매거진이미지예시.jpg";
 import StatusInfo from "../../components/common/StatusInfo";
+import useAsyncData from "../../hooks/useAsyncData";
 
 const MagazineDetail = () => {
     const { magazineId } = useParams();
 
-    const [magazine, setMagazine] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
-
-    useEffect(() => {
-        const fetchMagazineDetail = async() => {
-            setIsLoading(true);
-            setHasError(false);
-
-            try {
-                const data = await getMagazineDetail(magazineId);
-                setMagazine(data);
-
-                console.log("GET 매거진 상세 성공:", data);
-            }
-            catch(error){
-                setHasError(true);
-                console.error(
-                    "GET 매거진 상세 실패:",
-                    error.response?.data || error.message
-                )
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        fetchMagazineDetail();
-    }, [magazineId])
+    const {
+        data: magazine,
+        isLoading,
+        error,
+    } = useAsyncData(getMagazineDetail, magazineId);
 
     if (isLoading) {
         return <StatusInfo>매거진을 불러오는 중...</StatusInfo>;
     }
 
-    if (hasError || !magazine) {
+    if (error || !magazine) {
         return <StatusInfo>매거진을 찾을 수 없습니다.</StatusInfo>;
     }
 

@@ -3,30 +3,11 @@ import FeaturedNewsSection from "../../components/magazine/FeaturedNewsSection"
 import WellnessNewsSection from "../../components/magazine/WellnessNewsSection";
 import * as S from "./Magazine.styled"
 import { getMagazines } from "../../apis/magazine";
-import { useState, useEffect } from "react";
 import StatusInfo from "../../components/common/StatusInfo";
+import useAsyncData from "../../hooks/useAsyncData";
 
 const Magazine = () => {
-  const  [magazineData, setMagazineData] = useState(null);
-
-  useEffect(() => {
-    const fetchMagazines = async () => {
-      try{
-        const data = await getMagazines();
-
-        setMagazineData(data);
-        console.log("대표 매거진 ID:", data.featured?.id);
-      }
-      catch(error){
-        console.error(
-          "GET /magazines 실패:",
-          error.response?.data || error.message,
-        );
-      }
-    };
-
-    fetchMagazines();
-  }, []);
+  const { data: magazineData } = useAsyncData(getMagazines);
 
   if (!magazineData) {
     return <StatusInfo>매거진을 불러오는 중...</StatusInfo>;

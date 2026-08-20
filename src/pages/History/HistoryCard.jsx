@@ -25,6 +25,7 @@ const Card = styled.div`
     border-radius: 20px;
     border: 1px solid var(--subcolor, #EFEFEF);
     background: #FFF;
+    cursor: pointer;
 `;
 
 const Date = styled.p`

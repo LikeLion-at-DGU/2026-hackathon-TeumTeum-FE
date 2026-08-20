@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
 import * as S from "./BreathingContent.style";
+import useStepTimer from "../../../hooks/useStepTimer";
+
+const EMPTY_STEPS = [];
 
 const BreathingContent = ({ content, isPlaying }) => {
-    const steps = content.steps ?? [];
+    const steps = content.steps ?? EMPTY_STEPS;
     const repeatCount = content.repeat_count ?? 1;
 
-    const [currentStepIndex, setCurrentStepIndex] = useState(0);
-    const [remainingSeconds, setRemainingSeconds] = useState(
-        steps[0]?.duration_seconds ?? 0,
-    );
-    const [completedRepeatCount, setCompletedRepeatCount] = useState(0);
-    const [isComplete, setIsComplete] = useState(false);
+    const { currentStepIndex, remainingSeconds } = useStepTimer({
+        steps,
+        repeatCount,
+        isPlaying,
+        resetKey: content.content_order,
+    });
 
     const currentStep = steps[currentStepIndex];
     const currentInstruction =
@@ -18,56 +20,6 @@ const BreathingContent = ({ content, isPlaying }) => {
         currentStep?.phase ??
         content.description ??
         "";
-
-    useEffect(() => {
-        setCurrentStepIndex(0);
-        setRemainingSeconds(steps[0]?.duration_seconds ?? 0);
-        setCompletedRepeatCount(0);
-        setIsComplete(steps.length === 0);
-    }, [content.content_order]);
-
-    useEffect(() => {
-        if (!isPlaying || isComplete || steps.length === 0) return;
-
-        const timer = setTimeout(() => {
-            if (remainingSeconds > 1) {
-                setRemainingSeconds((previous) => previous - 1);
-                return;
-            }
-
-            const isLastStep = currentStepIndex === steps.length - 1;
-
-            if (!isLastStep) {
-                const nextStepIndex = currentStepIndex + 1;
-                setCurrentStepIndex(nextStepIndex);
-                setRemainingSeconds(steps[nextStepIndex].duration_seconds);
-                return;
-            }
-
-            const nextCompletedRepeatCount = completedRepeatCount + 1;
-
-            if (nextCompletedRepeatCount >= repeatCount) {
-                setCompletedRepeatCount(nextCompletedRepeatCount);
-                setRemainingSeconds(0);
-                setIsComplete(true);
-                return;
-            }
-
-            setCompletedRepeatCount(nextCompletedRepeatCount);
-            setCurrentStepIndex(0);
-            setRemainingSeconds(steps[0].duration_seconds);
-        }, 1000);
-
-        return () => clearTimeout(timer);
-    }, [
-        completedRepeatCount,
-        currentStepIndex,
-        isComplete,
-        isPlaying,
-        remainingSeconds,
-        repeatCount,
-        steps,
-    ]);
 
     return (
         <S.Container>

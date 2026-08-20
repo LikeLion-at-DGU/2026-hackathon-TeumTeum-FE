@@ -1,43 +1,25 @@
 import Header from "../../components/layout/Header";
 import Modal from "../../components/common/Modal";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 import AiGuide from "./AiGuide";
 import HistoryList from "./HistoryList";
 import styled from "styled-components";
 import { getRecords, executeRecord } from "../../apis/record";
 import { useNavigate } from "react-router-dom";
 import StatusInfo from "../../components/common/StatusInfo";
+import useAsyncData from "../../hooks/useAsyncData";
 
 
 const History = () => {
 
-  const [records, setRecords] = useState([]);
+  const { data: recordsData } = useAsyncData(getRecords);
+  const records = recordsData?.records ?? [];
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAiInfoOpen, setIsAiInfoOpen] = useState(false);
 
   const [isExecuting, setIsExecuting] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(()=> {
-    const fetchRecords = async () => {
-      try {
-        const data = await getRecords();
-
-        setRecords(data.records ?? []);
-
-        console.log("GET /records 성공: ", data);
-      }catch(error) {
-        console.error(
-          "GET /records 실패: ",
-          error.response?.data || error.message,
-        );
-      }
-    };
-
-    fetchRecords();
-
-  }, []);
 
   const handleCardClick = (record) => {
     setSelectedRecord(record);
