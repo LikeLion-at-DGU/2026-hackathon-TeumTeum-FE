@@ -1,3 +1,4 @@
+import StatusInfo from "../common/StatusInfo";
 import VideoContent from "./contents/VideoContent";
 import AiBriefContent from "./contents/AiBriefContent";
 import BreathingContent from "./contents/BreathingContent";
@@ -27,4 +28,3 @@ const ContentRenderer = ({ content, isPlaying }) => {
 };
 
 export default ContentRenderer;
-import StatusInfo from "../common/StatusInfo";

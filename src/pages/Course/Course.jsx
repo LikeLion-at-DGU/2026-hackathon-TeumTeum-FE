@@ -18,6 +18,17 @@ const formatRemainingTime = (seconds) => {
     ).padStart(2, "0")}`;
 };
 
+const getContentDuration = (content) => {
+    const durationSeconds = Number(content?.duration_seconds);
+
+    if (Number.isFinite(durationSeconds) && durationSeconds > 0) {
+        return Math.floor(durationSeconds);
+    }
+
+    const estimatedMinutes = Number(content?.estimated_minutes) || 0;
+    return Math.floor(estimatedMinutes * 60);
+};
+
 const Course = () => {
     const { courseId } = useParams();
     const { state } = useLocation();
@@ -32,6 +43,7 @@ const Course = () => {
     }, [execution]);
     
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentContentElapsed, setCurrentContentElapsed] = useState(0);
     const [remainingSeconds, setRemainingSeconds] = useState(
             execution?.remaining_seconds ?? 0,
         );
@@ -40,11 +52,34 @@ const Course = () => {
     const [isStopping, setIsStopping] = useState(false);
 
     const currentContent = contents[currentIndex];
+    const currentContentDuration = getContentDuration(currentContent);
 
     const [isPlaying, setIsPlaying] = useState(
         execution?.status === "in_progress",
     );
     const [isPausing, setIsPausing] = useState(false);
+
+    const handleNext = () => {
+        if (currentIndex >= contents.length - 1) {
+            setCurrentContentElapsed(currentContentDuration);
+            return;
+        }
+
+        setCurrentIndex((previous) => previous + 1);
+        setCurrentContentElapsed(0);
+    };
+
+    const handlePrevious = () => {
+        if (currentContentElapsed > 0) {
+            setCurrentContentElapsed(0);
+            return;
+        }
+
+        if (currentIndex > 0) {
+            setCurrentIndex((previous) => previous - 1);
+            setCurrentContentElapsed(0);
+        }
+    };
 
     const handlePause = async () => {
         if(isPausing) return;
@@ -174,16 +209,45 @@ const Course = () => {
     const hasRequestedComplete = useRef(false);
 
     useEffect(() => {
-        if(!isPlaying || isStopModalOpen || remainingSeconds <= 0) {
+        if (
+            !isPlaying ||
+            isPausing ||
+            isStopModalOpen ||
+            remainingSeconds <= 0
+        ) {
             return;
         }
-        const timer = setInterval(() => {
-            setRemainingSeconds((previous) =>
-                Math.max(previous - 1, 0),
-            );
+
+        const timer = setTimeout(() => {
+            setRemainingSeconds((previous) => Math.max(previous - 1, 0));
+
+            const nextElapsed = currentContentElapsed + 1;
+
+            if (nextElapsed < currentContentDuration) {
+                setCurrentContentElapsed(nextElapsed);
+                return;
+            }
+
+            if (currentIndex < contents.length - 1) {
+                setCurrentIndex(currentIndex + 1);
+                setCurrentContentElapsed(0);
+                return;
+            }
+
+            setCurrentContentElapsed(currentContentDuration);
         }, 1000);
-        return() => clearInterval(timer);
-    }, [isPlaying, isStopModalOpen, remainingSeconds]);
+
+        return () => clearTimeout(timer);
+    }, [
+        isPlaying,
+        isPausing,
+        isStopModalOpen,
+        remainingSeconds,
+        currentContentElapsed,
+        currentContentDuration,
+        currentIndex,
+        contents.length,
+    ]);
 
     useEffect(() => {
         if (remainingSeconds !== 0) return;
@@ -211,6 +275,16 @@ const Course = () => {
 
                 const message = error.response?.data?.detail || "코스를 완료 처리할 수 없습니다.";
                 console.error(message);
+
+                if (
+                    error.response?.status === 400 &&
+                    error.response?.data?.detail ===
+                        "아직 코스 시간이 다 되지 않았습니다. 중간에 그만두려면 stop을 사용해주세요."
+                ) {
+                    hasRequestedComplete.current = false;
+                    setRemainingSeconds(1);
+                    setIsPlaying(true);
+                }
             } 
         };
         completeCurrentCourse();
@@ -249,7 +323,9 @@ const Course = () => {
             <CoursePlayer
                 contents={contents}
                 currentIndex={currentIndex}
-                onIndexChange={setCurrentIndex}
+                currentContentElapsed={currentContentElapsed}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
                 isPlaying={isPlaying}
                 onPlayPause={handlePause}
                 isUpdating={isPausing}
