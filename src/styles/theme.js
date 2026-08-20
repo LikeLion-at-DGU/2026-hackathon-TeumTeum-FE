@@ -4,7 +4,7 @@ const theme = {
         background: "#FFFFFF",
 
         gray: "#B2B2B2",
-        optionGray: "#dd1515",
+        optionGray: "#c9c5c5",
         black: "#000000",
 
         catagory: "#EFEFEF",
