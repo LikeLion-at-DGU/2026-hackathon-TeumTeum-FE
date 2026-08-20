@@ -7,12 +7,15 @@ import formatDate from "../../utils/formatDate";
 const Modal = ({ 
     maintitle, date, title, description, 
     secondaryText, primaryText, onSecondaryClick, onPrimaryClick,
-    isOpen, onClose, children
+    isOpen, onClose, children, topOnlyRounded = false
  }) => {
     return (
         <>
             <Overlay $isOpen={isOpen} onClick={onClose}/>
-            <ModalContainer $isOpen={isOpen}>
+            <ModalContainer
+                $isOpen={isOpen}
+                $topOnlyRounded={topOnlyRounded}
+            >
             <LogoImage src={Logo} alt="로고" />
             <Content>
                 <MainTitle>{maintitle}</MainTitle>
@@ -22,12 +25,14 @@ const Modal = ({
                 {children}
             </Content>
             <ButtonGroup>
-                <Button
-                    variant="secondary"
-                    onClick={onSecondaryClick}
-                >
-                    {secondaryText}
-                </Button>
+                {secondaryText && (
+                    <Button
+                        variant="secondary"
+                        onClick={onSecondaryClick}
+                    >
+                        {secondaryText}
+                    </Button>
+                )}
                 <Button
                     variant="primary"
                     onClick={onPrimaryClick}
@@ -70,7 +75,8 @@ const ModalContainer = styled.div`
     transform 0.3s ease;
 
   background: #ffffff;
-  border-radius: 27px;
+  border-radius: ${({ $topOnlyRounded }) =>
+    $topOnlyRounded ? "27px 27px 0 0" : "27px"};
 
   display: flex;
   flex-direction: column;

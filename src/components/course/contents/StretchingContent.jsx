@@ -1,3 +1,4 @@
+import { useState } from "react";
 import * as S from "./StretchingContent.styled";
 
 const StretchingContent = ({ content }) => {
@@ -5,6 +6,7 @@ const StretchingContent = ({ content }) => {
 
   const steps = content.steps ?? [];
   const step = steps[currentStep];
+  const imageUrl = content.image_url;
 
   return (
     <S.Container>

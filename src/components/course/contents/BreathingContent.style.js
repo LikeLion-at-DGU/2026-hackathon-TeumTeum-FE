@@ -98,6 +98,8 @@ export const Glow = styled.div`
   );
   animation: ${pulse} 2.6s ease-in-out infinite;
   animation-delay: ${({ $delay }) => $delay};
+  animation-play-state: ${({ $isPlaying }) =>
+    $isPlaying ? "running" : "paused"};
 `;
 
 export const Core = styled.div`
@@ -108,6 +110,8 @@ export const Core = styled.div`
   border-radius: 50%;
   background: #9be99a;
   animation: ${corePulse} 2.6s ease-in-out infinite;
+  animation-play-state: ${({ $isPlaying }) =>
+    $isPlaying ? "running" : "paused"};
 `;
 
 export const StatusArea = styled.div`

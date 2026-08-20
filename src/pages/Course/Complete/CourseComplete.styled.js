@@ -215,7 +215,7 @@ export const Record = styled.div`
 `
 export const RecordTitle = styled.span`
     font-size: ${({theme}) => theme.fontsize.title};
-    font-weight: ${({theme}) => theme.fontWeight.bold};
+    font-weight: 600;
     color: ${({theme}) => theme.colors.primary};
     padding: 20px 0px 15px 0px;
 `
@@ -223,7 +223,7 @@ export const InfoWrapper = styled.div`
     display: flex;
     flex-direction: row;
     gap: 50px;
-    padding: 40px 0px 40px 0px;
+    padding: 20px 0px 40px 0px;
 
 `
 export const Info = styled.div`
