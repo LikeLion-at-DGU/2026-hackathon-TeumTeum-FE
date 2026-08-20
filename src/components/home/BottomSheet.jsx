@@ -113,7 +113,7 @@ const BottomSheet = ({ course, onRefresh, targetMinutes }) => {
                     </RefreshButton>
                 </Header>
                 <TimeSection>
-                    <TotalTime><span>생성된 코스 시간:</span> {formattedDuration}</TotalTime>
+                    <TotalTime><span>정확한 코스 시간:</span><br /> {formattedDuration}</TotalTime>
                     <TimeDescription>현재 장소와 컨디션, 다음 일정을 반영해<br/> {targetMinutes}분 안에 끝나는 나만의 코스를 만들었어요.</TimeDescription>
                 </TimeSection>
                 
@@ -163,7 +163,7 @@ const BottomSheet = ({ course, onRefresh, targetMinutes }) => {
                         variant="primary"
                         onClick={handleStartCourse}
                     >
-                        {isStarting ? "코스 실행 중..." : `{targetMinutes}분 코스 실행`}
+                        {isStarting ? "코스 실행 중..." : `${targetMinutes}분 코스 실행`}
                     </BottomButton>
                 </ButtonWrapper>
                 
@@ -198,17 +198,20 @@ export const Overlay = styled.div`
 
 export const Container = styled.div`
     background-color: ${theme.colors.background};
-    width: 375px;
-    min-height: 750px;
+    width: 100vw;
+    height: min(750px, calc(100dvh - 16px));
+    max-height: calc(100dvh - 16px);
 
-    @media (min-width: 768px) {
-        min-height: 720px;
-        height: 720px;
-    }
     box-sizing: border-box;
     border-radius: 20px 20px 0 0;
-    overflow: hidden;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
     padding: 24px 22px;
+    padding-bottom: calc(
+        24px + env(safe-area-inset-bottom)
+    );
 
     position:fixed;
     bottom: 0px;
@@ -324,6 +327,7 @@ const TimeDescription = styled.p`
     font-weight: 400;
     color: ${theme.colors.gray};
     line-height: 1.4;
+    padding-top: 10px;
 `;
 
 const CourseSection = styled.section`
@@ -333,7 +337,7 @@ const CourseSection = styled.section`
     flex-direction: column;
     align-items: flex-start;
     gap: 18px;
-    padding-bottom: 100px;
+    padding-bottom: 200px;
 `;
 
 const CourseCard = styled.div`
@@ -380,15 +384,18 @@ const ContentInfoWrapper= styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 13px;
+    flex: 1;
+    min-width: 0;
 `
 
 const ContentInfo = styled.div`
     display: flex;
-    width: 164px;
+    min-width: 0;
+    flex: 1;
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+    padding-right: 10px;
 `;
 
 const ContentTitle = styled.h3`
@@ -404,7 +411,8 @@ const ContentDescription = styled.p`
 `;
 
 const ContentTime = styled.span`
-    padding-left: 8px;
+    margin-left: auto;
+    flex-shrink: 0;
     font-size: 12px;
     color: ${({theme}) => theme.colors.primary};
 `
