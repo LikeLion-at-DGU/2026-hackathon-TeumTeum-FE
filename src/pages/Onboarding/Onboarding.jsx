@@ -5,6 +5,7 @@ import * as S from "./Onboarding.styled.js"
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getOnboardingQuestions, saveOnboardingAnswers } from "../../apis/onboarding";
+import StatusInfo from "../../components/common/StatusInfo.jsx";
 
 const Onboarding = () => {
   const [questions, setQuestions] = useState([]);
@@ -36,11 +37,11 @@ const Onboarding = () => {
   }, []);
 
     if (isLoading) {
-    return <p>질문을 불러오는 중...</p>;
+    return <StatusInfo>질문을 불러오는 중...</StatusInfo>;
   }
 
   if (questions.length === 0) {
-    return <p>질문을 불러오지 못했습니다.</p>;
+    return <StatusInfo>질문을 불러오지 못했습니다.</StatusInfo>;
   }
 
   const currentQuestion = questions.find(

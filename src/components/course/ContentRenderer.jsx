@@ -22,8 +22,9 @@ const ContentRenderer = ({ content, isPlaying }) => {
         return <ReflectionContent content={content} />;
 
     default:
-        return <p>지원하지 않는 콘텐츠입니다.</p>;
+        return <StatusInfo>지원하지 않는 콘텐츠입니다.</StatusInfo>;
   }
 };
 
 export default ContentRenderer;
+import StatusInfo from "../common/StatusInfo";

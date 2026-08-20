@@ -13,6 +13,7 @@ import * as S from "./Home.styled";
 import { useEffect, useState } from "react";
 import { getMain, postMain, getQuestions, postQuestions } from "../../apis/main";
 import { createRecommendedCourse, refreshRecommendedCourse } from "../../apis/course";
+import StatusInfo from "../../components/common/StatusInfo";
 
 const Home = () => {
 
@@ -189,7 +190,7 @@ const Home = () => {
   }
 
   if (!stepData) {
-    return <div>불러오는 중...</div>;
+    return <StatusInfo>메인 화면을 불러오는 중...</StatusInfo>;
   }
 
   return (

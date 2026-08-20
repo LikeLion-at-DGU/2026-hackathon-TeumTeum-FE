@@ -4,6 +4,7 @@ import WellnessNewsSection from "../../components/magazine/WellnessNewsSection";
 import * as S from "./Magazine.styled"
 import { getMagazines } from "../../apis/magazine";
 import { useState, useEffect } from "react";
+import StatusInfo from "../../components/common/StatusInfo";
 
 const Magazine = () => {
   const  [magazineData, setMagazineData] = useState(null);
@@ -28,7 +29,7 @@ const Magazine = () => {
   }, []);
 
   if (!magazineData) {
-    return <div>불러오는 중...</div>;
+    return <StatusInfo>매거진을 불러오는 중...</StatusInfo>;
   }
 
   return (

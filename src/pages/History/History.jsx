@@ -4,7 +4,9 @@ import { useState,useEffect } from "react";
 import AiGuide from "./AiGuide";
 import HistoryList from "./HistoryList";
 import styled from "styled-components";
-import { getRecords } from "../../apis/record";
+import { getRecords, executeRecord } from "../../apis/record";
+import { useNavigate } from "react-router-dom";
+import StatusInfo from "../../components/common/StatusInfo";
 
 
 const History = () => {
@@ -13,6 +15,9 @@ const History = () => {
   const [selectedRecord, setSelectedRecord] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isAiInfoOpen, setIsAiInfoOpen] = useState(false);
+
+  const [isExecuting, setIsExecuting] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(()=> {
     const fetchRecords = async () => {
@@ -39,6 +44,43 @@ const History = () => {
     setIsModalOpen(true);
   }
 
+  const handleExecuteRecord = async () => {
+    if (!selectedRecord || isExecuting) {
+      return;
+    }
+
+    try {
+      setIsExecuting(true);
+
+      const data = await executeRecord(
+        selectedRecord.record_id,
+      );
+
+      console.log("기록 실행 성공:", data);
+
+      setIsModalOpen(false);
+
+      navigate(`/course/${data.course_id}`, {
+        state: {
+          execution: data,
+        },
+      });
+    } catch (error) {
+      console.error(
+        "기록 실행 실패:",
+        error.response?.data || error.message,
+      );
+
+      const message =
+        error.response?.data?.detail ||
+        "기록을 다시 실행하지 못했습니다.";
+
+      alert(message);
+    } finally {
+      setIsExecuting(false);
+    }
+  };
+
   return (
     <>
       
@@ -55,7 +97,7 @@ const History = () => {
         />
 
         {records.length === 0 ? (
-          <EmtyInfo>아직 완료한 코스 기록이 없습니다.</EmtyInfo>
+          <StatusInfo>아직 완료한 코스 기록이 없습니다.</StatusInfo>
         ) : (
           <HistoryList
             records={records}
@@ -73,12 +115,11 @@ const History = () => {
         title={selectedRecord?.title}
         description="나를 온전히 챙겨준 반가운 틈새 기록, 이대로 불러올까요?"
         secondaryText="닫기"
-        primaryText="네, 진행할게요"
+        primaryText={
+          isExecuting ? "불러오는 중..." : "네, 진행할게요"
+        }
         onSecondaryClick={() => setIsModalOpen(false)}
-        onPrimaryClick={() => {
-          console.log("선택한 기록:", selectedRecord);
-          setIsModalOpen(false);
-        }}
+        onPrimaryClick={handleExecuteRecord}
       />
     </>
   );
@@ -99,17 +140,3 @@ const Content = styled.div`
   padding-right: 28px;
 `;
 
-const EmtyInfo = styled.div`
-  position: fixed;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  text-align: center;
-
-  color: ${({theme}) => theme.colors.primary};
-  font-size: ${({theme}) => theme.fontsize.lg};
-  font-weight: ${({theme}) => theme.fontWeight.semibold};
-`
