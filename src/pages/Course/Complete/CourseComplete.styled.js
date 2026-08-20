@@ -198,7 +198,7 @@ export const Record = styled.div`
     border: 1px solid #B4B9C9;
     border-radius: 27px;
     width: 100%;
-    height: 373px;
+    height: 370px;
 
     display: flex;
     flex-direction: column;
@@ -254,5 +254,5 @@ export const ButtonWrapper = styled.div`
     justify-content: center;
     align-items: center;
     gap: 15px;
-    padding: 55px 0px;
+    padding: 50px 0px;
 `
