@@ -1,7 +1,6 @@
 import Header from "../../components/layout/Header";
 import * as S from "./MyPage.styled"
 import Button from "../../components/common/Button"
-import { useState, useEffect } from "react";
 import CourseIcon from "../../assets/mypageIcon/Icon/solar_course-up-bold.svg";
 import CompleteIcon from "../../assets/mypageIcon/Icon/fluent-mdl2_completed.svg"
 import AiIcon from "../../assets/mypageIcon/Icon/mingcute_robot-line.svg"
@@ -24,6 +23,7 @@ import ReadyIcon from "../../assets/icons/OnboardingIcons/before-appointment.svg
 
 import { getMypage } from "../../apis/mypage";
 import StatusInfo from "../../components/common/StatusInfo";
+import useAsyncData from "../../hooks/useAsyncData";
 
 const PATTERN_ICON_MAP = {
   "이동 중": MovingIcon,
@@ -55,25 +55,7 @@ const getPatternLabel = (label) =>
 
 const MyPage = () => {
 
-  const [myData, setMyData] = useState(null);
-
-  useEffect(() => {
-    const fetchMypage = async() => {
-      try{
-        const data = await getMypage();
-        setMyData(data);
-
-        console.log("GET /mypage 성공:", data);
-      }
-      catch(error){
-        console.error(
-          "GET /mypage 실패 : ",
-          error.response?.data || error.message
-        )
-      }
-    }
-    fetchMypage();
-  }, [])
+  const { data: myData } = useAsyncData(getMypage);
 
   if (!myData) {
     return <StatusInfo>마이페이지를 불러오는 중...</StatusInfo>;
