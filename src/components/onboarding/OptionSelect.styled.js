@@ -20,7 +20,7 @@ export const Button = styled.button`
     user-select: none;
     touch-action: manipulation;
     
-    background-color: ${({theme, $isSelected }) => $isSelected ? theme.colors.primary : theme.colors.catagory};
+    background-color: ${({theme, $isSelected }) => $isSelected ? theme.colors.primary : theme.colors.optionGray};
     width: 70px;
     height: 70px;
     border-radius: 35px;
@@ -39,7 +39,7 @@ export const Button = styled.button`
         background-color: ${({ theme, $isSelected }) =>
         $isSelected
             ? theme.colors.primary
-            : theme.colors.catagory};
+            : theme.colors.optionGray};
 
         box-shadow: 0 6px 12px rgba(147, 147, 147, 0.25);
     }
@@ -48,7 +48,7 @@ export const Button = styled.button`
         background-color: ${({ theme, $isSelected }) =>
         $isSelected
             ? theme.colors.primary
-            : theme.colors.catagory};
+            : theme.colors.optionGray};
 
         box-shadow: 0 2px 4px rgba(147, 147, 147, 0.25);
         transform: scale(0.92);
@@ -61,7 +61,7 @@ export const Button = styled.button`
 
 `
 export const Label = styled.span`
-    color: ${({theme, $isSelected }) => $isSelected ? theme.colors.primary : theme.colors.catagory};
+    color: ${({theme, $isSelected }) => $isSelected ? theme.colors.primary : theme.colors.gray};
     font-size: ${({theme}) => theme.fontsize.catagory};
     font-weight: ${({theme}) => theme.fontWeight.medium};
 
@@ -73,7 +73,7 @@ export const Label = styled.span`
         background-color: ${({ theme, $isSelected }) =>
         $isSelected
             ? theme.colors.primary
-            : theme.colors.catagory};
+            : theme.colors.gray};
 
         box-shadow: 0 6px 12px rgba(147, 147, 147, 0.25);
     }
