@@ -8,10 +8,13 @@ export const Container = styled.article`
 
 export const VideoPlayer = styled.iframe`
   position: relative;
+  left: 50%;
   z-index: 1;
   display: block;
-  width: 100%;
+  width: min(760px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
   aspect-ratio: 16 / 9;
+  transform: translateX(-50%);
   border: 0;
   background: ${theme.colors.black};
   pointer-events: auto;

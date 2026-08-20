@@ -32,9 +32,13 @@ const getYoutubeEmbedUrl = (url) => {
         let videoId = "";
 
         if (parsedUrl.hostname === "youtu.be") {
-            videoId = parsedUrl.pathname.slice(1);
-        } else if (parsedUrl.pathname.startsWith("/embed/")) {
-            videoId = parsedUrl.pathname.split("/embed/")[1];
+            videoId = parsedUrl.pathname.split("/").filter(Boolean)[0] ?? "";
+        } else if (
+            parsedUrl.pathname.startsWith("/embed/") ||
+            parsedUrl.pathname.startsWith("/shorts/") ||
+            parsedUrl.pathname.startsWith("/live/")
+        ) {
+            videoId = parsedUrl.pathname.split("/").filter(Boolean)[1] ?? "";
         } else {
             videoId = parsedUrl.searchParams.get("v") ?? "";
         }
@@ -94,6 +98,12 @@ const VideoContent = ({ content, isPlaying, onPlaybackStateChange, onEnded }) =>
                         ) {
                             callbacksRef.current.onPlaybackStateChange?.("buffering");
                         }
+                    },
+                    onError: (event) => {
+                        console.error("YouTube 영상 로드 실패:", {
+                            code: event.data,
+                            videoUrl: content.video_url,
+                        });
                     },
                 },
             });
